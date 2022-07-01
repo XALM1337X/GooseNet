@@ -16,7 +16,6 @@ void loop(){
   DigiKeyboard.update();
   DigiKeyboard.sendKeyStroke('r', KEY_LEFT_GUI);
   DigiKeyboard.delay(500);
-  DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.print("Run");
   DigiKeyboard.sendKeyStroke(KEY_ENTER, MOD_CONTROL_LEFT + MOD_SHIFT_LEFT);
   DigiKeyboard.delay(500);
