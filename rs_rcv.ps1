@@ -72,7 +72,7 @@ while ($exit -eq 0) {
 				} else {
 					while ($clientList[$i].StreamReader.Peek() -ge 0) {
 						try {
-							$in_buff = clientList[$i].StreamReader.ReadLine();
+							$in_buff = $clientList[$i].StreamReader.ReadLine();
 							$join = $in_buff -join "";
 							$MasterClient.StreamWriter.WriteLine($join);
 							$MasterClient.StreamWriter.Flush();
@@ -84,7 +84,7 @@ while ($exit -eq 0) {
 		} catch [ObjectDisposedException] {
 			$NewList = $null
 			foreach($item in $clientList) {
-				if ($item.ClientConn -ne $client) {
+				if ($item.ClientConn -ne $clientList[$i].ClientConn) {
 					$NewList += $item
 				}
 			}
@@ -92,6 +92,6 @@ while ($exit -eq 0) {
 		}
 	}
 
-	#Check MasterClient StreamReader for commands
+	#TODO: Check MasterClient StreamReader for commands
 	
 }
