@@ -8,11 +8,12 @@ if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 } 
 $exit = 0;
 $enc = [system.Text.Encoding]::UTF8
-# Set up endpoint and start listening	
+# Set up endpoint and start listening
+$clientIDTicker = 0;
 $endpoint = new-object System.Net.IPEndPoint([ipaddress]::any, 1337) 
 $server = new-object System.Net.Sockets.TcpListener $endpoint
-[System.Net.Sockets.TcpClient[]]$clientList = $null;
-[System.Net.Sockets.TcpClient]$MasterClient = $null;
+[pscustomobject[]]$clientList = $null;
+[pscustomobject]$MasterClient = $null;
 
 Try { 	
 	Write-Output "Booting server...";
@@ -24,37 +25,58 @@ Catch {
 
 Write-Output "Waiting for clients...";
 while ($exit -eq 0) {
-	#Accept new clients.
+	#Client Initialization.
 	if ($server.Pending()) {
 		$client = $server.AcceptTcpClient();
-		#$client.Client.RemoteEndPoint.Address.IPAddressToString; #HOW TO GET IP
-		$clientList += $client;
-		Write-Output "Client Connected...";
 		$stream = $client.GetStream() 
-		$reader = New-Object System.IO.StreamReader($stream);	
+		$reader = New-Object System.IO.StreamReader($stream);
+		$writer = New-Object System.IO.StreamWriter($stream);			
 		if ($reader.Peek() -ge 0) {
 			$in_buff = $reader.ReadLine();
 			Write-Output $in_buff;
+			$join_buff = $in_buff -join "";
+			if ($join_buff -eq "master_init") {
+				$MasterClient = [pscustomobject]@{
+								ID = $clientIDTicker
+								ClientConn = $client;
+								ClientRemoteIP = $client.Client.RemoteEndPoint.Address.IPAddressToString;
+								StreamReader = $reader;
+								StreamWriter = $writer;
+							  }				
+				$writer.WriteLine("master established");
+				$writer.Flush();
+				Write-Output "Master Connected";
+			} else {
+				$clientList += [pscustomobject]@{
+								ID = $clientIDTicker;
+								ClientConn = $client;
+								ClientRemoteIP = $client.Client.RemoteEndPoint.Address.IPAddressToString;
+								StreamReader = $reader;
+								StreamWriter = $writer;
+							  }
+				$writer.WriteLine("client established");
+				$writer.Flush();
+				Write-Output "Client Connected...";
+			}
 		}
-		$writer = New-Object System.IO.StreamWriter($stream);		
-		$writer.WriteLine("established");
-		$writer.Flush();
+		$clientIDTicker += 1;
 	}
 	
-	for ($i=0; $i -lt $clientList.Length; $i++) {
-		$client = $clientList[$i];		
+	#Iterate over clients. Read content of messages and send results to master client.
+	for ($i=0; $i -lt $clientList.Length; $i++) {			
 		try {
-			if($client.Client.Poll(500000,[System.Net.Sockets.SelectMode]::SelectRead) -eq $true) {
-				if ($client.Client.Available -eq 0) {
+			if($clientList[$i].ClientConn.Client.Poll(500000,[System.Net.Sockets.SelectMode]::SelectRead) -eq $true) {
+				if ($clientList[$i].ClientConn.Client.Available -eq 0) {
 					Write-Output "Connection to client lost.";
-					$client.Close();
+					$clientList[$i].ClientConn.Close();					
 				} else {
-					$stream = $client.GetStream() 
-					$reader = New-Object System.IO.StreamReader($stream);
-					while ($reader.Peek() -ge 0) {		
+					while ($clientList[$i].StreamReader.Peek() -ge 0) {
 						try {
-							$in_buff = $reader.ReadLine();
-							Write-Output $in_buff;
+							$in_buff = clientList[$i].StreamReader.ReadLine();
+							$join = $in_buff -join "";
+							$MasterClient.StreamWriter.WriteLine($join);
+							$MasterClient.StreamWriter.Flush();
+							
 						} catch {}
 					}
 				}
@@ -62,14 +84,14 @@ while ($exit -eq 0) {
 		} catch [ObjectDisposedException] {
 			$NewList = $null
 			foreach($item in $clientList) {
-				if ($item -ne $client) {
+				if ($item.ClientConn -ne $client) {
 					$NewList += $item
 				}
 			}
 			$clientList = $NewList;
 		}
 	}
-	
-	#iterate over existing clients and check for any messages received.
+
+	#Check MasterClient StreamReader for commands
 	
 }
