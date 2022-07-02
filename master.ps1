@@ -25,8 +25,10 @@ try {
 				Write-Output "Connection to server lost";
 				$exit = 1;
 			} else {
-				while ($reader.Peek() -ge 0) {		
-					$in_buff = $reader.ReadLine();
+				$in_stream = $client.GetStream();
+				$in_reader = New-Object System.IO.StreamReader($in_stream);
+				while ($in_reader.Peek() -ge 0) {		
+					$in_buff = $in_reader.ReadLine();
 					Write-Output $in_buff;
 				}
 			}				
