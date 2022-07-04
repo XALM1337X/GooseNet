@@ -154,7 +154,8 @@ while ($exit -eq 0) {
 				}
 			}
 		} catch [ObjectDisposedException] {
-			Write-Output "disposed exception thrown";
+			Write-Output "disposed exception thrown on master connection.";
+			$MasterClient = $null;
 		}		
 	}	
 }
