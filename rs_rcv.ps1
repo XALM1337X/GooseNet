@@ -37,7 +37,7 @@ while ($exit -eq 0) {
 		$writer = New-Object System.IO.StreamWriter($stream);		
 		if ($reader.Peek() -ge 0) {
 			$in_buff = $reader.ReadLine();
-			Write-Output $in_buff;
+			#Write-Output $in_buff;
 			$join_buff = $in_buff -join "";
 			if ($join_buff -eq "master_init") {
 				$MasterClient = [pscustomobject]@{
@@ -99,15 +99,12 @@ while ($exit -eq 0) {
 	}
 
 	if ($MasterClient -ne $null) {
-		#Write-Output "HIT0";
-		#TODO: Check MasterClient StreamReader for commands
 		try {
 			if($MasterClient.ClientConn.Client.Poll(500000, [System.Net.Sockets.SelectMode]::SelectRead) -eq $true) {
 				if ($MasterClient.ClientConn.Client.Available -eq 0) {
 					Write-Output "Master Connection lost.";
 					$MasterClient.ClientConn.Close();
 				} else {
-					#Write-Output "HIT0";
 						$master_stream = $MasterClient.ClientConn.GetStream();
 						$master_reader = New-Object System.IO.StreamReader($master_stream);
 						$master_writer = New-Object System.IO.StreamWriter($master_stream);
@@ -120,24 +117,45 @@ while ($exit -eq 0) {
 							#Read commands send by master client, and relay to appropriate endpoint.
 							
 							#Dump connected client info to master client.
+							
+							#client_dump####################################################
 							if ($join -match "client_dump") {
 								Write-Output "Dumping client list to master client.";
-								for ($i=0; $i -lt $ClientList.Length; $i++) {
-									try {
-										$master_writer.WriteLine($ClientList[$i]);
-										$master_writer.Flush();	
-									} catch {
-										Write-Output $_;
-									}
-									
+								if ($ClientList.Length -gt 0) {
+									for ($i=0; $i -lt $ClientList.Length; $i++) {
+										try {
+											$master_writer.WriteLine($ClientList[$i]);
+												
+										} catch {
+											Write-Output $_;
+										}
+										
+									}									
+								} else {
+									$master_writer.WriteLine("No clients connected");
 								}
+
+								$master_writer.Flush();
 							}
-						} catch{}
+							#################################################################
+							
+							
+							
+							
+							
+							
+							
+							
+							
+						} catch{
+							Write-Output $_;
+						}
 					}
 				}
 			}
 		} catch [ObjectDisposedException] {
-			
+			Write-Output "disposed exception thrown on master connection.";
+			$MasterClient = $null;
 		}		
 	}	
 }
