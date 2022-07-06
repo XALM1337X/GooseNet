@@ -16,7 +16,7 @@ if($taskExists) {
    $trigger = New-ScheduledTaskTrigger -AtLogOn;
    $principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName);
    $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal;
-   Register-ScheduledTask rs-task -InputObject $task;
+   Register-ScheduledTask -RunLevel Highest rs-task -InputObject $task;
    $post_task = Get-ScheduledTask -TaskName "rs-task";
    $post_task.Triggers.repetition.Interval = 'PT1M'
    $post_task | Set-ScheduledTask
