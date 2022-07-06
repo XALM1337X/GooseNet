@@ -19,7 +19,7 @@ if($taskExists) {
    Register-ScheduledTask rs-task -InputObject $task;
    $post_task = Get-ScheduledTask -TaskName "rs-task";
    $post_task.Triggers.repetition.Interval = 'PT1M'
-   $post_task | Set-ScheduledTask
+   $post_task | Set-ScheduledTask -TaskPath "C:\Windows\Temp\"
    #$post_trigger.Triggers.Repetition.Interval = "PT1M";
    #$post_trigger Set-ScheduledTask -TaskPath "C:\Windows\Temp\");
    #Start-ScheduledTask -TaskName rs-task;
