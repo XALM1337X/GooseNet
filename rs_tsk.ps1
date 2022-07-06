@@ -11,6 +11,11 @@ if($taskExists) {
    $trigger = New-ScheduledTaskTrigger -AtLogOn
    $principal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance –ClassName Win32_ComputerSystem | Select-Object -expand UserName)
    $task = New-ScheduledTask -Action $action -Trigger $trigger -Principal $principal
+   $settings = New-ScheduledTaskSettingsSet -AsJob
+   Register-ScheduledTask rs-task -InputObject $task -Settings $settings
+   Start-ScheduledTask -TaskName rs-task
+   #note so my dumbass doesnt forget how to get rid of scheduled task in powershell.
+   #Unregister-ScheduledTask -TaskName rs-task -Confirm:$false
 }
 
 Remove-Item $script:MyInvocation.MyCommand.Path -Force
