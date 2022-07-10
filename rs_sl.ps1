@@ -44,7 +44,7 @@ try {
 					$cmd_buff = $client_reader.ReadLine();
 					$launch = $cmd_buff -join ""
 
-					if ($launch -ne "client established") {
+					if ($launch -ne "slave established") {
 						if ($launch -match "^cd (.*)") {
 							cd $Matches[1];
 							$client_writer.WriteLine(" ");

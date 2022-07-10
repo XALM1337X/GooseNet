@@ -56,9 +56,9 @@ while ($exit -eq 0) {
 								ClientRemoteIP = $client.Client.RemoteEndPoint.Address.IPAddressToString;
 
 							  }
-				$writer.WriteLine("client established");
+				$writer.WriteLine("slave established");
 				$writer.Flush();
-				Write-Output "Client Connected...";
+				Write-Output "slave Connected...";
 			}
 		}
 		$clientIDTicker += 1;
