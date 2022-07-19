@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
         <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Panel.ZIndex="1">
             <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14"/>
-            <RichTextBox x:Name="richTextBox" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" TextChanged="richTextBox_TextChanged" IsReadOnly="True" RenderTransformOrigin="0.5,0.5">
+            <RichTextBox x:Name="richTextBox" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True" RenderTransformOrigin="0.5,0.5">
                 <RichTextBox.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -48,12 +48,12 @@
             </RichTextBox>
             <Label x:Name="client_number_label" Content="Client Id:" Canvas.Left="12" Canvas.Top="97" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
             <TextBox x:Name="textBox" Canvas.Left="87" TextWrapping="NoWrap" Canvas.Top="101" Width="74" HorizontalAlignment="Center" VerticalAlignment="Top" Height="21"/>
-            <Button x:Name="configure_server" Content="configure" Canvas.Left="11" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.5,0.503" FontSize="14" Height="23"/>
+            <Button x:Name="configure_server" Content="configure" Canvas.Left="11" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.5,0.503" FontSize="14" Height="23" Click="ConfigureServerClick"/>
             <Button x:Name="kill_server" Content="kill server" Canvas.Left="91" Canvas.Top="180" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" FontSize="14"/>
             <Image x:Name="image" Height="188" Canvas.Top="285" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
             <Button x:Name="button" Content="run cmd" Canvas.Left="784" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Width="74" Height="23"/>
             <Button x:Name="client_kill_switch" Content="kill switch" Canvas.Left="87" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" FontSize="14" Foreground="Red" Height="22"/>
-            <Button x:Name="configure_payload" Canvas.Left="10" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" Content="configure" FontSize="14"/>
+            <Button x:Name="configure_payload" Canvas.Left="10" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" Content="configure" FontSize="14" Click="PayloadConfigureButtonClick"/>
             <Button x:Name="payload_burn" Content="Burn" Canvas.Left="80" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" FontSize="14"/>
             <Label x:Name="label" Content="Payload Options:" Canvas.Top="251" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="client_list" Content="client list" Canvas.Left="89" Canvas.Top="209" HorizontalAlignment="Center" VerticalAlignment="Top" Width="70" Height="23"/>
@@ -66,6 +66,7 @@
             <Label x:Name="label1" Canvas.Left="124" Canvas.Top="152"/>
             <Label x:Name="server_options_label" Content="Server Options:" Foreground="White" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="147" VerticalAlignment="Top" FontSize="14"/>
             <Label x:Name="target_client_options" Content="Target Client Options:" Canvas.Left="12" Canvas.Top="68" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
         </Canvas>
         <Canvas x:Name="master_client_configure_canvas" Height="484" Width="900" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource AppBackground}" Grid.Row="2">
             <Canvas.RenderTransform>
@@ -80,9 +81,34 @@
             <Label x:Name="master_client_config_label" Content="Master Client Configuration:" Canvas.Left="16" Canvas.Top="16" FontSize="16" Foreground="White"/>
             <Button x:Name="master_client_config_back" Content="Back" Canvas.Left="843" Canvas.Top="20" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47" Click="MasterClientConfigBack"/>
             <Label x:Name="server_label" Content="Server FQDN or IP:" Canvas.Left="20" Canvas.Top="127" FontSize="14" Foreground="White"/>
-            <TextBox x:Name="master_client_domain_textbox" Canvas.Left="148" TextWrapping="Wrap" Canvas.Top="134" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Button x:Name="master_client_config_submit" Content="Submit" Canvas.Left="353" Canvas.Top="132" FontSize="14" Foreground="Black" Click="MasterClientConfigSubmit"/>
+            <TextBox x:Name="master_client_domain_textbox" Canvas.Left="148" TextWrapping="Wrap" Canvas.Top="134" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
+            <Button x:Name="master_client_config_submit" Content="Submit" Canvas.Left="24" Canvas.Top="209" FontSize="14" Foreground="Black" Click="MasterClientConfigSubmit"/>
+            <Label x:Name="master_client_server_port" Content="Server Port:" Canvas.Left="20" Canvas.Top="172" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="master_client_server_port1" Canvas.Left="101" TextWrapping="Wrap" Canvas.Top="178" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
         </Canvas>
+        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+            <Image x:Name="image_Copy1" Height="188" Canvas.Top="286" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
+            <Label x:Name="server_configuration" Content="Server Configuration:" Canvas.Left="10" Canvas.Top="22" Foreground="White" FontSize="14"/>
+            <Label x:Name="fqdn_or_wan_label" Content="FQDN or WAN:" Canvas.Left="15" Canvas.Top="95" Foreground="White" FontSize="14"/>
+            <TextBox x:Name="server_fqdn_or_wan" Canvas.Left="123" TextWrapping="Wrap" Canvas.Top="100" Width="288" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="15" Canvas.Top="138" Foreground="White" FontSize="14"/>
+            <TextBox x:Name="server_port" Canvas.Left="123" TextWrapping="Wrap" Canvas.Top="143" Width="66" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="16" Canvas.Top="172" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Button x:Name="server_conf_back" Content="Back" Canvas.Left="834" Canvas.Top="10" FontSize="14" Click="ServerConfBackClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47"/>
+        </Canvas>
+        <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
+            <Image x:Name="image_Copy2" Height="188" Canvas.Top="285" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
+            <Label x:Name="payload_conf_label" Content="Payload Configuration Options:" Canvas.Left="10" Canvas.Top="20" Foreground="White" FontSize="14"/>
+            <Label x:Name="task_fqdn_or_wan_endpoint" Content="Task FQDN or WAN: " Canvas.Left="10" Canvas.Top="96" Foreground="White" FontSize="14"/>
+            <TextBox x:Name="task_fqdn_wan_textbox" Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="100" Width="250" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="task_name_label" Content="/rs__tsk.ps1" Canvas.Left="402" Canvas.Top="96" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="slave_fqdn_or_wan_label" Content="Slave FQDN or WAN:" Canvas.Left="10" Canvas.Top="130" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="slave_fqdn_or_wan_textbox" Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="134" Width="250" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="slave_fqdn_or_wan_end_label" Content="/rs__sl.ps1" Canvas.Left="402" Canvas.Top="130" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="payload_conf_submit" Content="Submit" Canvas.Left="15" Canvas.Top="170" FontSize="14" Width="47" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="paylout_conf_back" Content="Back" Canvas.Left="831" Canvas.Top="26" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47" Click="PayloadConfBackButton"/>
+        </Canvas>
+        <Label x:Name="label2" Content="Label" HorizontalAlignment="Left" Margin="58,188,0,0" Grid.RowSpan="3" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

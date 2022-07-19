@@ -16,4 +16,8 @@
     <Resource Include="GooseNet.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
 </Project>
