@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="SetupProject1" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="4ca9e9d0-0d7e-447d-996e-304437f18d98">
+	<Product Id="*" Name="GooseNet" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="9ac21d64-cae4-44d0-9088-25727707244d">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
-		<Feature Id="ProductFeature" Title="SetupProject1" Level="1">
+		<Feature Id="ProductFeature" Title="GooseNet" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 	</Product>
@@ -14,7 +14,7 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="SetupProject1" />
+				<Directory Id="INSTALLFOLDER" Name="GooseNet" />
 			</Directory>
 		</Directory>
 	</Fragment>
