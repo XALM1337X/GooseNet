@@ -5,16 +5,32 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "attiny85_rshell", "attiny85_rshell.csproj", "{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "GooseNet", "GooseNet\GooseNet.wixproj", "{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Debug|x86.Build.0 = Debug|Any CPU
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|x86.Build.0 = Release|Any CPU
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Debug|Any CPU.Build.0 = Debug|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Debug|x86.ActiveCfg = Debug|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Debug|x86.Build.0 = Debug|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Release|Any CPU.ActiveCfg = Release|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Release|Any CPU.Build.0 = Release|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Release|x86.ActiveCfg = Release|x86
+		{FAE18CB8-C984-4FEF-B7BC-1462FB0954E1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
