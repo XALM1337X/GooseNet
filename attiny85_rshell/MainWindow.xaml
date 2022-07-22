@@ -87,7 +87,7 @@
             <Label x:Name="master_client_server_port_label" Content="Server Port:" Canvas.Left="17" Canvas.Top="97" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox x:Name="master_client_server_port" Canvas.Left="145" TextWrapping="Wrap" Canvas.Top="103" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
         </Canvas>
-        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
+        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
             <Image x:Name="image_Copy1" Height="188" Canvas.Top="286" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
             <Label x:Name="server_configuration" Content="Server Configuration:" Canvas.Left="10" Canvas.Top="22" Foreground="White" FontSize="14"/>
             <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="9" Canvas.Top="48" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
