@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="data\" />
+    <Folder Include="scripts\" />
     <Folder Include="Templates\" />
   </ItemGroup>
 

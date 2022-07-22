@@ -64,7 +64,7 @@ namespace attiny85_rshell {
 
             Panel.SetZIndex(landing_page, 1);
             Panel.SetZIndex(master_client_configure_canvas, 0);
-            MasterContext master_client = new MasterContext(master_client_domain_textbox.Text, master_client_server_port.Text);
+            MasterClientConf master_client = new MasterClientConf(master_client_domain_textbox.Text, master_client_server_port.Text);
 
             string jsonString = JsonSerializer.Serialize(master_client);
             using (StreamWriter writetext = new StreamWriter("../../../data/master_client.json")) 
@@ -72,7 +72,7 @@ namespace attiny85_rshell {
                 writetext.WriteLine(jsonString);
             }
             FlowDocument myFlowDoc = new FlowDocument();
-            myFlowDoc.Blocks.Add(new Paragraph(new Run("Paragraph 1")));
+            myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote: ../../../data/master_client.json")));
             landing_page_log.Document = myFlowDoc;
         }
 
@@ -85,6 +85,10 @@ namespace attiny85_rshell {
         {
             Panel.SetZIndex(landing_page, 1);
             Panel.SetZIndex(server_configuration_canvas, 0);
+        }
+        private void ServerConfSubmit(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("THING");
         }
 
         private void PayloadConfBackButton(object sender, RoutedEventArgs e)
@@ -99,5 +103,8 @@ namespace attiny85_rshell {
             Panel.SetZIndex(landing_page, 0);
             Panel.SetZIndex(payload_conf_canvas, 1);
         }
+
+
+
     }
 }

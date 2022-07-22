@@ -87,14 +87,12 @@
             <Label x:Name="master_client_server_port_label" Content="Server Port:" Canvas.Left="17" Canvas.Top="97" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox x:Name="master_client_server_port" Canvas.Left="145" TextWrapping="Wrap" Canvas.Top="103" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
         </Canvas>
-        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
             <Image x:Name="image_Copy1" Height="188" Canvas.Top="286" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
             <Label x:Name="server_configuration" Content="Server Configuration:" Canvas.Left="10" Canvas.Top="22" Foreground="White" FontSize="14"/>
-            <Label x:Name="fqdn_or_wan_label" Content="FQDN or WAN:" Canvas.Left="15" Canvas.Top="95" Foreground="White" FontSize="14"/>
-            <TextBox x:Name="server_fqdn_or_wan" Canvas.Left="123" TextWrapping="Wrap" Canvas.Top="100" Width="288" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="15" Canvas.Top="138" Foreground="White" FontSize="14"/>
-            <TextBox x:Name="server_port" Canvas.Left="123" TextWrapping="Wrap" Canvas.Top="143" Width="66" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="16" Canvas.Top="172" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="9" Canvas.Top="48" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="server_port" Canvas.Left="117" TextWrapping="Wrap" Canvas.Top="53" Width="66" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="14" Canvas.Top="77" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ServerConfSubmit"/>
             <Button x:Name="server_conf_back" Content="Back" Canvas.Left="834" Canvas.Top="10" FontSize="14" Click="ServerConfBackClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47"/>
         </Canvas>
         <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">

