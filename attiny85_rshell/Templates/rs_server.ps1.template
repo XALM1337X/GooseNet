@@ -1,10 +1,10 @@
 
 if (!$(Get-NetFirewallRule -DisplayName "rs1in" 2>$null)) {
-	New-NetFirewallRule -DisplayName "rs1in" -Direction Inbound -LocalPort <FIREWALL_PORT> -Protocol TCP -Action Allow
+	New-NetFirewallRule -DisplayName "rs1in" -Direction Inbound -LocalPort <OS_PORT> -Protocol TCP -Action Allow
 } 
 
 if (!$(Get-NetFirewallRule -DisplayName "rs1out" 2>$null)) {
-	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort <FIREWALL_PORT> -Protocol TCP -Action Allow
+	New-NetFirewallRule -DisplayName "rs1out" -Direction Outbound -LocalPort <OS_PORT> -Protocol TCP -Action Allow
 } 
 #$stream = $client.GetStream() 
 #$reader = New-Object System.IO.StreamReader($stream);
@@ -14,7 +14,7 @@ $exit = 0;
 $enc = [system.Text.Encoding]::UTF8
 # Set up endpoint and start listening
 $clientIDTicker = 0;
-$endpoint = new-object System.Net.IPEndPoint([ipaddress]::any, <FIREWALL_PORT>) 
+$endpoint = new-object System.Net.IPEndPoint([ipaddress]::any, <OS_PORT>) 
 $server = new-object System.Net.Sockets.TcpListener $endpoint
 [pscustomobject[]]$ClientList = $null;
 [pscustomobject]$MasterClient = $null;
