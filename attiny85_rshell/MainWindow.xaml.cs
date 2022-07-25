@@ -133,8 +133,11 @@ namespace attiny85_rshell {
                 }            
         }
 
-        private void PayloadConfBackButton(object sender, RoutedEventArgs e)
-        {
+            Panel.SetZIndex(landing_page, 1);
+            Panel.SetZIndex(server_configuration_canvas, 0);
+        }
+
+        private void PayloadConfBackButton(object sender, RoutedEventArgs e) {
             Panel.SetZIndex(landing_page, 1);
             Panel.SetZIndex(payload_conf_canvas, 0);
             
