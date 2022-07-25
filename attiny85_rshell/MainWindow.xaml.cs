@@ -17,18 +17,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-
-
-//using System.Diagnostics;
-//This namespace gives access to Process.Start("<cmd_path>");
-
-
-
-//NOTE: How to create flow document and add to RichTextBox.
-//FlowDocument myFlowDoc = new FlowDocument();
-//myFlowDoc.Blocks.Add(new Paragraph(new Run("Paragraph 1")));
-//TextBox.Document = myFlowDoc;
-
 namespace attiny85_rshell { 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
