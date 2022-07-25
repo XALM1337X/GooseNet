@@ -73,19 +73,15 @@ namespace attiny85_rshell {
             landing_page_log.Document = myFlowDoc;
         }
 
-        private void ConfigureServerClick(object sender, RoutedEventArgs e)
-        {
+        private void ConfigureServerClick(object sender, RoutedEventArgs e) {
             Panel.SetZIndex(landing_page, 0);
             Panel.SetZIndex(server_configuration_canvas, 1);
         }
-        private void ServerConfBackClick(object sender, RoutedEventArgs e)
-        {
+        private void ServerConfBackClick(object sender, RoutedEventArgs e) {
             Panel.SetZIndex(landing_page, 1);
             Panel.SetZIndex(server_configuration_canvas, 0);
         }
-        private void ServerConfSubmit(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("THING");
+        private void ServerConfSubmit(object sender, RoutedEventArgs e) {
         }
 
         private void PayloadConfBackButton(object sender, RoutedEventArgs e)
