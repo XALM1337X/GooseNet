@@ -23,7 +23,7 @@
             <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
         <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Panel.ZIndex="1">
-            <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14"/>
+            <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" Click="RunServerClick"/>
             <RichTextBox x:Name="landing_page_log" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True" RenderTransformOrigin="0.5,0.5">
                 <RichTextBox.RenderTransform>
                     <TransformGroup>
@@ -56,7 +56,7 @@
             <Button x:Name="configure_payload" Canvas.Left="10" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" Content="configure" FontSize="14" Click="PayloadConfigureButtonClick"/>
             <Button x:Name="payload_burn" Content="Burn" Canvas.Left="80" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" FontSize="14"/>
             <Label x:Name="label" Content="Payload Options:" Canvas.Top="251" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
-            <Button x:Name="client_list" Content="client list" Canvas.Left="89" Canvas.Top="209" HorizontalAlignment="Center" VerticalAlignment="Top" Width="70" Height="23"/>
+            <Button x:Name="client_list" Content="client list" Canvas.Left="89" Canvas.Top="209" HorizontalAlignment="Center" VerticalAlignment="Top" Width="70" Height="23" FontSize="14"/>
             <Label x:Name="client_options_label" Content="Master Client Options:" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
             <Button x:Name="client_disconnect" Content="disconnect" Canvas.Left="11" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" FontSize="14" Height="22"/>
             <Label x:Name="cmd_label" Content="Command:" Canvas.Left="260" Canvas.Top="62" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
