@@ -82,6 +82,55 @@ namespace attiny85_rshell {
             Panel.SetZIndex(server_configuration_canvas, 0);
         }
         private void ServerConfSubmit(object sender, RoutedEventArgs e) {
+            if (File.Exists("../../../data/rs_server.ps1")) {
+                string question = "../../../data/rs_server.ps1 already exists. Would you like to overwrite?";
+                if (MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }
+
+            Regex regex = new Regex(@"(.*)<OS_PORT>(.*)");
+
+            string[] lines;
+
+
+            if (File.Exists("../../../Templates/rs_server.ps1.template")) {
+                lines = System.IO.File.ReadAllLines(@"../../../Templates/rs_server.ps1.template");
+            } else {
+                MessageBox.Show("rs_server.ps1.template not found. Reinstall application to fix.", "Critical Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+                
+            int port;
+            bool changes_made = false;
+            bool success = int.TryParse(server_port.Text, out port);
+            if (!success) {
+                //err
+            } else {
+                if (port > 0 && port < 65537) {
+                    for (int i = 0; i < lines.Length; i++) {
+                        if (regex.IsMatch(lines[i])) {
+                            lines[i] = (regex.Replace(lines[i], "$1") + port.ToString() + regex.Replace(lines[i], "$2"));
+                            changes_made = true;
+                        }
+                    }
+                } else {
+                    MessageBox.Show("Valid port range is [1 - 65536]");
+                    return;
+                } 
+                if (changes_made) {
+                    using (StreamWriter writetext = new StreamWriter("../../../data/rs_server.ps1")) {
+                        foreach (string line in lines) {
+                            writetext.WriteLine(line);
+                        }
+                        writetext.Close();
+                    }
+                    FlowDocument myFlowDoc = new FlowDocument();
+                    myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote: ../../../data/rs_server.ps1")));
+                    landing_page_log.Document.Blocks.Clear();
+                    landing_page_log.Document = myFlowDoc;
+                }            
         }
 
         private void PayloadConfBackButton(object sender, RoutedEventArgs e)
