@@ -53,9 +53,9 @@ namespace attiny85_rshell {
         }
 
         private void MasterClientConfigSubmit(object sender, RoutedEventArgs e) {
+            if (File.Exists("../../../data/master_client.json")) {
                 string question = "master_client.json already exists. Would you like to overwrite?";
-                if (MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                {
+                if (MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
                     return;
                 }
             }
