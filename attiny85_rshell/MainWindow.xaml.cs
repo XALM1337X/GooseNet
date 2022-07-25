@@ -65,8 +65,7 @@ namespace attiny85_rshell {
             MasterClientConf master_client = new MasterClientConf(master_client_domain_textbox.Text, master_client_server_port.Text);
 
             string jsonString = JsonSerializer.Serialize(master_client);
-            using (StreamWriter writetext = new StreamWriter("../../../data/master_client.json")) 
-            {                
+            using (StreamWriter writetext = new StreamWriter("../../../data/master_client.json")) {                
                 writetext.WriteLine(jsonString);
             }
             FlowDocument myFlowDoc = new FlowDocument();
