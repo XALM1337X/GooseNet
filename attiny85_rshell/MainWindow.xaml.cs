@@ -40,24 +40,19 @@ namespace attiny85_rshell {
 
         }
 
-        private void MasterClientConfigureView(object sender, RoutedEventArgs e)
-        {
+        private void MasterClientConfigureView(object sender, RoutedEventArgs e) {
             Panel.SetZIndex(landing_page, 0);
             Panel.SetZIndex(master_client_configure_canvas, 1);
             //MessageBox.Show("Hello");
         }
 
-        private void MasterClientConfigBack(object sender, RoutedEventArgs e)
-        {
+        private void MasterClientConfigBack(object sender, RoutedEventArgs e) {
             //MessageBox.Show("Hello");
             Panel.SetZIndex(landing_page, 1);
             Panel.SetZIndex(master_client_configure_canvas, 0);
         }
 
-        private void MasterClientConfigSubmit(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists("../../../data/master_client.json"))
-            {
+        private void MasterClientConfigSubmit(object sender, RoutedEventArgs e) {
                 string question = "master_client.json already exists. Would you like to overwrite?";
                 if (MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 {
