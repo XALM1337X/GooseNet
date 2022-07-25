@@ -149,7 +149,21 @@ namespace attiny85_rshell {
             Panel.SetZIndex(payload_conf_canvas, 1);
         }
 
+        private void RunServerClick(object sender, RoutedEventArgs e) {
+            if (File.Exists("..\\..\\..\\data\\rs_server.ps1")) {
+                using (Process myProcess = new Process()) {
+                    myProcess.StartInfo.UseShellExecute = true;
+                    // You can start any process, HelloWorld is a do-nothing example.
+                    myProcess.StartInfo.FileName = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
+                    myProcess.StartInfo.CreateNoWindow = false;
+                    myProcess.StartInfo.Arguments = "..\\..\\..\\data\\rs_server.ps1";
+                    myProcess.Start();
+                }
+            } else {
+                MessageBox.Show("..\\..\\..\\data\\rs_server.ps1 does not exist. Use server configuration button.","Configured server not found", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-
+        }
     }
 }
