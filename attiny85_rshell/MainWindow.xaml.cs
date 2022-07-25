@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -131,7 +131,7 @@ namespace attiny85_rshell {
                     landing_page_log.Document.Blocks.Clear();
                     landing_page_log.Document = myFlowDoc;
                 }            
-        }
+            }
 
             Panel.SetZIndex(landing_page, 1);
             Panel.SetZIndex(server_configuration_canvas, 0);
