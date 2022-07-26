@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +13,9 @@ namespace attiny85_rshell
     /// </summary>
     public partial class App : Application
     {
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
+            MessageBox.Show("Error" + Environment.NewLine + e.Exception.Message, "Error");
+            e.Handled = true;
+        }
     }
 }
