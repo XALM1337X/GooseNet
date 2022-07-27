@@ -32,27 +32,27 @@ namespace attiny85_rshell {
         }
 
         private void MasterClientConfigureView(object sender, RoutedEventArgs e) {
-            Panel.SetZIndex(landing_page, 0);
-            Panel.SetZIndex(master_client_configure_canvas, 1);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 1);
             //MessageBox.Show("Hello");
         }
 
         private void MasterClientConfigBack(object sender, RoutedEventArgs e) {
             //MessageBox.Show("Hello");
-            Panel.SetZIndex(landing_page, 1);
-            Panel.SetZIndex(master_client_configure_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 0);
         }
 
         private void MasterClientConfigSubmit(object sender, RoutedEventArgs e) {
             if (File.Exists("../../../data/master_client.json")) {
                 string question = "master_client.json already exists. Would you like to overwrite?";
-                if (MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
                     return;
                 }
             }
 
-            Panel.SetZIndex(landing_page, 1);
-            Panel.SetZIndex(master_client_configure_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 0);
             MasterClientConf master_client = new MasterClientConf(master_client_domain_textbox.Text, master_client_server_port.Text);
 
             string jsonString = JsonSerializer.Serialize(master_client);
@@ -65,19 +65,19 @@ namespace attiny85_rshell {
         }
 
         private void ConfigureServerClick(object sender, RoutedEventArgs e) {
-            Panel.SetZIndex(landing_page, 0);
-            Panel.SetZIndex(server_configuration_canvas, 1);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 1);
         }
 
         private void ServerConfBackClick(object sender, RoutedEventArgs e) {
-            Panel.SetZIndex(landing_page, 1);
-            Panel.SetZIndex(server_configuration_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 0);
         }
 
         private void ServerConfSubmit(object sender, RoutedEventArgs e) {
             if (File.Exists("../../../scripts/rs_server.ps1")) {
                 string question = "../../../scripts/rs_server.ps1 already exists. Would you like to overwrite?";
-                if (MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
                     return;
                 }
             }
@@ -90,7 +90,7 @@ namespace attiny85_rshell {
             if (File.Exists("../../../Templates/rs_server.ps1.template")) {
                 lines = System.IO.File.ReadAllLines(@"../../../Templates/rs_server.ps1.template");
             } else {
-                MessageBox.Show("rs_server.ps1.template not found. Reinstall application to fix.", "Critical Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("rs_server.ps1.template not found. Reinstall application to fix.", "Critical Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace attiny85_rshell {
                         }
                     }
                 } else {
-                    MessageBox.Show("Valid port range is [1 - 65536]");
+                    System.Windows.MessageBox.Show("Valid port range is [1 - 65536]");
                     return;
                 } 
                 if (changes_made) {
@@ -126,30 +126,34 @@ namespace attiny85_rshell {
                 }            
             }
 
-            Panel.SetZIndex(landing_page, 1);
-            Panel.SetZIndex(server_configuration_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 0);
         }
 
         private void PayloadConfBackButton(object sender, RoutedEventArgs e) {
-            Panel.SetZIndex(landing_page, 1);
-            Panel.SetZIndex(payload_conf_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
             
         }
 
         private void PayloadConfigureButtonClick(object sender, RoutedEventArgs e) {
-            Panel.SetZIndex(landing_page, 0);
-            Panel.SetZIndex(payload_conf_canvas, 1);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 1);
         }
 
         private void PayloadConfigSubmit(object sender, RoutedEventArgs e) {
+
+
+            //Set Hosting domains for task and slave
+            //Set Slave Target server and port
+
             //FolderBrowserDialog folderBrowserDialog1;
             //folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             //folderBrowserDialog1.Description ="Select the directory that you want to use as the default.";
             //folderBrowserDialog1.ShowNewFolderButton = false;
             //folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
 
-            //Set Hosting domains for task and slave
-            //Set Slave Target server and port
+
         }
 
         private void RunServerClick(object sender, RoutedEventArgs e) {
@@ -174,7 +178,7 @@ namespace attiny85_rshell {
 
                 }
             } else {
-                MessageBox.Show("..\\..\\..\\scripts\\rs_server.ps1 does not exist. Use server configuration button.","Configured server not found", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("..\\..\\..\\scripts\\rs_server.ps1 does not exist. Use server configuration button.","Configured server not found", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -191,7 +195,7 @@ namespace attiny85_rshell {
                 landing_page_log.Document.Blocks.Clear();
                 landing_page_log.Document = myFlowDoc;
             } else {
-                MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
                 return ;
             }
         }
