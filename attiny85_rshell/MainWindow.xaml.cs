@@ -143,17 +143,139 @@ namespace attiny85_rshell {
 
         private void PayloadConfigSubmit(object sender, RoutedEventArgs e) {
 
+            if (File.Exists("../../../scripts/rs_tsk.ps1")) {
+                string question = "rs_tsk.ps1 already exists. Would you like to overwrite?";
+                if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }
+            if (File.Exists("../../../scripts/rs_sl.ps1")) {
+                string question = "rs_sl.ps1 already exists. Would you like to overwrite?";
+                if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }
+            if (File.Exists("../../../payload_out/payload_out.ino")) {
+                string question = "payload_out.ino already exists. Would you like to overwrite?";
+                if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }
 
-            //Set Hosting domains for task and slave
-            //Set Slave Target server and port
 
+
+            FlowDocument myFlowDoc = new FlowDocument();
+            Regex re_port = new Regex(@"(.*)<OS_PORT>(.*)");
+            Regex re_dom = new Regex(@"(.*)<HOST_DOMAIN>(.*)");
+            Regex re_slave_server = new Regex(@"(.*)<SLAVE_SERVER_DOMAIN>(.*)");
+            Regex re_proto_catch = new Regex(@"https://|http://(.+)");
+            bool changes_made = false;
+            //Set Hosting domains for task and slave   
+            ///Task: task_fqdn_wan_textbox
+            ///string[] lines;
+
+            string[] tsk_lines;
+            string[] paylout_out_lines;
+            string[] slave_lines;
+            //Write the rs_tsk.ps1 script //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (!File.Exists("../../../Templates/rs_tsk.ps1.template")) {
+                myFlowDoc.Blocks.Add(new Paragraph(new Run("rs_tsk.ps1.template not found. Reinstall application to fix.")));
+            } else {
+                tsk_lines = System.IO.File.ReadAllLines(@"../../../Templates/rs_tsk.ps1.template");
+                for (int i = 0; i < tsk_lines.Length; i++) {
+                    if (re_dom.IsMatch(tsk_lines[i])) {
+                        tsk_lines[i] = (re_dom.Replace(tsk_lines[i], "$1") + host_fqdn_wan_textbox.Text + re_dom.Replace(tsk_lines[i], "$2"));
+                        changes_made = true;
+                        break;
+                    }
+                }
+                if (changes_made) {
+                    //Write file
+                    using (StreamWriter writetext = new StreamWriter("../../../scripts/rs_tsk.ps1")) {
+                        foreach (string line in tsk_lines) {
+                            writetext.WriteLine(line);
+                        }
+                        writetext.Close();
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote ../../../scripts/rs_tsk.ps1")));
+                    }
+                    changes_made = false;
+                }
+            }
+
+            //Write the payload_out.ino file ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (!File.Exists("../../../Templates/payload_out.ino.template")) {
+                myFlowDoc.Blocks.Add(new Paragraph(new Run("payload_out.ino.template not found. Reinstall application to fix.")));
+            } else {
+                paylout_out_lines = System.IO.File.ReadAllLines(@"../../../Templates/payload_out.ino.template");
+                for (int i = 0; i < paylout_out_lines.Length; i++) {
+                    if (re_dom.IsMatch(paylout_out_lines[i])) {
+                        paylout_out_lines[i] = (re_dom.Replace(paylout_out_lines[i], "$1") + host_fqdn_wan_textbox.Text + re_dom.Replace(paylout_out_lines[i], "$2"));
+                        changes_made = true;
+                        break;
+                    }
+                }
+                if (changes_made) {
+                    //Write file
+                    using (StreamWriter writetext = new StreamWriter("../../../payload_out/payload_out.ino")) {
+                        foreach (string line in paylout_out_lines) {
+                            writetext.WriteLine(line);
+                        }
+                        writetext.Close();
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote ../../../payload_out/payload_out.ino")));
+                    }
+                    changes_made = false;
+                }
+            }
+            //Write out rs_sl.ps1//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (!File.Exists("../../../Templates/rs_sl.ps1.template")) {
+                myFlowDoc.Blocks.Add(new Paragraph(new Run("rs_s1.ps1.template not found. Reinstall application to fix.")));
+            } else {
+                slave_lines = System.IO.File.ReadAllLines(@"../../../Templates/rs_sl.ps1.template");
+                //Look for 
+                for (int i = 0; i < slave_lines.Length; i++) {
+                    if (re_port.IsMatch(slave_lines[i])) {
+                        slave_lines[i] = (re_port.Replace(slave_lines[i], "$1") + slave_server_port_textbox.Text + re_port.Replace(slave_lines[i], "$2"));
+                        changes_made = true;
+                    }
+                    if (re_slave_server.IsMatch(slave_lines[i])) {
+                        if (re_proto_catch.IsMatch(slave_server_textbox.Text)) {
+                            slave_lines[i] = (re_slave_server.Replace(slave_lines[i], "$1") + re_proto_catch.Replace(slave_server_textbox.Text, "$1") + re_slave_server.Replace(slave_lines[i], "$2"));
+                            changes_made = true;
+                        } else {
+                            System.Windows.MessageBox.Show("Failed to parse domain. Must meet format https://<your_site> or http://<your_site>", "Failed to parse", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                    }
+
+                }
+                if (changes_made) {
+                    //Write file
+                    using (StreamWriter writetext = new StreamWriter("../../../scripts/rs_sl.ps1")) {
+                        foreach (string line in slave_lines) {
+                            writetext.WriteLine(line);
+                        }
+                        writetext.Close();
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote ../../../scripts/rs_sl.ps1")));
+                    }
+                    changes_made = false;
+                }
+            }
+
+            //TODO:
+            //Set Optional Local Hosting Path.
             //FolderBrowserDialog folderBrowserDialog1;
             //folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             //folderBrowserDialog1.Description ="Select the directory that you want to use as the default.";
             //folderBrowserDialog1.ShowNewFolderButton = false;
             //folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
 
-
+            landing_page_log.Document.Blocks.Clear();
+            landing_page_log.Document = myFlowDoc;
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
         }
 
         private void RunServerClick(object sender, RoutedEventArgs e) {

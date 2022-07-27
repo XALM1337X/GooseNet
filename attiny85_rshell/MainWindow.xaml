@@ -98,20 +98,17 @@
         <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
             <Image x:Name="image_Copy2" Height="188" Canvas.Top="285" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
             <Label x:Name="payload_conf_label" Content="Payload Configuration Options:" Canvas.Left="10" Canvas.Top="20" Foreground="White" FontSize="14" BorderBrush="#FFC10808"/>
-            <Label x:Name="task_fqdn_or_wan_endpoint" Content="Task FQDN or WAN: " Canvas.Left="10" Canvas.Top="134" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="task_fqdn_wan_textbox" Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="138" Width="222" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="task_name_label" Content="/rs__tsk.ps1" Canvas.Left="374" Canvas.Top="134" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Width="66"/>
-            <Label x:Name="slave_fqdn_or_wan_label" Content="Slave FQDN or WAN:" Canvas.Left="10" Canvas.Top="168" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="slave_fqdn_or_wan_textbox" Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="172" Width="222" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="slave_fqdn_or_wan_end_label" Content="/rs__sl.ps1" Canvas.Left="374" Canvas.Top="168" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" Width="60"/>
+            <Label x:Name="host_fqdn_or_wan_label" Content="Host FQDN or WAN: " Canvas.Left="28" Canvas.Top="132" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox x:Name="host_fqdn_wan_textbox" Canvas.Left="170" TextWrapping="Wrap" Canvas.Top="136" Width="222" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Hosting domain or ip for task and slave scripts. exp: https://example.com/parth/to/&lt;rs_sl.ps1 || rs_tsk.ps1&gt;"/>
             <Button x:Name="payload_conf_submit" Content="Submit" Canvas.Left="831" Canvas.Top="285" FontSize="14" Width="47" HorizontalAlignment="Left" VerticalAlignment="Center" Click="PayloadConfigSubmit"/>
             <Button x:Name="paylout_conf_back" Content="Back" Canvas.Left="831" Canvas.Top="26" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47" Click="PayloadConfBackButton"/>
-            <Label x:Name="hosting_label" Content="Hosting Paths:" Canvas.Left="10" Canvas.Top="100" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="slave_server_label" Content="Slave Target Server:" Canvas.Left="450" Canvas.Top="100" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="slave_server" Content="Server FQDN or WAN:" Canvas.Left="450" Canvas.Top="134" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="slave_server_textbox" Canvas.Left="610" TextWrapping="Wrap" Canvas.Top="138" Width="244" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="slave_server_port_label" Content="Server Port:" Canvas.Left="450" Canvas.Top="164" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="slave_server_port_textbox" Canvas.Left="610" TextWrapping="Wrap" Canvas.Top="168" Width="120" FontSize="14"/>
+            <Label x:Name="hosting_label" Content="Hosting Path:" Canvas.Left="10" Canvas.Top="100" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="slave_server_label" Content="Slave Target Server:" Canvas.Left="10" Canvas.Top="178" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="slave_server" Content="Server FQDN or WAN:" Canvas.Left="28" Canvas.Top="212" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="slave_server_textbox" Canvas.Left="188" TextWrapping="Wrap" Canvas.Top="216" Width="244" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="The Fully qualified domain or WAN address of the target server to connect the slave to."/>
+            <Label x:Name="slave_server_port_label" Content="Server Port:" Canvas.Left="28" Canvas.Top="242" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="slave_server_port_textbox" Canvas.Left="188" TextWrapping="Wrap" Canvas.Top="246" Width="120" FontSize="14" ToolTip="The port that the slave will connect to the master server on." HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="script_labels" Content="/&lt;rs__tsk.ps1 || rs__s1.ps1&gt;" Canvas.Left="392" Canvas.Top="132" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         </Canvas>
 
     </Grid>
