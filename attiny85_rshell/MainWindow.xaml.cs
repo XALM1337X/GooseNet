@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +17,23 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Net.Http;
+
+
+//TODO_FUNCTIONALITY_LIST:
+//Master Client Options
+//Start button: (Requires creating GUI master client)
+
+//Target Client Options:
+//All buttons
+
+//Server Options:
+//Client List Button:
+
+//Payload Options:
+//Burn button: (Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
+//https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+
 
 namespace attiny85_rshell { 
     /// <summary>
