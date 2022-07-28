@@ -47,14 +47,14 @@
                 </FlowDocument>
             </RichTextBox>
             <Label x:Name="client_number_label" Content="Client Id:" Canvas.Left="12" Canvas.Top="97" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
-            <TextBox x:Name="textBox" Canvas.Left="87" TextWrapping="NoWrap" Canvas.Top="101" Width="74" HorizontalAlignment="Center" VerticalAlignment="Top" Height="21"/>
+            <TextBox x:Name="client_id_textbox" Canvas.Left="87" TextWrapping="NoWrap" Canvas.Top="101" Width="74" HorizontalAlignment="Center" VerticalAlignment="Top" Height="21" FontSize="14"/>
             <Button x:Name="configure_server" Content="configure" Canvas.Left="11" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.5,0.503" FontSize="14" Height="23" Click="ConfigureServerClick"/>
             <Button x:Name="kill_server" Content="kill server" Canvas.Left="91" Canvas.Top="180" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" FontSize="14" Click="KillServerClick"/>
-            <Image x:Name="image" Height="188" Canvas.Top="285" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
+            <Image x:Name="image" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
             <Button x:Name="button" Content="run cmd" Canvas.Left="784" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Width="74" Height="23"/>
-            <Button x:Name="client_kill_switch" Content="kill switch" Canvas.Left="87" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" FontSize="14" Foreground="Red" Height="22"/>
+            <Button x:Name="client_kill_switch" Content="kill switch" Canvas.Left="164" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" FontSize="14" Foreground="Red" Height="22"/>
             <Button x:Name="configure_payload" Canvas.Left="10" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" Content="configure" FontSize="14" Click="PayloadConfigureButtonClick"/>
-            <Button x:Name="payload_burn" Content="Burn" Canvas.Left="80" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" FontSize="14"/>
+            <Button x:Name="payload_upload_view_button" Content="Upload" Canvas.Left="80" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" FontSize="14" Click="PayloadUploadClick"/>
             <Label x:Name="label" Content="Payload Options:" Canvas.Top="251" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
             <Button x:Name="client_list" Content="client list" Canvas.Left="89" Canvas.Top="209" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72" Height="23" FontSize="14"/>
             <Label x:Name="client_options_label" Content="Master Client Options:" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
@@ -62,10 +62,12 @@
             <Label x:Name="cmd_label" Content="Command:" Canvas.Left="260" Canvas.Top="62" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="master_client_start" Content="start" Canvas.Left="89" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72"/>
             <Button x:Name="master_client_configure_button" Content="configure" Canvas.Left="12" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="72" Click="MasterClientConfigureView"/>
-            <Button x:Name="client_clear_logs" Content="clear logs" Canvas.Left="166" Canvas.Top="101" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="72" Height="22"/>
+            <Button x:Name="client_clear_logs" Content="clear logs" Canvas.Left="87" Canvas.Top="125" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" Height="22"/>
             <Label x:Name="label1" Canvas.Left="124" Canvas.Top="152"/>
             <Label x:Name="server_options_label" Content="Server Options:" Foreground="White" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="147" VerticalAlignment="Top" FontSize="14"/>
             <Label x:Name="target_client_options" Content="Target Client Options:" Canvas.Left="12" Canvas.Top="68" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <CheckBox x:Name="broadcast_checbox" Content="Broadcast" Canvas.Left="164" Canvas.Top="104" Foreground="White" FontSize="14" Click="SlaveClientBroadcastCheckBoxClick"/>
+            <Canvas Height="484" Width="900"/>
 
         </Canvas>
         <Canvas x:Name="master_client_configure_canvas" Height="484" Width="900" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource AppBackground}" Grid.Row="2">
@@ -77,7 +79,7 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </Canvas.RenderTransform>
-            <Image x:Name="image_Copy" Height="188" Canvas.Top="297" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="9"/>
+            <Image x:Name="image_Copy" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
             <Label x:Name="master_client_config_label" Content="Master Client Configuration:" Canvas.Left="16" Canvas.Top="16" FontSize="16" Foreground="White"/>
             <Button x:Name="master_client_config_back" Content="Back" Canvas.Left="843" Canvas.Top="20" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47" Click="MasterClientConfigBack"/>
             <Label x:Name="server_label" Content="Server FQDN or IP:" Canvas.Left="17" Canvas.Top="125" FontSize="14" Foreground="White"/>
@@ -88,28 +90,35 @@
             <TextBox x:Name="master_client_server_port" Canvas.Left="145" TextWrapping="Wrap" Canvas.Top="103" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
         </Canvas>
         <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
-            <Image x:Name="image_Copy1" Height="188" Canvas.Top="286" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
+            <Image x:Name="image_Copy1" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
             <Label x:Name="server_configuration" Content="Server Configuration:" Canvas.Left="10" Canvas.Top="22" Foreground="White" FontSize="14"/>
             <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="9" Canvas.Top="48" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="server_port" Canvas.Left="117" TextWrapping="Wrap" Canvas.Top="53" Width="66" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="server_port" Canvas.Left="117" TextWrapping="Wrap" Canvas.Top="53" Width="66" HorizontalAlignment="Center" VerticalAlignment="Top" ToolTip="The port that the local master server will run on. [1-65536]"/>
             <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="14" Canvas.Top="77" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ServerConfSubmit"/>
             <Button x:Name="server_conf_back" Content="Back" Canvas.Left="834" Canvas.Top="10" FontSize="14" Click="ServerConfBackClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47"/>
         </Canvas>
-        <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
-            <Image x:Name="image_Copy2" Height="188" Canvas.Top="285" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
+        <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+            <Image x:Name="image_Copy2" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
             <Label x:Name="payload_conf_label" Content="Payload Configuration Options:" Canvas.Left="10" Canvas.Top="20" Foreground="White" FontSize="14" BorderBrush="#FFC10808"/>
-            <Label x:Name="host_fqdn_or_wan_label" Content="Host FQDN or WAN: " Canvas.Left="28" Canvas.Top="132" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBox x:Name="host_fqdn_wan_textbox" Canvas.Left="170" TextWrapping="Wrap" Canvas.Top="136" Width="222" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Hosting domain or ip for task and slave scripts. exp: https://example.com/parth/to/&lt;rs_sl.ps1 || rs_tsk.ps1&gt;"/>
-            <Button x:Name="payload_conf_submit" Content="Submit" Canvas.Left="831" Canvas.Top="285" FontSize="14" Width="47" HorizontalAlignment="Left" VerticalAlignment="Center" Click="PayloadConfigSubmit"/>
+            <Label x:Name="host_fqdn_or_wan_label" Content="Host FQDN or WAN: " Canvas.Left="31" Canvas.Top="89" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox x:Name="host_fqdn_wan_textbox" Canvas.Left="176" TextWrapping="Wrap" Canvas.Top="93" Width="178" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="Hosting domain or ip for task and slave scripts. exp: https://example.com/path/to/&lt;rs_sl.ps1 &amp;&amp; rs_tsk.ps1&gt;"/>
+            <Button x:Name="payload_conf_submit" Content="Submit" Canvas.Left="831" Canvas.Top="427" FontSize="14" Width="47" HorizontalAlignment="Center" VerticalAlignment="Top" Click="PayloadConfigSubmit"/>
             <Button x:Name="paylout_conf_back" Content="Back" Canvas.Left="831" Canvas.Top="26" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="47" Click="PayloadConfBackButton"/>
-            <Label x:Name="hosting_label" Content="Hosting Path:" Canvas.Left="10" Canvas.Top="100" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="slave_server_label" Content="Slave Target Server:" Canvas.Left="10" Canvas.Top="178" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="slave_server" Content="Server FQDN or WAN:" Canvas.Left="28" Canvas.Top="212" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="slave_server_textbox" Canvas.Left="188" TextWrapping="Wrap" Canvas.Top="216" Width="244" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="The Fully qualified domain or WAN address of the target server to connect the slave to."/>
-            <Label x:Name="slave_server_port_label" Content="Server Port:" Canvas.Left="28" Canvas.Top="242" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="slave_server_port_textbox" Canvas.Left="188" TextWrapping="Wrap" Canvas.Top="246" Width="120" FontSize="14" ToolTip="The port that the slave will connect to the master server on." HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Label x:Name="script_labels" Content="/&lt;rs__tsk.ps1 || rs__s1.ps1&gt;" Canvas.Left="392" Canvas.Top="132" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label x:Name="hosting_label" Content="Hosting Path:" Canvas.Left="13" Canvas.Top="57" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="slave_server_label" Content="Slave Target Server:" Canvas.Left="13" Canvas.Top="168" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="slave_server" Content="Server FQDN or WAN:" Canvas.Left="31" Canvas.Top="202" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="slave_server_textbox" Canvas.Left="177" TextWrapping="Wrap" Canvas.Top="206" Width="177" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" ToolTip="The Fully qualified domain or WAN address of the target server to connect the slave to."/>
+            <Label x:Name="slave_server_port_label" Content="Server Port:" Canvas.Left="31" Canvas.Top="232" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBox x:Name="slave_server_port_textbox" Canvas.Left="177" TextWrapping="Wrap" Canvas.Top="236" Width="177" FontSize="14" ToolTip="The port that the slave will connect to the master server on." HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label x:Name="script_labels" Content="/&lt;scripts&gt;" Canvas.Left="354" Canvas.Top="89" FontSize="14" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <CheckBox x:Name="local_hosting_checkbox" Content="" Canvas.Left="125" Canvas.Top="126" FontSize="14" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.534,0.513" Click="PayloadLocalHostCheckboxClick" ToolTip="This will place your finalized scripts in the locally hosted path."/>
+            <Label x:Name="local_hosting_label" Content="locally hosted:" Canvas.Left="31" Canvas.Top="118" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="local_host_select_button" Content="Select " Canvas.Left="360" Canvas.Top="123" HorizontalAlignment="Center" VerticalAlignment="Top" IsEnabled="False" Click="PayloadLocallyHostedSelectButtonClick" ToolTip="This will place your finalized scripts in the locally hosted path."/>
+            <TextBox x:Name="local_host_path_test_display" Canvas.Left="176" TextWrapping="NoWrap" Canvas.Top="123" Width="179" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Background="White" IsReadOnly="True" IsReadOnlyCaretVisible="True" ToolTip="This will place your finalized scripts in the locally hosted path." IsEnabled="False"/>
         </Canvas>
-
+        <Canvas x:Name="payload_upload_canvas" Height="484" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" >
+            <Image x:Name="image_Copy3" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="payload_upload_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="PayloadUploadBackClick"/>
+        </Canvas>
     </Grid>
 </Window>

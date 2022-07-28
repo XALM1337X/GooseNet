@@ -17,6 +17,23 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Net.Http;
+
+
+//TODO_FUNCTIONALITY_LIST:
+//Master Client Options
+//Start button: (Requires creating GUI master client)
+
+//Target Client Options:
+//All buttons
+
+//Server Options:
+//Client List Button:
+
+//Payload Options:
+//Burn button: (Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
+//https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+
 
 namespace attiny85_rshell { 
     /// <summary>
@@ -264,18 +281,54 @@ namespace attiny85_rshell {
                 }
             }
 
-            //TODO:
-            //Set Optional Local Hosting Path.
-            //FolderBrowserDialog folderBrowserDialog1;
-            //folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            //folderBrowserDialog1.Description ="Select the directory that you want to use as the default.";
-            //folderBrowserDialog1.ShowNewFolderButton = false;
-            //folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
+
+            if (local_host_path_test_display.Text != "") {
+                if (File.Exists(local_host_path_test_display.Text+"\\rs_tsk.ps1")) {
+                    if (System.Windows.MessageBox.Show(local_host_path_test_display.Text + "\\rs_tsk.ps1" + " already exists. Would you like to replace file at destination?", "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                        File.Copy("../../../scripts/rs_tsk.ps1", local_host_path_test_display.Text + "\\rs_tsk.ps1", true);                    
+                    }
+                
+                } else {
+                    File.Copy("../../../scripts/rs_tsk.ps1", local_host_path_test_display.Text + "\\rs_tsk.ps1");
+                }
+
+                if (File.Exists(local_host_path_test_display.Text+"\\rs_sl.ps1")) {
+                    if (System.Windows.MessageBox.Show(local_host_path_test_display.Text + "\\rs_sl.ps1" + " already exists. Would you like to replace file at destination?", "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                        File.Copy("../../../scripts/rs_sl.ps1", local_host_path_test_display.Text + "\\rs_sl.ps1",true);
+                    }
+                } else {
+                    File.Copy("../../../scripts/rs_sl.ps1", local_host_path_test_display.Text + "\\rs_sl.ps1");
+                }                
+            }
+
+   
 
             landing_page_log.Document.Blocks.Clear();
             landing_page_log.Document = myFlowDoc;
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
+        }
+        private void PayloadLocalHostCheckboxClick(object sender, RoutedEventArgs e) {
+            if (local_hosting_checkbox.IsChecked ?? false) {
+                local_host_select_button.IsEnabled = true;
+                local_host_path_test_display.IsEnabled = true;
+            } else {
+                local_host_select_button.IsEnabled = false;
+                local_host_path_test_display.IsEnabled = false;
+            }
+        }
+
+        private void PayloadLocallyHostedSelectButtonClick(object sender, RoutedEventArgs e) {
+            FolderBrowserDialog folderBrowserDialog1;
+            folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            folderBrowserDialog1.Description ="Select the hosting path for your scripts.";
+            folderBrowserDialog1.ShowNewFolderButton = false;
+            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                string folderName = folderBrowserDialog1.SelectedPath;
+                local_host_path_test_display.Text = folderName;
+            }
         }
 
         private void RunServerClick(object sender, RoutedEventArgs e) {
@@ -322,6 +375,22 @@ namespace attiny85_rshell {
             }
         }
 
+        private void SlaveClientBroadcastCheckBoxClick(object sender, RoutedEventArgs e) {
+            if (broadcast_checbox.IsChecked ?? false) {
+                client_id_textbox.IsEnabled = false;
+            } else {
+                client_id_textbox.IsEnabled = true;
+            }
+        }
 
+        private void PayloadUploadClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_canvas, 1);
+        }
+
+        private void PayloadUploadBackClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_canvas, 0);
+        }
     }
 }
