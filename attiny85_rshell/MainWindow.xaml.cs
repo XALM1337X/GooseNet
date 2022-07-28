@@ -308,6 +308,15 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
         }
+        private void PayloadLocalHostCheckboxClick(object sender, RoutedEventArgs e) {
+            if (local_hosting_checkbox.IsChecked ?? false) {
+                local_host_select_button.IsEnabled = true;
+                local_host_path_test_display.IsEnabled = true;
+            } else {
+                local_host_select_button.IsEnabled = false;
+                local_host_path_test_display.IsEnabled = false;
+            }
+        }
 
         private void PayloadLocallyHostedSelectButtonClick(object sender, RoutedEventArgs e) {
             FolderBrowserDialog folderBrowserDialog1;
