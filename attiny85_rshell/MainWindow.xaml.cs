@@ -281,13 +281,27 @@ namespace attiny85_rshell {
                 }
             }
 
-            //TODO:
-            //Set Optional Local Hosting Path.
-            //FolderBrowserDialog folderBrowserDialog1;
-            //folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            //folderBrowserDialog1.Description ="Select the directory that you want to use as the default.";
-            //folderBrowserDialog1.ShowNewFolderButton = false;
-            //folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
+
+            if (local_host_path_test_display.Text != "") {
+                if (File.Exists(local_host_path_test_display.Text+"\\rs_tsk.ps1")) {
+                    if (System.Windows.MessageBox.Show(local_host_path_test_display.Text + "\\rs_tsk.ps1" + " already exists. Would you like to replace file at destination?", "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                        File.Copy("../../../scripts/rs_tsk.ps1", local_host_path_test_display.Text + "\\rs_tsk.ps1", true);                    
+                    }
+                
+                } else {
+                    File.Copy("../../../scripts/rs_tsk.ps1", local_host_path_test_display.Text + "\\rs_tsk.ps1");
+                }
+
+                if (File.Exists(local_host_path_test_display.Text+"\\rs_sl.ps1")) {
+                    if (System.Windows.MessageBox.Show(local_host_path_test_display.Text + "\\rs_sl.ps1" + " already exists. Would you like to replace file at destination?", "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                        File.Copy("../../../scripts/rs_sl.ps1", local_host_path_test_display.Text + "\\rs_sl.ps1",true);
+                    }
+                } else {
+                    File.Copy("../../../scripts/rs_sl.ps1", local_host_path_test_display.Text + "\\rs_sl.ps1");
+                }                
+            }
+
+   
 
             landing_page_log.Document.Blocks.Clear();
             landing_page_log.Document = myFlowDoc;
