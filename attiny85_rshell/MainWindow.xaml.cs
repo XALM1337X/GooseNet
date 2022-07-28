@@ -309,6 +309,19 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
         }
 
+        private void PayloadLocallyHostedSelectButtonClick(object sender, RoutedEventArgs e) {
+            FolderBrowserDialog folderBrowserDialog1;
+            folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            folderBrowserDialog1.Description ="Select the hosting path for your scripts.";
+            folderBrowserDialog1.ShowNewFolderButton = false;
+            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Personal;
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                string folderName = folderBrowserDialog1.SelectedPath;
+                local_host_path_test_display.Text = folderName;
+            }
+        }
+
         private void RunServerClick(object sender, RoutedEventArgs e) {
             if (File.Exists("..\\..\\..\\scripts\\rs_server.ps1")) {
                 using (Process myProcess = new Process()) {
