@@ -375,6 +375,22 @@ namespace attiny85_rshell {
             }
         }
 
+        private void SlaveClientBroadcastCheckBoxClick(object sender, RoutedEventArgs e) {
+            if (broadcast_checbox.IsChecked ?? false) {
+                client_id_textbox.IsEnabled = false;
+            } else {
+                client_id_textbox.IsEnabled = true;
+            }
+        }
 
+        private void PayloadUploadClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_canvas, 1);
+        }
+
+        private void PayloadUploadBackClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_canvas, 0);
+        }
     }
 }
