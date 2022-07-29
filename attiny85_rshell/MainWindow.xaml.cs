@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -409,6 +409,22 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_manual_option_canvas, 0);
         }
-        }
+
+
+
+        //TODO: Working code. Needs proper button and canvas placement.
+        /*private async void Testing(object sender, RoutedEventArgs e) {
+            using var client = new HttpClient();
+            using (var response = await client.GetAsync("https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip"))
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            using (var file = File.OpenWrite("../../../ThirdParty/arduino-cli.zip")) {
+                stream.CopyTo(file);
+            }           
+
+            ZipFile.ExtractToDirectory("../../../ThirdParty/arduino-cli.zip", "../../../ThirdParty/arduino-cli");
+            System.Windows.MessageBox.Show("Extracted Successfully");
+            
+
+        }*/
     }
 }
