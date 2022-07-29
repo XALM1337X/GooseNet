@@ -32,8 +32,14 @@ using System.IO.Compression;
 //Client List Button:
 
 //Payload Options:
-//Burn button: (Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
+//(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
 //https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+
+//Commands to run from arduino-cli to make things functional.
+// .\arduino-cli.exe core update-index
+// .\arduino-cli.exe config init
+// .\arduino - cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
+// .\arduino-cli core install
 
 
 namespace attiny85_rshell { 
