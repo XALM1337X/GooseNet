@@ -392,7 +392,7 @@ namespace attiny85_rshell {
 
         private void PayloadUploadClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
-            System.Windows.Controls.Panel.SetZIndex(payload_upload_canvas, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
         }
 
         private void PayloadUploadBackClick(object sender, RoutedEventArgs e) {
