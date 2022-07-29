@@ -116,11 +116,11 @@
             <Button x:Name="local_host_select_button" Content="Select " Canvas.Left="360" Canvas.Top="123" HorizontalAlignment="Center" VerticalAlignment="Top" IsEnabled="False" Click="PayloadLocallyHostedSelectButtonClick" ToolTip="This will place your finalized scripts in the locally hosted path."/>
             <TextBox x:Name="local_host_path_test_display" Canvas.Left="176" TextWrapping="NoWrap" Canvas.Top="123" Width="179" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Background="White" IsReadOnly="True" IsReadOnlyCaretVisible="True" ToolTip="This will place your finalized scripts in the locally hosted path." IsEnabled="False"/>
         </Canvas>
-        <Canvas x:Name="payload_upload_options_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1" >
+        <Canvas x:Name="payload_upload_options_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" >
             <Image x:Name="image_Copy3" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="PayloadUploadBackClick"/>
             <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="368" Canvas.Top="336" Height="23" Width="72" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
-            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="451" Canvas.Top="336" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Testing"/>
+            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="451" Canvas.Top="336" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Label x:Name="payload_upload_options_label" Content="Payload Upload Options:" Canvas.Left="37" Canvas.Top="41" Foreground="White" FontSize="14"/>
             <RichTextBox x:Name="richTextBox" Height="217" Width="681" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="102" Canvas.Left="108" HorizontalContentAlignment="Center">
                 <FlowDocument>
