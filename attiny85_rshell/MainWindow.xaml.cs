@@ -399,6 +399,12 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
         }
+
+        private void ManualUploadButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_manual_option_canvas, 1);
+        }
+
         }
     }
 }
