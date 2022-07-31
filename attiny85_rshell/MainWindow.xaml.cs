@@ -288,7 +288,6 @@ namespace attiny85_rshell {
                             return;
                         }
                     }
-
                 }
                 if (changes_made) {
                     //Write file
@@ -302,7 +301,6 @@ namespace attiny85_rshell {
                     changes_made = false;
                 }
             }
-
 
             if (local_host_path_test_display.Text != "") {
                 if (File.Exists(local_host_path_test_display.Text+"\\rs_tsk.ps1")) {
