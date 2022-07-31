@@ -109,6 +109,11 @@ namespace attiny85_rshell {
                 }
             }
 
+            if (server_port.Text == "") {
+                System.Windows.MessageBox.Show("Server port cannot be empty.", "Entry empty", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             Regex regex = new Regex(@"(.*)<OS_PORT>(.*)");
 
             string[] lines;
