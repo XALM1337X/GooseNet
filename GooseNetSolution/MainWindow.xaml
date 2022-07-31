@@ -92,9 +92,9 @@
         <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
             <Image x:Name="image_Copy1" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
             <Label x:Name="server_configuration" Content="Server Configuration:" Canvas.Left="10" Canvas.Top="22" Foreground="White" FontSize="14"/>
-            <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="9" Canvas.Top="48" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox x:Name="server_port" Canvas.Left="117" TextWrapping="Wrap" Canvas.Top="53" Width="66" HorizontalAlignment="Center" VerticalAlignment="Top" ToolTip="The port that the local master server will run on. [1-65536]"/>
-            <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="14" Canvas.Top="77" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ServerConfSubmit"/>
+            <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="10" Canvas.Top="72" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox x:Name="server_port" Canvas.Left="118" TextWrapping="Wrap" Canvas.Top="77" Width="90" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="The port that the local master server will run on. [1-65536]"/>
+            <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="831" Canvas.Top="427" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ServerConfSubmit" Width="47"/>
             <Button x:Name="server_conf_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="ServerConfBackClick" />
         </Canvas>
         <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
