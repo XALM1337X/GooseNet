@@ -320,9 +320,6 @@ namespace attiny85_rshell {
                     File.Copy("../../../scripts/rs_sl.ps1", local_host_path_test_display.Text + "\\rs_sl.ps1");
                 }                
             }
-
-   
-
             landing_page_log.Document.Blocks.Clear();
             landing_page_log.Document = myFlowDoc;
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
