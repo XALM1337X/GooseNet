@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,13 +34,16 @@ using System.IO.Compression;
 //Payload Options:
 //(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
 //https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+//Drivers required for payload device.
+// https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
 
 //Commands to run from arduino-cli to make things functional.
 // .\arduino-cli.exe core update-index
 // .\arduino-cli.exe config init
-// .\arduino - cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
+// .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
 // .\arduino-cli core install
 
+// Alt+254 makes black square
 
 namespace attiny85_rshell { 
     /// <summary>
