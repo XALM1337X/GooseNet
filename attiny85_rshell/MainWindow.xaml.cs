@@ -189,6 +189,18 @@ namespace attiny85_rshell {
                 }
             }
 
+            if (host_fqdn_wan_textbox.Text == "") {
+                System.Windows.MessageBox.Show("Host FQDN field cannot be empty","Empty Entry", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (slave_server_textbox.Text == "") {
+                System.Windows.MessageBox.Show("Slave FQDN field cannot be empty", "Empty Entry", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (slave_server_port_textbox.Text == "") {
+                System.Windows.MessageBox.Show("Slave port field cannot be empty", "Empty Entry", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
 
             FlowDocument myFlowDoc = new FlowDocument();
