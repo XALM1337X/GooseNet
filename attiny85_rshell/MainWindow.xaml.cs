@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -420,8 +420,24 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_manual_option_canvas, 0);
         }
 
+        private void HyperlinkRequestIDE(object sender, RoutedEventArgs e) {
+            using (Process myProcess = new Process()) {
+                myProcess.StartInfo = new ProcessStartInfo("https://www.arduino.cc/en/software");
+                myProcess.StartInfo.UseShellExecute = true;
+                myProcess.Start();
+                e.Handled = true;
+            }
+        }
 
-
+        private void HyperlinkRequestDrivers(object sender, RoutedEventArgs e) {
+            using (Process myProcess = new Process()) {
+                myProcess.StartInfo = new ProcessStartInfo("https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip");
+                myProcess.StartInfo.UseShellExecute = true;
+                myProcess.Start();
+                e.Handled = true;
+            }
+        }
+       
         //TODO: Working code. Needs proper button and canvas placement.
         /*private async void Testing(object sender, RoutedEventArgs e) {
             using var client = new HttpClient();
