@@ -119,8 +119,8 @@
         <Canvas x:Name="payload_upload_options_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" >
             <Image x:Name="image_Copy3" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="PayloadUploadBackClick"/>
-            <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="368" Canvas.Top="336" Height="23" Width="72" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
-            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="451" Canvas.Top="336" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="372" Canvas.Top="335" Height="23" Width="72" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
+            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="454" Canvas.Top="335" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label x:Name="payload_upload_options_label" Content="Payload Upload Options:" Canvas.Left="37" Canvas.Top="41" Foreground="White" FontSize="14"/>
             <RichTextBox x:Name="richTextBox" Height="217" Width="681" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="102" Canvas.Left="108" HorizontalContentAlignment="Center">
                 <FlowDocument>
@@ -129,18 +129,25 @@
                     </Paragraph>
                     <Paragraph>
                         <Run Text="(#1):" FontSize="14" FontWeight="UltraBlack"/>
-                        <Run Text=" The manual option will display a series of instructions in order to step you through installing the arduino IDE and board drivers necessary to make your payload functional." FontSize="14" FontWeight="Medium"/>
+                        <Run Text=" The manual option will display a series of instructions to step you through installing the arduino IDE, and board drivers to make your payload functional." FontSize="14" FontWeight="Medium"/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="(#2):" FontSize="14" FontWeight="UltraBlack"/>
-                        <Run Text=" The automated option will attempt remotely install the arudino-cli toolset and drivers necessary to automate the upload process." FontSize="14" FontWeight="Medium"/>
+                        <Run Text=" The automated option will attempt to remotely install the arudino-cli toolset and drivers necessary to automate the upload process." FontSize="14" FontWeight="Medium"/>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
         </Canvas>
-        <Canvas x:Name="payload_upload_manual_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+        <Canvas x:Name="payload_upload_manual_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
             <Image x:Name="image_Copy4" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_options_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="ManualPayloadBackButtonClick"/>
+            <RichTextBox x:Name="payload_upload_manual_instructions" Height="258" Width="720" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="90" Canvas.Top="65">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text=""/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
         </Canvas>
     </Grid>
 </Window>
