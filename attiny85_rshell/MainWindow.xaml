@@ -119,8 +119,8 @@
         <Canvas x:Name="payload_upload_options_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" >
             <Image x:Name="image_Copy3" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="PayloadUploadBackClick"/>
-            <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="368" Canvas.Top="336" Height="23" Width="72" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
-            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="451" Canvas.Top="336" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="372" Canvas.Top="335" Height="23" Width="72" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
+            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="454" Canvas.Top="335" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label x:Name="payload_upload_options_label" Content="Payload Upload Options:" Canvas.Left="37" Canvas.Top="41" Foreground="White" FontSize="14"/>
             <RichTextBox x:Name="richTextBox" Height="217" Width="681" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="102" Canvas.Left="108" HorizontalContentAlignment="Center">
                 <FlowDocument>
@@ -129,11 +129,11 @@
                     </Paragraph>
                     <Paragraph>
                         <Run Text="(#1):" FontSize="14" FontWeight="UltraBlack"/>
-                        <Run Text=" The manual option will display a series of instructions in order to step you through installing the arduino IDE and board drivers necessary to make your payload functional." FontSize="14" FontWeight="Medium"/>
+                        <Run Text=" The manual option will display a series of instructions to step you through installing the arduino IDE, and board drivers to make your payload functional." FontSize="14" FontWeight="Medium"/>
                     </Paragraph>
                     <Paragraph>
                         <Run Text="(#2):" FontSize="14" FontWeight="UltraBlack"/>
-                        <Run Text=" The automated option will attempt remotely install the arudino-cli toolset and drivers necessary to automate the upload process." FontSize="14" FontWeight="Medium"/>
+                        <Run Text=" The automated option will attempt to remotely install the arudino-cli toolset and drivers necessary to automate the upload process." FontSize="14" FontWeight="Medium"/>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
@@ -141,6 +141,79 @@
         <Canvas x:Name="payload_upload_manual_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
             <Image x:Name="image_Copy4" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_options_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="ManualPayloadBackButtonClick"/>
+            <RichTextBox x:Name="payload_upload_manual_instructions" Height="240" Width="720" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="90" Canvas.Top="65" IsReadOnly="True" VerticalScrollBarVisibility="Auto" IsDocumentEnabled="True">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Center">
+                        <Run Text="Arduino IDE and Digistump Attiny_85 setup instructions: " FontSize="14" FontWeight="Bold"/>
+                    </Paragraph>
+
+                    <Paragraph>
+                        <Run Text="(#1): " FontSize="14" FontWeight="UltraBlack"/>
+                        <Run Text="Get the Arduino IDE: " FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Height="20" Width="223" Canvas.Left="268" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Hyperlink x:Name="payload_manual_hyperlink" Foreground="#FF1E32D2" Click="HyperlinkRequestIDE" Cursor="Hand" FontSize="14" TextDecorations="{x:Null}">
+                                https://www.arduino.cc/en/software
+                            </Hyperlink>
+                        </TextBlock>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="(#2): " FontSize="14" FontWeight="UltraBlack" />
+                        <Run Text="Get the Attiny_85 drivers: " FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Height="20" Width="132" Canvas.Left="298" Canvas.Top="120" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Hyperlink x:Name="payload_manual_driverlink" Foreground="#FF1E32D2" Click="HyperlinkRequestDrivers" Cursor="Hand" FontSize="14" TextDecorations="{x:Null}">
+                                Digistump.Drivers.zip
+                            </Hyperlink>
+                        </TextBlock>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="Unzip the contents, and install DPinst.exe for 32 bit, or DPinst64.exe for 64 bit." FontSize="14" FontWeight="Normal"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="(#3): " FontSize="14" FontWeight="UltraBlack" />
+                        <Run Text="Open the Arduinio IDE, and in the top left corner click: " FontSize="14" FontWeight="Normal"/>
+                        <Run Text="File -> Preferences" FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="In the" FontSize="14" FontWeight="Normal"/>
+                        <Run Text="''Aditional Boards Manager URLs: ''" FontSize="14" FontWeight="SemiBold"/>
+                        <Run Text="Paste the following:" FontSize="14" FontWeight="Normal"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json" FontSize="13" FontWeight="Normal"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="(#4): " FontSize="14" FontWeight="UltraBlack" />
+                        <Run Text="In the Arduino IDE click: " FontSize="14" FontWeight="Normal"/>
+                        <Run Text="Tools -> Board -> Boards Manager " FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="In the Textbox type" FontSize="14" FontWeight="Normal"/>
+                        <Run Text="''Digistump''" FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="In the dialogue, you should see" FontSize="14" FontWeight="Normal"/>
+                        <Run Text="''Digistump AVR Boards''" FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="Hover the Digistump AVR Boards option and click: " FontSize="14" FontWeight="Normal"/>
+                        <Run Text="''Install''" FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="In the IDE click," FontSize="14" FontWeight="Normal"/>
+                        <Run Text="Tools -> Board -> Digistump AVR Boards -> Digispark (Default - 16.5mhz)" FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="(#5): " FontSize="14" FontWeight="UltraBlack"/>
+                        <Run Text="After you ''Configure'' your payload on the main landing page. It will create a payload_out.ino file in:" FontSize="14" FontWeight="Normal"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="SemiBold"/>
+                        <Run Text="C:\Program Files\GooseNet\payload_out\payload_out.ino" FontSize="14" FontWeight="Normal"/>
+                        <LineBreak/>
+                        <Run Text="               ■" FontSize="10" FontWeight="Normal"/>
+                        <Run Text="Open the file with the Arduino IDE and use the compile/upload buttons to burn the micrcontroller" FontSize="14" FontWeight="Normal"/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
         </Canvas>
     </Grid>
 </Window>
