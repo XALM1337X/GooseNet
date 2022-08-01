@@ -43,12 +43,8 @@ using System.IO.Compression;
 // .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
 // .\arduino-cli core install
 
-// Alt+254 makes black square
-
 namespace attiny85_rshell { 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window {
 
         public int GlobalServerID { get; set; }
