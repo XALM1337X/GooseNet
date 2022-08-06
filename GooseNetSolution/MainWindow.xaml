@@ -1,4 +1,4 @@
-<Window x:Name="richTextBox2" x:Class="attiny85_rshell.MainWindow"
+﻿<Window x:Name="richTextBox2" x:Class="attiny85_rshell.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -120,7 +120,7 @@
             <Image x:Name="image_Copy3" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="PayloadUploadBackClick"/>
             <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="372" Canvas.Top="335" Height="23" Width="72" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
-            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="454" Canvas.Top="335" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="454" Canvas.Top="335" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AutomatedUploadButtonClick"/>
             <Label x:Name="payload_upload_options_label" Content="Payload Upload Options:" Canvas.Left="37" Canvas.Top="41" Foreground="White" FontSize="14"/>
             <RichTextBox x:Name="richTextBox" Height="217" Width="681" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="102" Canvas.Left="108" HorizontalContentAlignment="Center">
                 <FlowDocument>
