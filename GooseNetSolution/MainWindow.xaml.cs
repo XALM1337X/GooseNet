@@ -438,7 +438,12 @@ namespace attiny85_rshell {
                 e.Handled = true;
             }
         }
-       
+
+        private void AutomatedUploadButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_automated_canvas, 1);
+        }
+
         //TODO: Working code. Needs proper button and canvas placement.
         /*private async void Testing(object sender, RoutedEventArgs e) {
             using var client = new HttpClient();
