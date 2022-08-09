@@ -484,7 +484,6 @@ namespace attiny85_rshell {
 
         }
 
-        //TODO: Working code. Needs proper button and canvas placement.
         private async void DownloadZipAndUnpack() {
             if (File.Exists("../../../ThirdParty/arduino-cli.zip")) {
                 if (System.Windows.MessageBox.Show("arduino-cli.zip already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
