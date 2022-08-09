@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.IO.Compression;
+using System.Windows.Threading;
 
 
 //TODO_FUNCTIONALITY_LIST:
@@ -31,17 +32,18 @@ using System.IO.Compression;
 //Server Options:
 //Client List Button:
 
-//Payload Options:
-//(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
-//https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
-//Drivers required for payload device.
-// https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
 
-//Commands to run from arduino-cli to make things functional.
-// .\arduino-cli.exe core update-index
-// .\arduino-cli.exe config init
-// .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
-// .\arduino-cli core install
+//Notes on how to launch async thread function calls
+/*
+    DispatcherTimer dispatcherTimer = new DispatcherTimer();
+    dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+    dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+    dispatcherTimer.Start();
+*/
+/*
+    private void dispatcherTimer_Tick(object sender, EventArgs e)  {
+    }
+*/
 
 namespace attiny85_rshell { 
 
@@ -439,13 +441,56 @@ namespace attiny85_rshell {
             }
         }
 
-        private void AutomatedUploadButtonClick(object sender, RoutedEventArgs e) {
-            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
-            System.Windows.Controls.Panel.SetZIndex(payload_upload_automated_canvas, 1);
+
+        private void PayloadUploadAutoButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 1);
+        }
+
+        private void StartGooseNetButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(terms_of_service, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+        }
+
+        private void TermsOfServiceCheckboxClick(object sender, RoutedEventArgs e) {
+            if (service_agreement_auto_install_checkbox.IsChecked ?? true) {
+                start_goosenet_button.IsEnabled = true;
+            } else {
+                start_goosenet_button.IsEnabled = false;
+            }
+        }
+
+        private void PayloadUploadAutoButtonBackClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 0);
+        }
+
+        private void ArduinoDownloadButtonClick(object sender, RoutedEventArgs e) {
+            //Payload Options:
+            //(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
+            //https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+
+            arduino_cli_driver_init_button.IsEnabled = false;
+            arduino_cli_driver_init_button.Content = "Loading";
+            arduino_cli_driver_init_button.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, DownloadZipAndUnpack);
+            //Drivers required for payload device.
+            //https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
+
+            //Commands to run from arduino-cli to make things functional.
+            // .\arduino-cli.exe core update-index
+            // .\arduino-cli.exe config init
+            // .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
+            // .\arduino-cli core install
+
         }
 
         //TODO: Working code. Needs proper button and canvas placement.
-        /*private async void Testing(object sender, RoutedEventArgs e) {
+        private async void DownloadZipAndUnpack() {
+            if (File.Exists("../../../ThirdParty/arduino-cli.zip")) {
+                if (System.Windows.MessageBox.Show("arduino-cli.zip already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }           
             using var client = new HttpClient();
             using (var response = await client.GetAsync("https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip"))
             using (var stream = await response.Content.ReadAsStreamAsync())
@@ -454,9 +499,10 @@ namespace attiny85_rshell {
             }           
 
             ZipFile.ExtractToDirectory("../../../ThirdParty/arduino-cli.zip", "../../../ThirdParty/arduino-cli");
-            System.Windows.MessageBox.Show("Extracted Successfully");
-            
+            System.Windows.MessageBox.Show("Arduino-cli Extracted Successfully");
 
-        }*/
+            arduino_cli_driver_init_button.IsEnabled = true;
+            arduino_cli_driver_init_button.Content = "Install";
+        }
     }
 }

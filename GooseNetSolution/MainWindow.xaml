@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:attiny85_rshell"
         mc:Ignorable="d"
-        Title="GooseNet" Height="500" Width="900">
+        Title="GooseNet" Height="500" Width="900" ResizeMode="NoResize">
     <Window.Resources>
         <LinearGradientBrush x:Key="AppBackground" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF022504" Offset="1"/>
@@ -16,13 +16,34 @@
         </LinearGradientBrush>
     </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="221*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0*"/>
             <RowDefinition Height="0*"/>
             <RowDefinition/>
             <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
-        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Panel.ZIndex="1">
+        <Canvas x:Name="terms_of_service" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1" Grid.ColumnSpan="2">
+            <Image x:Name="image_Copy5" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <RichTextBox x:Name="terms_of_service_rich_textbox" Height="177" Width="720" Canvas.Left="90" Canvas.Top="65" IsReadOnly="True" VerticalScrollBarVisibility="Auto" IsDocumentEnabled="True" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Center">
+                        <Run Text="GooseNet terms of service agreement:" FontSize="14" FontWeight="Bold"/>
+                    </Paragraph>
+                    <Paragraph>
+                        <Run Text="GooseNets usage is intended for usage soley for penetration testing in a white hat environemnt with the end user targets having been prenotified to its usage and given consent to do so. The User of this software is prohibited from usage in any circumstance otherwise stated that would vioalte CFAA policies. Haveing been alerted to the consequences of violating any and all CFAA policies, I as the user here by agree to release the GooseNet team from any legal responsiblilty resulting the improper usage of this product. I the user agree that all legal liabilities from improper usage are my sole responsibility." FontSize="14" FontWeight="Bold"/>
+                    </Paragraph>
+
+
+                </FlowDocument>
+            </RichTextBox>
+            <CheckBox x:Name="service_agreement_auto_install_checkbox" Content="I Agree to terms of service" Canvas.Left="359" Canvas.Top="247" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="TermsOfServiceCheckboxClick"/>
+            <Button x:Name="start_goosenet_button" Content="Start" Canvas.Left="418" Canvas.Top="288" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Click="StartGooseNetButtonClick" Width="65"/>
+        </Canvas>
+        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Grid.ColumnSpan="2">
             <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" Click="RunServerClick"/>
             <RichTextBox x:Name="landing_page_log" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True" RenderTransformOrigin="0.5,0.5">
                 <RichTextBox.RenderTransform>
@@ -70,7 +91,7 @@
             <Canvas Height="484" Width="900"/>
 
         </Canvas>
-        <Canvas x:Name="master_client_configure_canvas" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{DynamicResource AppBackground}" Grid.RowSpan="3">
+        <Canvas x:Name="master_client_configure_canvas" RenderTransformOrigin="0.5,0.5" Background="{DynamicResource AppBackground}" Grid.RowSpan="3" Grid.ColumnSpan="2">
             <Canvas.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -89,7 +110,7 @@
             <Label x:Name="master_client_server_port_label" Content="Server Port:" Canvas.Left="17" Canvas.Top="97" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox x:Name="master_client_server_port" Canvas.Left="145" TextWrapping="Wrap" Canvas.Top="103" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14"/>
         </Canvas>
-        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+        <Canvas x:Name="server_configuration_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Grid.ColumnSpan="2">
             <Image x:Name="image_Copy1" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2" Panel.ZIndex="1"/>
             <Label x:Name="server_configuration" Content="Server Configuration:" Canvas.Left="10" Canvas.Top="22" Foreground="White" FontSize="14"/>
             <Label x:Name="server_port_label" Content="Listening port:" Canvas.Left="10" Canvas.Top="72" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -97,7 +118,7 @@
             <Button x:Name="server_conf_submit" Content="Submit" Canvas.Left="831" Canvas.Top="427" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ServerConfSubmit" Width="47"/>
             <Button x:Name="server_conf_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="ServerConfBackClick" />
         </Canvas>
-        <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+        <Canvas x:Name="payload_conf_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Grid.ColumnSpan="2">
             <Image x:Name="image_Copy2" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
             <Label x:Name="payload_conf_label" Content="Payload Configuration Options:" Canvas.Left="10" Canvas.Top="20" Foreground="White" FontSize="14" BorderBrush="#FFC10808"/>
             <Label x:Name="host_fqdn_or_wan_label" Content="Host FQDN or WAN: " Canvas.Left="31" Canvas.Top="89" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -116,11 +137,11 @@
             <Button x:Name="local_host_select_button" Content="Select " Canvas.Left="360" Canvas.Top="123" HorizontalAlignment="Center" VerticalAlignment="Top" IsEnabled="False" Click="PayloadLocallyHostedSelectButtonClick" ToolTip="This will place your finalized scripts in the locally hosted path."/>
             <TextBox x:Name="local_host_path_test_display" Canvas.Left="176" TextWrapping="NoWrap" Canvas.Top="123" Width="179" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" Background="White" IsReadOnly="True" IsReadOnlyCaretVisible="True" ToolTip="This will place your finalized scripts in the locally hosted path." IsEnabled="False"/>
         </Canvas>
-        <Canvas x:Name="payload_upload_options_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" >
+        <Canvas x:Name="payload_upload_options_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Grid.ColumnSpan="2" >
             <Image x:Name="image_Copy3" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="PayloadUploadBackClick"/>
             <Button x:Name="manual_upload_button" Content="Manual " Canvas.Left="372" Canvas.Top="335" Height="23" Width="72" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ManualUploadButtonClick"/>
-            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="454" Canvas.Top="335" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AutomatedUploadButtonClick"/>
+            <Button x:Name="automated_upload_button" Content="Automated" Canvas.Left="454" Canvas.Top="335" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PayloadUploadAutoButtonClick"/>
             <Label x:Name="payload_upload_options_label" Content="Payload Upload Options:" Canvas.Left="37" Canvas.Top="41" Foreground="White" FontSize="14"/>
             <RichTextBox x:Name="richTextBox" Height="217" Width="681" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="102" Canvas.Left="108" HorizontalContentAlignment="Center">
                 <FlowDocument>
@@ -138,7 +159,7 @@
                 </FlowDocument>
             </RichTextBox>
         </Canvas>
-        <Canvas x:Name="payload_upload_manual_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
+        <Canvas x:Name="payload_upload_manual_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Grid.ColumnSpan="2">
             <Image x:Name="image_Copy4" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_options_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" Click="ManualPayloadBackButtonClick"/>
             <RichTextBox x:Name="payload_upload_manual_instructions" Height="240" Width="720" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="90" Canvas.Top="65" IsReadOnly="True" VerticalScrollBarVisibility="Auto" IsDocumentEnabled="True">
@@ -215,8 +236,25 @@
                 </FlowDocument>
             </RichTextBox>
         </Canvas>
-        <Canvas x:Name="payload_upload_automated_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
-            <Image x:Name="image_Copy5" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Canvas x:Name="payload_upload_auto_option_canvas" Grid.RowSpan="3" Grid.ColumnSpan="2" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
+            <Image x:Name="image_Copy6" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="payload_upload_auto_button_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" Width="45" Click="PayloadUploadAutoButtonBackClick" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <RichTextBox x:Name="richTextBox3" Height="195" Width="640" HorizontalAlignment="Left" Canvas.Left="130" VerticalAlignment="Center" Canvas.Top="47">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Center">
+                        <Run Text="Adrduino-cli, Drivers, and board setup instructions:" FontSize="14" FontWeight="Bold"/>
+                    </Paragraph>
+                    <Paragraph>
+                        <Run Text="(#1): " FontSize="14" FontWeight="UltraBlack"/>
+                        <Run Text="Install Arduino-cli, Drivers, and Initialize Arduino-cli." FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+            <Button x:Name="arduino_cli_driver_init_button" Content="Install" Canvas.Left="172" Canvas.Top="274" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="55" Click="ArduinoDownloadButtonClick" Visibility="Visible"/>
+            <Label x:Name="install_arduino_label_1" Content="(#1):" Canvas.Left="130" Canvas.Top="271" Foreground="White" FontSize="14"/>
         </Canvas>
+
     </Grid>
 </Window>
