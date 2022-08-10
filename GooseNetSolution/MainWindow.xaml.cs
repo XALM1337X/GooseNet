@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.IO.Compression;
+using System.Windows.Threading;
 
 
 //TODO_FUNCTIONALITY_LIST:
@@ -31,24 +32,21 @@ using System.IO.Compression;
 //Server Options:
 //Client List Button:
 
-//Payload Options:
-//(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
-//https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
-//Drivers required for payload device.
-// https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
 
-//Commands to run from arduino-cli to make things functional.
-// .\arduino-cli.exe core update-index
-// .\arduino-cli.exe config init
-// .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
-// .\arduino-cli core install
-
-// Alt+254 makes black square
+//Notes on how to launch async thread function calls
+/*
+    DispatcherTimer dispatcherTimer = new DispatcherTimer();
+    dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+    dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+    dispatcherTimer.Start();
+*/
+/*
+    private void dispatcherTimer_Tick(object sender, EventArgs e)  {
+    }
+*/
 
 namespace attiny85_rshell { 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window {
 
         public int GlobalServerID { get; set; }
@@ -107,6 +105,11 @@ namespace attiny85_rshell {
                 if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
                     return;
                 }
+            }
+
+            if (server_port.Text == "") {
+                System.Windows.MessageBox.Show("Server port cannot be empty.", "Entry empty", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
             Regex regex = new Regex(@"(.*)<OS_PORT>(.*)");
@@ -437,20 +440,112 @@ namespace attiny85_rshell {
                 e.Handled = true;
             }
         }
-       
-        //TODO: Working code. Needs proper button and canvas placement.
-        /*private async void Testing(object sender, RoutedEventArgs e) {
+
+
+        private void PayloadUploadAutoButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 1);
+        }
+
+        private void StartGooseNetButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(terms_of_service, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
+        }
+
+        private void TermsOfServiceCheckboxClick(object sender, RoutedEventArgs e) {
+            if (service_agreement_auto_install_checkbox.IsChecked ?? true) {
+                start_goosenet_button.IsEnabled = true;
+            } else {
+                start_goosenet_button.IsEnabled = false;
+            }
+        }
+
+        private void PayloadUploadAutoButtonBackClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
+            System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 0);
+        }
+
+        private void ArduinoDownloadButtonClick(object sender, RoutedEventArgs e) {
+            //Payload Options:
+            //(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
+            //https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+
+            zip_down_button.IsEnabled = false;
+            zip_down_button.Content = "Loading";
+            zip_down_button.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, InstallStart);
+            //Drivers required for payload device.
+            //https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
+
+            //Commands to run from arduino-cli to make things functional.
+            // .\arduino-cli.exe core update-index
+            // .\arduino-cli.exe config init
+            // .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
+            // .\arduino-cli core install
+
+        }
+        private void InstallStart() {
+            DownloadCLIZipAndUnpack();
+            DownloadDriverZipAndUnpack();
+            zip_down_button.IsEnabled = true;
+            zip_down_button.Content = "Install";
+        }
+        private async void DownloadCLIZipAndUnpack() {
+            if (File.Exists("../../../ThirdParty/arduino-cli/arduino-cli.exe")) {
+                if (System.Windows.MessageBox.Show("arduino-cli.exe already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }           
             using var client = new HttpClient();
             using (var response = await client.GetAsync("https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip"))
             using (var stream = await response.Content.ReadAsStreamAsync())
             using (var file = File.OpenWrite("../../../ThirdParty/arduino-cli.zip")) {
                 stream.CopyTo(file);
-            }           
+            }    
+            
+            if (Directory.Exists("../../../ThirdParty/arduino-cli")) {
+                Directory.Delete("../../../ThirdParty/arduino-cli",true);
+            }
 
             ZipFile.ExtractToDirectory("../../../ThirdParty/arduino-cli.zip", "../../../ThirdParty/arduino-cli");
-            System.Windows.MessageBox.Show("Extracted Successfully");
-            
+            System.Windows.MessageBox.Show("Arduino-cli extracted successfully");
+        }
 
-        }*/
+        private async void DownloadDriverZipAndUnpack() {
+            if (File.Exists("../../../ThirdParty/digistump-drivers.zip")) {
+                if (System.Windows.MessageBox.Show("digistump-drivers.zip already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }
+            using var client = new HttpClient();
+            using (var response = await client.GetAsync("https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip"))
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            using (var file = File.OpenWrite("../../../ThirdParty/digistump-drivers.zip")) {
+                stream.CopyTo(file);
+            }
+
+            if (Directory.Exists("../../../ThirdParty/Digistump Drivers")) {
+                Directory.Delete("../../../ThirdParty/Digistump Drivers", true);
+            }
+
+            ZipFile.ExtractToDirectory("../../../ThirdParty/digistump-drivers.zip", "../../../ThirdParty/");
+            System.Windows.MessageBox.Show("Digistump drivers extracted successfully");
+        }
+
+        private void InstallDriverClick(object sender, RoutedEventArgs e) {
+            if (File.Exists("../../../ThirdParty/Digistump Drivers/DPinst64.exe")) {
+
+                var procStIfo = new ProcessStartInfo("../../../ThirdParty/Digistump Drivers/DPinst64.exe");
+                procStIfo.RedirectStandardOutput = true;
+                procStIfo.UseShellExecute = false;
+                procStIfo.CreateNoWindow = true;
+                var proc = new Process();
+                proc.StartInfo = procStIfo;
+                proc.Start();
+            } else {
+                System.Windows.MessageBox.Show("../../../ThirdParty/Digistump Drivers/DPinst64.exe does not exist. Please run step (#1) to download and unpack drivers","Executeable doesn't exist",MessageBoxButton.OK,MessageBoxImage.Error);
+            
+            }
+
+        }
     }
 }
