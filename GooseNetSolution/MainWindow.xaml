@@ -259,7 +259,7 @@
             <Button x:Name="driver_install_button" Content="DriverInstall" Canvas.Left="296" Canvas.Top="274" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Click="InstallDriverClick"/>
             <Label x:Name="driver_install_label" Content="(#2)" Canvas.Left="257" Canvas.Top="271" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Label x:Name="cli_init_label" Content="(#3)" Canvas.Left="378" Canvas.Top="271" FontSize="14" Foreground="White"/>
-            <Button x:Name="cli_init_button" Content="CLI Init" Canvas.Left="417" Canvas.Top="274" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="78"/>
+            <Button x:Name="cli_init_button" Content="CLI Init" Canvas.Left="417" Canvas.Top="274" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="78" Click="ArduinoCLIInitClick"/>
         </Canvas>
 
     </Grid>

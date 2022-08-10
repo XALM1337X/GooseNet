@@ -20,6 +20,8 @@ using System.Windows.Forms;
 using System.Net.Http;
 using System.IO.Compression;
 using System.Windows.Threading;
+using Microsoft.VisualBasic.Logging;
+using System.Reflection;
 
 
 //TODO_FUNCTIONALITY_LIST:
@@ -466,22 +468,9 @@ namespace attiny85_rshell {
         }
 
         private void ArduinoDownloadButtonClick(object sender, RoutedEventArgs e) {
-            //Payload Options:
-            //(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
-            //https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
-
             zip_down_button.IsEnabled = false;
             zip_down_button.Content = "Loading";
             zip_down_button.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, InstallStart);
-            //Drivers required for payload device.
-            //https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
-
-            //Commands to run from arduino-cli to make things functional.
-            // .\arduino-cli.exe core update-index
-            // .\arduino-cli.exe config init
-            // .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
-            // .\arduino-cli core install
-
         }
         private void InstallStart() {
             DownloadCLIZipAndUnpack();
@@ -533,19 +522,50 @@ namespace attiny85_rshell {
 
         private void InstallDriverClick(object sender, RoutedEventArgs e) {
             if (File.Exists("../../../ThirdParty/Digistump Drivers/DPinst64.exe")) {
-
-                var procStIfo = new ProcessStartInfo("../../../ThirdParty/Digistump Drivers/DPinst64.exe");
+                var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\Digistump Drivers\\DPinst64.exe");
                 procStIfo.RedirectStandardOutput = true;
                 procStIfo.UseShellExecute = false;
                 procStIfo.CreateNoWindow = true;
                 var proc = new Process();
                 proc.StartInfo = procStIfo;
                 proc.Start();
+                proc.WaitForExit();
             } else {
                 System.Windows.MessageBox.Show("../../../ThirdParty/Digistump Drivers/DPinst64.exe does not exist. Please run step (#1) to download and unpack drivers","Executeable doesn't exist",MessageBoxButton.OK,MessageBoxImage.Error);
             
             }
+        
+        }
 
+        private void ArduinoCLIInitClick(object sender, RoutedEventArgs e) {
+            Regex regex = new Regex(@".*(Downloading.*)");
+            //Commands to run from arduino-cli to make things functional.
+            // .\arduino-cli.exe core update-index
+            // .\arduino-cli.exe config init
+            // .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
+            // .\arduino - cli.exe core update-index
+            // .\arduino-cli core install
+            if (!File.Exists("../../../ThirdParty/arduino-cli/arduino-cli.exe")) {
+                System.Windows.MessageBox.Show("../../../ThirdParty/arduino-cli/arduino-cli.exe does not exist. Please run step (#1) to download and unpack drivers","Executeable doesn't exist",MessageBoxButton.OK,MessageBoxImage.Error);
+            } else {
+
+                //Update arduino-cli index
+                var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+                procStIfo.RedirectStandardOutput = true;
+                procStIfo.UseShellExecute = false;
+                procStIfo.CreateNoWindow = true;
+                procStIfo.Arguments = "core update-index";
+                var proc = new Process();
+                proc.StartInfo = procStIfo;
+                proc.Start();
+                proc.WaitForExit();
+
+                StreamReader reader = proc.StandardOutput;
+                string output = reader.ReadToEnd();
+                if (regex.IsMatch(output)) {
+                    System.Windows.MessageBox.Show(regex.Replace(output, "$1"));
+                }
+            }
         }
     }
 }
