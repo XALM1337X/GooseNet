@@ -470,9 +470,9 @@ namespace attiny85_rshell {
             //(Requires pulling arduino-cli/unpacking/get-board-drivers/learn-to-upload
             //https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
 
-            arduino_cli_driver_init_button.IsEnabled = false;
-            arduino_cli_driver_init_button.Content = "Loading";
-            arduino_cli_driver_init_button.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, DownloadZipAndUnpack);
+            zip_down_button.IsEnabled = false;
+            zip_down_button.Content = "Loading";
+            zip_down_button.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, InstallStart);
             //Drivers required for payload device.
             //https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip
 
@@ -483,10 +483,15 @@ namespace attiny85_rshell {
             // .\arduino-cli core install
 
         }
-
-        private async void DownloadZipAndUnpack() {
-            if (File.Exists("../../../ThirdParty/arduino-cli.zip")) {
-                if (System.Windows.MessageBox.Show("arduino-cli.zip already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
+        private void InstallStart() {
+            DownloadCLIZipAndUnpack();
+            DownloadDriverZipAndUnpack();
+            zip_down_button.IsEnabled = true;
+            zip_down_button.Content = "Install";
+        }
+        private async void DownloadCLIZipAndUnpack() {
+            if (File.Exists("../../../ThirdParty/arduino-cli/arduino-cli.exe")) {
+                if (System.Windows.MessageBox.Show("arduino-cli.exe already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
                     return;
                 }
             }           
@@ -495,13 +500,52 @@ namespace attiny85_rshell {
             using (var stream = await response.Content.ReadAsStreamAsync())
             using (var file = File.OpenWrite("../../../ThirdParty/arduino-cli.zip")) {
                 stream.CopyTo(file);
-            }           
+            }    
+            
+            if (Directory.Exists("../../../ThirdParty/arduino-cli")) {
+                Directory.Delete("../../../ThirdParty/arduino-cli",true);
+            }
 
             ZipFile.ExtractToDirectory("../../../ThirdParty/arduino-cli.zip", "../../../ThirdParty/arduino-cli");
-            System.Windows.MessageBox.Show("Arduino-cli Extracted Successfully");
+            System.Windows.MessageBox.Show("Arduino-cli extracted successfully");
+        }
 
-            arduino_cli_driver_init_button.IsEnabled = true;
-            arduino_cli_driver_init_button.Content = "Install";
+        private async void DownloadDriverZipAndUnpack() {
+            if (File.Exists("../../../ThirdParty/digistump-drivers.zip")) {
+                if (System.Windows.MessageBox.Show("digistump-drivers.zip already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                }
+            }
+            using var client = new HttpClient();
+            using (var response = await client.GetAsync("https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip"))
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            using (var file = File.OpenWrite("../../../ThirdParty/digistump-drivers.zip")) {
+                stream.CopyTo(file);
+            }
+
+            if (Directory.Exists("../../../ThirdParty/Digistump Drivers")) {
+                Directory.Delete("../../../ThirdParty/Digistump Drivers", true);
+            }
+
+            ZipFile.ExtractToDirectory("../../../ThirdParty/digistump-drivers.zip", "../../../ThirdParty/");
+            System.Windows.MessageBox.Show("Digistump drivers extracted successfully");
+        }
+
+        private void InstallDriverClick(object sender, RoutedEventArgs e) {
+            if (File.Exists("../../../ThirdParty/Digistump Drivers/DPinst64.exe")) {
+
+                var procStIfo = new ProcessStartInfo("../../../ThirdParty/Digistump Drivers/DPinst64.exe");
+                procStIfo.RedirectStandardOutput = true;
+                procStIfo.UseShellExecute = false;
+                procStIfo.CreateNoWindow = true;
+                var proc = new Process();
+                proc.StartInfo = procStIfo;
+                proc.Start();
+            } else {
+                System.Windows.MessageBox.Show("../../../ThirdParty/Digistump Drivers/DPinst64.exe does not exist. Please run step (#1) to download and unpack drivers","Executeable doesn't exist",MessageBoxButton.OK,MessageBoxImage.Error);
+            
+            }
+
         }
     }
 }
