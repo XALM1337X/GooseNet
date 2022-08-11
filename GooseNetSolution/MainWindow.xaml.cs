@@ -22,6 +22,7 @@ using System.IO.Compression;
 using System.Windows.Threading;
 using Microsoft.VisualBasic.Logging;
 using System.Reflection;
+using static System.Windows.Forms.LinkLabel;
 
 
 //TODO_FUNCTIONALITY_LIST:
@@ -532,39 +533,102 @@ namespace attiny85_rshell {
                 proc.WaitForExit();
             } else {
                 System.Windows.MessageBox.Show("../../../ThirdParty/Digistump Drivers/DPinst64.exe does not exist. Please run step (#1) to download and unpack drivers","Executeable doesn't exist",MessageBoxButton.OK,MessageBoxImage.Error);
-            
+
             }
-        
+
         }
 
         private void ArduinoCLIInitClick(object sender, RoutedEventArgs e) {
-            Regex regex = new Regex(@".*(Downloading.*)");
             //Commands to run from arduino-cli to make things functional.
-            // .\arduino-cli.exe core update-index
-            // .\arduino-cli.exe config init
-            // .\arduino-cli.exe config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json
-            // .\arduino - cli.exe core update-index
             // .\arduino-cli core install
+            
             if (!File.Exists("../../../ThirdParty/arduino-cli/arduino-cli.exe")) {
                 System.Windows.MessageBox.Show("../../../ThirdParty/arduino-cli/arduino-cli.exe does not exist. Please run step (#1) to download and unpack drivers","Executeable doesn't exist",MessageBoxButton.OK,MessageBoxImage.Error);
             } else {
+                ArduinoCLIUpdateIndex();
+                ArduinoCLIClientInit();
+                ArduinoCLIBoardConfigAdd();
+                ArduinoCLIUpdateIndex();
+                //TODO: Core install here.
+            }           
+        }
 
-                //Update arduino-cli index
+        private void ArduinoCLIUpdateIndex() {
+            Regex regex = new Regex(@".*(Downloading.*)");
+            var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+            procStIfo.RedirectStandardOutput = true;
+            procStIfo.UseShellExecute = false;
+            procStIfo.CreateNoWindow = true;
+            procStIfo.Arguments = "core update-index";
+            var proc = new Process();
+            proc.StartInfo = procStIfo;
+            proc.Start();
+            proc.WaitForExit();
+
+            StreamReader reader = proc.StandardOutput;
+            string output = reader.ReadToEnd();
+            if (regex.IsMatch(output)) {
+                System.Windows.MessageBox.Show(regex.Replace(output, "$1"));
+            }
+
+        }
+
+
+        private void ArduinoCLIClientInit() {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Arduino15\\arduino-cli.yaml";
+            var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+            procStIfo.RedirectStandardOutput = true;
+            procStIfo.UseShellExecute = false;
+            procStIfo.CreateNoWindow = true;
+            procStIfo.Arguments = "config init";
+            var proc = new Process();
+            proc.StartInfo = procStIfo;
+
+
+            if (File.Exists(path)) {
+                if (System.Windows.MessageBox.Show("The arduino cli has already been configured. Would you like to overwrite previous configuration?", "Configuration Detected", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                    File.Delete(path);                    
+                    proc.Start();
+                    proc.WaitForExit();
+                    var reader = proc.StandardOutput;
+                    var output = reader.ReadToEnd();
+                    System.Windows.MessageBox.Show(output);
+                }
+            } else {
+                proc.Start();
+                proc.WaitForExit();
+                var reader = proc.StandardOutput;
+                var output = reader.ReadToEnd();
+                System.Windows.MessageBox.Show(output);
+            }
+        }
+
+
+        private void ArduinoCLIBoardConfigAdd() {
+            Regex re = new Regex(@"package_digistump_index.json");
+            bool skip = false;
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Arduino15\\arduino-cli.yaml";
+            if (File.Exists(path)) {
+                string[] lines = System.IO.File.ReadAllLines(path);
+                for (int i = 0; i < lines.Length; i++) {
+                    if (re.IsMatch(lines[i])) {
+                        skip = true;
+                        break;
+                    }
+                }
+            }
+            if (!skip) {
                 var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
                 procStIfo.RedirectStandardOutput = true;
                 procStIfo.UseShellExecute = false;
                 procStIfo.CreateNoWindow = true;
-                procStIfo.Arguments = "core update-index";
+                procStIfo.Arguments = "config add board_manager.additional_urls https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json";
                 var proc = new Process();
                 proc.StartInfo = procStIfo;
                 proc.Start();
                 proc.WaitForExit();
-
-                StreamReader reader = proc.StandardOutput;
-                string output = reader.ReadToEnd();
-                if (regex.IsMatch(output)) {
-                    System.Windows.MessageBox.Show(regex.Replace(output, "$1"));
-                }
+            } else {
+                System.Windows.MessageBox.Show("skipped");
             }
         }
     }
