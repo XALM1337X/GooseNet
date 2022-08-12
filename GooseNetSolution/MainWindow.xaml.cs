@@ -372,19 +372,26 @@ namespace attiny85_rshell {
 
         }
         private void KillServerClick(object sender, RoutedEventArgs e) {
-
-            Process myProcess = Process.GetProcessById(GlobalServerID);
-            if (myProcess != null) {
-                myProcess.CloseMainWindow();
-                myProcess.Close();
-                FlowDocument myFlowDoc = new FlowDocument();
-                myFlowDoc.Blocks.Add(new Paragraph(new Run("Server shutdown succesfully.")));
-                landing_page_log.Document.Blocks.Clear();
-                landing_page_log.Document = myFlowDoc;
-            } else {
-                System.Windows.MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
-                return ;
+            try {
+                Process myProcess = Process.GetProcessById(GlobalServerID);
+                if (myProcess != null)
+                {
+                    myProcess.CloseMainWindow();
+                    myProcess.Close();
+                    FlowDocument myFlowDoc = new FlowDocument();
+                    myFlowDoc.Blocks.Add(new Paragraph(new Run("Server shutdown succesfully.")));
+                    landing_page_log.Document.Blocks.Clear();
+                    landing_page_log.Document = myFlowDoc;
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            } catch (System.ArgumentException) {
+                System.Windows.MessageBox.Show("Internal error. Server is not running. Set your execution policies to unrestricted.");
             }
+
         }
         private void SlaveClientBroadcastCheckBoxClick(object sender, RoutedEventArgs e) {
             if (broadcast_checbox.IsChecked ?? false) {
