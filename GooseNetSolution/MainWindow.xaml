@@ -34,7 +34,7 @@
                         <Run Text="GooseNet terms of service agreement:" FontSize="14" FontWeight="Bold"/>
                     </Paragraph>
                     <Paragraph>
-                        <Run Text="GooseNets usage is intended for usage soley for penetration testing in a white hat environemnt with the end user targets having been prenotified to its usage and given consent to do so. The User of this software is prohibited from usage in any circumstance otherwise stated that would vioalte CFAA policies. Haveing been alerted to the consequences of violating any and all CFAA policies, I as the user here by agree to release the GooseNet team from any legal responsiblilty resulting the improper usage of this product. I the user agree that all legal liabilities from improper usage are my sole responsibility." FontSize="14" FontWeight="Bold"/>
+                        <Run Text="GooseNets usage is intended soley for penetration testing in a white hat environemnt with the end user targets having been prenotified to its usage and given consent to do so. The User of this software is prohibited from usage in any circumstance otherwise stated that would vioalte CFAA policies. Haveing been alerted to the consequences of violating any and all CFAA policies, and here by agree to release the GooseNet team from any legal responsiblilty resulting from the improper usage of this product, and agree that all legal liabilities from improper usage are my sole responsibility." FontSize="14" FontWeight="Bold"/>
                     </Paragraph>
 
 
@@ -236,7 +236,7 @@
                 </FlowDocument>
             </RichTextBox>
         </Canvas>
-        <Canvas x:Name="payload_upload_auto_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
+        <Canvas x:Name="payload_upload_auto_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}">
             <Image x:Name="image_Copy6" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_auto_button_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" Width="45" Click="PayloadUploadAutoButtonBackClick" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <RichTextBox x:Name="richTextBox3" Height="195" Width="640" HorizontalAlignment="Left" Canvas.Left="130" VerticalAlignment="Center" Canvas.Top="47" IsReadOnly="True" VerticalScrollBarVisibility="Auto" IsDocumentEnabled="True">
