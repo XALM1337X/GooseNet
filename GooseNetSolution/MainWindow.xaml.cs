@@ -64,13 +64,11 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 1);
             //MessageBox.Show("Hello");
         }
-
         private void MasterClientConfigBack(object sender, RoutedEventArgs e) {
             //MessageBox.Show("Hello");
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 0);
         }
-
         private void MasterClientConfigSubmit(object sender, RoutedEventArgs e) {
             if (File.Exists("../../../data/master_client.json")) {
                 string question = "master_client.json already exists. Would you like to overwrite?";
@@ -91,17 +89,14 @@ namespace attiny85_rshell {
             myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote: ../../../data/master_client.json")));
             landing_page_log.Document = myFlowDoc;
         }
-
         private void ConfigureServerClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
             System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 1);
         }
-
         private void ServerConfBackClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 0);
         }
-
         private void ServerConfSubmit(object sender, RoutedEventArgs e) {
             if (File.Exists("../../../scripts/rs_server.ps1")) {
                 string question = "../../../scripts/rs_server.ps1 already exists. Would you like to overwrite?";
@@ -162,18 +157,15 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 0);
         }
-
         private void PayloadConfBackButton(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
             
         }
-
         private void PayloadConfigureButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 1);
         }
-
         private void PayloadConfigSubmit(object sender, RoutedEventArgs e) {
 
             if (File.Exists("../../../scripts/rs_tsk.ps1")) {
@@ -340,7 +332,6 @@ namespace attiny85_rshell {
                 local_host_path_test_display.IsEnabled = false;
             }
         }
-
         private void PayloadLocallyHostedSelectButtonClick(object sender, RoutedEventArgs e) {
             FolderBrowserDialog folderBrowserDialog1;
             folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
@@ -353,7 +344,6 @@ namespace attiny85_rshell {
                 local_host_path_test_display.Text = folderName;
             }
         }
-
         private void RunServerClick(object sender, RoutedEventArgs e) {
             if (File.Exists("..\\..\\..\\scripts\\rs_server.ps1")) {
                 using (Process myProcess = new Process()) {
@@ -381,7 +371,6 @@ namespace attiny85_rshell {
             }
 
         }
-
         private void KillServerClick(object sender, RoutedEventArgs e) {
 
             Process myProcess = Process.GetProcessById(GlobalServerID);
@@ -397,7 +386,6 @@ namespace attiny85_rshell {
                 return ;
             }
         }
-
         private void SlaveClientBroadcastCheckBoxClick(object sender, RoutedEventArgs e) {
             if (broadcast_checbox.IsChecked ?? false) {
                 client_id_textbox.IsEnabled = false;
@@ -405,27 +393,22 @@ namespace attiny85_rshell {
                 client_id_textbox.IsEnabled = true;
             }
         }
-
         private void PayloadUploadClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
         }
-
         private void PayloadUploadBackClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
         }
-
         private void ManualUploadButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_manual_option_canvas, 1);
         }
-
         private void ManualPayloadBackButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_manual_option_canvas, 0);
         }
-
         private void HyperlinkRequestIDE(object sender, RoutedEventArgs e) {
             using (Process myProcess = new Process()) {
                 myProcess.StartInfo = new ProcessStartInfo("https://www.arduino.cc/en/software");
@@ -434,7 +417,6 @@ namespace attiny85_rshell {
                 e.Handled = true;
             }
         }
-
         private void HyperlinkRequestDrivers(object sender, RoutedEventArgs e) {
             using (Process myProcess = new Process()) {
                 myProcess.StartInfo = new ProcessStartInfo("https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.Drivers.zip");
@@ -443,18 +425,23 @@ namespace attiny85_rshell {
                 e.Handled = true;
             }
         }
-
-
+        private void HyperlinkRequestDigistump(object sender, RoutedEventArgs e)  {
+            using (Process myProcess = new Process())
+            {
+                myProcess.StartInfo = new ProcessStartInfo("http://digistump.com/products/1");
+                myProcess.StartInfo.UseShellExecute = true;
+                myProcess.Start();
+                e.Handled = true;
+            }
+        }
         private void PayloadUploadAutoButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 1);
         }
-
         private void StartGooseNetButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(terms_of_service, 0);
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
         }
-
         private void TermsOfServiceCheckboxClick(object sender, RoutedEventArgs e) {
             if (service_agreement_auto_install_checkbox.IsChecked ?? true) {
                 start_goosenet_button.IsEnabled = true;
@@ -462,12 +449,10 @@ namespace attiny85_rshell {
                 start_goosenet_button.IsEnabled = false;
             }
         }
-
         private void PayloadUploadAutoButtonBackClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 0);
         }
-
         private void ArduinoDownloadButtonClick(object sender, RoutedEventArgs e) {
             zip_down_button.IsEnabled = false;
             zip_down_button.Content = "Loading";
@@ -499,7 +484,6 @@ namespace attiny85_rshell {
             ZipFile.ExtractToDirectory("../../../ThirdParty/arduino-cli.zip", "../../../ThirdParty/arduino-cli");
             System.Windows.MessageBox.Show("Arduino-cli extracted successfully");
         }
-
         private async void DownloadDriverZipAndUnpack() {
             if (File.Exists("../../../ThirdParty/digistump-drivers.zip")) {
                 if (System.Windows.MessageBox.Show("digistump-drivers.zip already exists. Would you like to overwrite it?", "File Exists", MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == MessageBoxResult.No) {
@@ -520,7 +504,6 @@ namespace attiny85_rshell {
             ZipFile.ExtractToDirectory("../../../ThirdParty/digistump-drivers.zip", "../../../ThirdParty/");
             System.Windows.MessageBox.Show("Digistump drivers extracted successfully");
         }
-
         private void InstallDriverClick(object sender, RoutedEventArgs e) {
             if (File.Exists("../../../ThirdParty/Digistump Drivers/DPinst64.exe")) {
                 var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\Digistump Drivers\\DPinst64.exe");
@@ -537,7 +520,6 @@ namespace attiny85_rshell {
             }
 
         }
-
         private void ArduinoCLIInitClick(object sender, RoutedEventArgs e) {
             //Commands to run from arduino-cli to make things functional.
             // .\arduino-cli core install
@@ -549,10 +531,14 @@ namespace attiny85_rshell {
                 ArduinoCLIClientInit();
                 ArduinoCLIBoardConfigAdd();
                 ArduinoCLIUpdateIndex();
-                //TODO: Core install here.
+                ArduinoCLICoreInstall();
+                string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                
+                if (Directory.Exists(localAppDataPath + "\\Arduino15\\packages\\digistump")) {
+                    System.Windows.MessageBox.Show("Digistump AVR boards succesfully installed.");
+                }
             }           
         }
-
         private void ArduinoCLIUpdateIndex() {
             Regex regex = new Regex(@".*(Downloading.*)");
             var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
@@ -572,8 +558,6 @@ namespace attiny85_rshell {
             }
 
         }
-
-
         private void ArduinoCLIClientInit() {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Arduino15\\arduino-cli.yaml";
             var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
@@ -602,8 +586,6 @@ namespace attiny85_rshell {
                 System.Windows.MessageBox.Show(output);
             }
         }
-
-
         private void ArduinoCLIBoardConfigAdd() {
             Regex re = new Regex(@"package_digistump_index.json");
             bool skip = false;
@@ -631,5 +613,132 @@ namespace attiny85_rshell {
                 System.Windows.MessageBox.Show("skipped");
             }
         }
+        private void ArduinoCLICoreInstall() {
+            string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            if (Directory.Exists(localAppDataPath +"\\Arduino15\\packages\\digistump")) {
+                if (System.Windows.MessageBox.Show("Digistump core boards already installed. Would you like to overwrite this installation?","Directory exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
+                    return;
+                } else {
+                    var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+                    procStIfo.RedirectStandardOutput = true;
+                    procStIfo.UseShellExecute = false;
+                    procStIfo.CreateNoWindow = true;
+                    procStIfo.Arguments = "core uninstall digistump:avr";
+                    var proc = new Process();
+                    proc.StartInfo = procStIfo;
+                    proc.Start();
+                    proc.WaitForExit();
+                    Directory.Delete(localAppDataPath + "\\Arduino15\\packages\\digistump", true);
+
+
+                    var procStIfo2 = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+                    procStIfo2.RedirectStandardOutput = true;
+                    procStIfo2.UseShellExecute = false;
+                    procStIfo2.CreateNoWindow = true;
+                    procStIfo2.Arguments = "core install digistump:avr";
+                    var proc2 = new Process();
+                    proc2.StartInfo = procStIfo2;
+                    proc2.Start();
+                    proc2.WaitForExit();
+
+                }
+            } else {
+
+                var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+                procStIfo.RedirectStandardOutput = true;
+                procStIfo.UseShellExecute = false;
+                procStIfo.CreateNoWindow = true;
+                procStIfo.Arguments = "core install digistump:avr";
+                var proc = new Process();
+                proc.StartInfo = procStIfo;
+                proc.Start();
+                proc.WaitForExit();
+
+            }
+
+        }
+        private void CompileAndUpload(object sender, RoutedEventArgs e) {
+            if (!File.Exists("..\\..\\..\\payload_out\\payload_out.ino")) {
+                System.Windows.MessageBox.Show("payload_out.ino file not found. Run \"Payload Options: Configure\" on the landing screen.", "File not found", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string port = GetCommPort();
+            if (port == "") {
+                return;
+            }
+            if (!CompileInoFile()) {
+                System.Windows.MessageBox.Show("Error during ino file compile.");
+                return;
+            }
+            UploadToDevice(port);
+        }
+        private string GetCommPort() {
+            char[] delims = new[] { '\r', '\n' };
+            string result = "";
+            Regex usb_re = new Regex(@"(.*)\(USB\)(.*)");
+            var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+            procStIfo.RedirectStandardOutput = true;
+            procStIfo.UseShellExecute = false;
+            procStIfo.CreateNoWindow = true;
+            procStIfo.Arguments = "board list";
+            var proc = new Process();
+            proc.StartInfo = procStIfo;
+            proc.Start();
+            proc.WaitForExit();
+            StreamReader reader = proc.StandardOutput;
+            string output = reader.ReadToEnd();
+
+            string[] lines = output.Split(delims, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < lines.Length; i++) {
+                if (usb_re.IsMatch(lines[i])) {
+                    string[] space_split = lines[i].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    result = space_split[0];
+                    break;
+                }            
+            }
+
+            if (result == "" || result == null) {
+                System.Windows.MessageBox.Show("Internal error, could not get communications port.");
+                return "";
+            }
+            return result;
+        }
+        private bool CompileInoFile() {
+            char[] delims = new[] { '\r', '\n' };
+            Regex re = new Regex("Sketch uses");
+            var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+            procStIfo.RedirectStandardOutput = true;
+            procStIfo.UseShellExecute = false;
+            procStIfo.CreateNoWindow = true;
+            procStIfo.Arguments = "compile -b digistump:avr:digispark-tiny ..\\..\\..\\payload_out\\payload_out.ino";
+            var proc = new Process();
+            proc.StartInfo = procStIfo;
+            proc.Start();
+            proc.WaitForExit();
+            StreamReader reader = proc.StandardOutput;
+            string output = reader.ReadToEnd();
+            string[] lines = output.Split(delims, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < lines.Length; i++) {
+                if (re.IsMatch(output)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private void UploadToDevice(string port) {
+            var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
+            procStIfo.RedirectStandardOutput = false;
+            procStIfo.UseShellExecute = true;
+            procStIfo.CreateNoWindow = false;
+            procStIfo.Arguments = "upload -p "+ port + " -b digistump:avr:digispark-tiny ..\\..\\..\\payload_out\\payload_out.ino";
+            var proc = new Process();
+            proc.StartInfo = procStIfo;
+            proc.Start();
+            proc.WaitForExit();
+
+        }
+
     }
 }

@@ -239,7 +239,7 @@
         <Canvas x:Name="payload_upload_auto_option_canvas" Grid.RowSpan="3" Background="{DynamicResource AppBackground}" Panel.ZIndex="1">
             <Image x:Name="image_Copy6" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" Canvas.Left="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button x:Name="payload_upload_auto_button_back" Content="Back" Canvas.Left="822" Canvas.Top="61" FontSize="14" Width="45" Click="PayloadUploadAutoButtonBackClick" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <RichTextBox x:Name="richTextBox3" Height="195" Width="640" HorizontalAlignment="Left" Canvas.Left="130" VerticalAlignment="Center" Canvas.Top="47">
+            <RichTextBox x:Name="richTextBox3" Height="195" Width="640" HorizontalAlignment="Left" Canvas.Left="130" VerticalAlignment="Center" Canvas.Top="47" IsReadOnly="True" VerticalScrollBarVisibility="Auto" IsDocumentEnabled="True">
                 <FlowDocument>
                     <Paragraph TextAlignment="Center">
                         <Run Text="Adrduino-cli, Drivers, and board setup instructions:" FontSize="14" FontWeight="Bold"/>
@@ -251,15 +251,39 @@
                         <LineBreak/>
                         <Run Text="(#2): " FontSize="14" FontWeight="UltraBlack"/>
                         <Run Text="Install Digistump Drivers." FontSize="14" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="(#3): " FontSize="14" FontWeight="UltraBlack"/>
+                        <Run Text="Initialize arduino-cli and update with Digistump board information for " FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,3,0" RenderTransformOrigin="0.5,0.5" >
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="360"/>
+                                    <TranslateTransform X="-5" Y="0"/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                            <Hyperlink x:Name="digistump_hyperlink" Foreground="#FF1E32D2"  Cursor="Hand" FontSize="14" TextDecorations="{x:Null}" Click="HyperlinkRequestDigistump">
+                                Digispark
+                            </Hyperlink>
+                        </TextBlock>
+
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run Text="(#4): " FontSize="14" FontWeight="UltraBlack"/>
+                        <Run Text="Compile and upload payload into device." FontSize="14" FontWeight="SemiBold"/>
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
-            <Button x:Name="zip_down_button" Content="Download" Canvas.Left="172" Canvas.Top="274" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72" Click="ArduinoDownloadButtonClick" Visibility="Visible"/>
-            <Label x:Name="install_arduino_label_1" Content="(#1):" Canvas.Left="130" Canvas.Top="271" Foreground="White" FontSize="14"/>
-            <Button x:Name="driver_install_button" Content="DriverInstall" Canvas.Left="296" Canvas.Top="274" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Click="InstallDriverClick"/>
-            <Label x:Name="driver_install_label" Content="(#2)" Canvas.Left="257" Canvas.Top="271" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Label x:Name="cli_init_label" Content="(#3)" Canvas.Left="378" Canvas.Top="271" FontSize="14" Foreground="White"/>
-            <Button x:Name="cli_init_button" Content="CLI Init" Canvas.Left="417" Canvas.Top="274" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="78" Click="ArduinoCLIInitClick"/>
+            <Button x:Name="zip_down_button" Content="Download" Canvas.Left="243" Canvas.Top="262" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="72" Click="ArduinoDownloadButtonClick" Visibility="Visible"/>
+            <Label x:Name="install_arduino_label_1" Content="(#1):" Canvas.Left="201" Canvas.Top="259" Foreground="White" FontSize="14"/>
+            <Button x:Name="driver_install_button" Content="DriverInstall" Canvas.Left="367" Canvas.Top="262" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Click="InstallDriverClick"/>
+            <Label x:Name="driver_install_label" Content="(#2)" Canvas.Left="328" Canvas.Top="259" Foreground="White" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="cli_init_label" Content="(#3)" Canvas.Left="449" Canvas.Top="259" FontSize="14" Foreground="White"/>
+            <Button x:Name="cli_init_button" Content="CLI Init" Canvas.Left="488" Canvas.Top="262" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="78" Click="ArduinoCLIInitClick"/>
+            <Label x:Name="burn_label" Content="(#4)" Canvas.Left="571" Canvas.Top="260" Foreground="White"/>
+            <Button x:Name="burn_button" Content="Burn" Canvas.Left="607" Canvas.Top="262" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="78" Click="CompileAndUpload"/>
         </Canvas>
 
     </Grid>
