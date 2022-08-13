@@ -43,6 +43,12 @@ namespace attiny85_rshell {
             System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 0);
         }
         private void MasterClientConfigSubmit(object sender, RoutedEventArgs e) {
+            Regex re_proto_catch = new Regex(@"(https://|http://)(.+)");
+            if (!re_proto_catch.IsMatch(master_client_domain_textbox.Text)) {
+                System.Windows.MessageBox.Show("Must use fully qualified domain name and protocol. ex. https://testing.com");
+                return;
+            }
+            
             if (File.Exists("../../../data/master_client.json")) {
                 string question = "master_client.json already exists. Would you like to overwrite?";
                 if (System.Windows.MessageBox.Show(question, "File Exists", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) {
