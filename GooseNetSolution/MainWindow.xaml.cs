@@ -184,7 +184,7 @@ namespace attiny85_rshell {
             Regex re_port = new Regex(@"(.*)<OS_PORT>(.*)");
             Regex re_dom = new Regex(@"(.*)<HOST_DOMAIN>(.*)");
             Regex re_slave_server = new Regex(@"(.*)<SLAVE_SERVER_DOMAIN>(.*)");
-            Regex re_proto_catch = new Regex(@"https://|http://(.+)");
+            Regex re_proto_catch = new Regex(@"(https://|http://)(.+)");
             bool changes_made = false;
             //Set Hosting domains for task and slave   
             ///Task: task_fqdn_wan_textbox
