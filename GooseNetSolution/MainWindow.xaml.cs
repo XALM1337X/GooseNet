@@ -258,7 +258,7 @@ namespace attiny85_rshell {
                     }
                     if (re_slave_server.IsMatch(slave_lines[i])) {
                         if (re_proto_catch.IsMatch(slave_server_textbox.Text)) {
-                            slave_lines[i] = (re_slave_server.Replace(slave_lines[i], "$1") + re_proto_catch.Replace(slave_server_textbox.Text, "$1") + re_slave_server.Replace(slave_lines[i], "$2"));
+                            slave_lines[i] = (re_slave_server.Replace(slave_lines[i], "$1") + re_proto_catch.Replace(slave_server_textbox.Text, "$2") + re_slave_server.Replace(slave_lines[i], "$2"));
                             changes_made = true;
                         } else {
                             System.Windows.MessageBox.Show("Failed to parse domain. Must meet format https://<your_site> or http://<your_site>", "Failed to parse", MessageBoxButton.OK, MessageBoxImage.Error);
