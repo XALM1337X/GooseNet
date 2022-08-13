@@ -1,17 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.Json;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -19,22 +8,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.IO.Compression;
-using System.Windows.Threading;
-using Microsoft.VisualBasic.Logging;
-using System.Reflection;
-using static System.Windows.Forms.LinkLabel;
-
-
-//TODO_FUNCTIONALITY_LIST:
-//Master Client Options
-//Start button: (Requires creating GUI master client)
-
-//Target Client Options:
-//All buttons
-
-//Server Options:
-//Client List Button:
-
 
 //Notes on how to launch async thread function calls
 /*
