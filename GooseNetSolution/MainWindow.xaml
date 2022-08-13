@@ -43,7 +43,7 @@
             <CheckBox x:Name="service_agreement_auto_install_checkbox" Content="I Agree to terms of service" Canvas.Left="359" Canvas.Top="247" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="TermsOfServiceCheckboxClick"/>
             <Button x:Name="start_goosenet_button" Content="Start" Canvas.Left="418" Canvas.Top="288" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Click="StartGooseNetButtonClick" Width="65"/>
         </Canvas>
-        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3">
+        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Panel.ZIndex="1">
             <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" Click="RunServerClick"/>
             <RichTextBox x:Name="landing_page_log" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True" RenderTransformOrigin="0.5,0.5">
                 <RichTextBox.RenderTransform>
@@ -81,7 +81,7 @@
             <Label x:Name="client_options_label" Content="Master Client Options:" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
             <Button x:Name="client_disconnect" Content="disconnect" Canvas.Left="11" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" FontSize="14" Height="22"/>
             <Label x:Name="cmd_label" Content="Command:" Canvas.Left="260" Canvas.Top="62" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Button x:Name="master_client_start" Content="start" Canvas.Left="89" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72"/>
+            <Button x:Name="master_client_start" Content="start" Canvas.Left="89" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72" Click="MasterClientStart"/>
             <Button x:Name="master_client_configure_button" Content="configure" Canvas.Left="12" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="72" Click="MasterClientConfigureView"/>
             <Button x:Name="client_clear_logs" Content="clear logs" Canvas.Left="87" Canvas.Top="125" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" Height="22"/>
             <Label x:Name="label1" Canvas.Left="124" Canvas.Top="152"/>
