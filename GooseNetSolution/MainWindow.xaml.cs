@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Documents;
 using System.Text.Json;
@@ -324,6 +324,10 @@ namespace attiny85_rshell {
             }
         }
         private void RunServerClick(object sender, RoutedEventArgs e) {
+            if (!CheckExecutionPolicy()) {
+                return;            
+            }
+            
             if (File.Exists("..\\..\\..\\scripts\\rs_server.ps1")) {
                 using (Process myProcess = new Process()) {
 
@@ -333,28 +337,28 @@ namespace attiny85_rshell {
                     myProcess.StartInfo.FileName = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
                     myProcess.StartInfo.CreateNoWindow = true;
                     myProcess.StartInfo.Arguments = "..\\..\\..\\scripts\\rs_server.ps1";
-                    myProcess.Start();
-                    GlobalServerID = myProcess.Id;
-
-                    FlowDocument myFlowDoc = new FlowDocument();
-                    myFlowDoc.Blocks.Add(new Paragraph(new Run("Server Started Succesfully.")));
-                    myFlowDoc.Blocks.Add(new Paragraph(new Run("Server ID: "+ GlobalServerID.ToString())));
-                    landing_page_log.Document.Blocks.Clear();
-                    landing_page_log.Document = myFlowDoc;
-
-
+                    if (myProcess.Start()) {
+                        GlobalServerID = myProcess.Id;
+                        FlowDocument myFlowDoc = new FlowDocument();
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Server Started Succesfully.")));
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Server ID: " + GlobalServerID.ToString())));
+                        landing_page_log.Document.Blocks.Clear();
+                        landing_page_log.Document = myFlowDoc;
+                    } else {
+                        System.Windows.MessageBox.Show("Failed to boot server. Check Execution policies and try again.");
+                        return;
+                    }
                 }
             } else {
                 System.Windows.MessageBox.Show("..\\..\\..\\scripts\\rs_server.ps1 does not exist. Use server configuration button.","Configured server not found", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+            
         }
         private void KillServerClick(object sender, RoutedEventArgs e) {
             try {
                 Process myProcess = Process.GetProcessById(GlobalServerID);
-                if (myProcess != null)
-                {
+                if (myProcess != null) {
                     myProcess.CloseMainWindow();
                     myProcess.Close();
                     FlowDocument myFlowDoc = new FlowDocument();
@@ -362,13 +366,12 @@ namespace attiny85_rshell {
                     landing_page_log.Document.Blocks.Clear();
                     landing_page_log.Document = myFlowDoc;
                 }
-                else
-                {
+                else {
                     System.Windows.MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             } catch (System.ArgumentException) {
-                System.Windows.MessageBox.Show("Internal error. Server is not running. Set your execution policies to unrestricted.");
+                System.Windows.MessageBox.Show("Server is not running.");
             }
 
         }
