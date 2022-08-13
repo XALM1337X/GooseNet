@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -747,5 +747,112 @@ namespace attiny85_rshell {
 
         }
 
+        private void MasterClientStart(object sender, RoutedEventArgs e) {
+            
+            if (!CheckExecutionPolicy()) {
+                return;
+            }
+            FireWallInRuleCheck();
+            FireWallOutRuleCheck();
+        }
+
+
+        private void FireWallInRuleCheck() {
+
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            if (!File.Exists(fileName)) {
+                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.");
+                return;
+            }
+            string jsonString = File.ReadAllText(fileName);
+            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;        
+            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procFWQueryInfo.RedirectStandardOutput = true;
+            procFWQueryInfo.UseShellExecute = false;
+            procFWQueryInfo.CreateNoWindow = true;
+            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1in\"";
+            var procFWQueryIN = new Process();
+            procFWQueryIN.StartInfo = procFWQueryInfo;
+            procFWQueryIN.Start();
+            procFWQueryIN.WaitForExit();
+            if (procFWQueryIN.ExitCode != 0)
+            {
+                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+                procFWInfo.RedirectStandardOutput = true;
+                procFWInfo.UseShellExecute = false;
+                procFWInfo.CreateNoWindow = true;
+                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1in\" -Direction Inbound -LocalPort " + conf.TargetServerPort + " -Protocol TCP -Action Allow";
+                var procFWIN = new Process();
+                procFWIN.StartInfo = procFWInfo;
+                procFWIN.Start();
+                procFWIN.WaitForExit();
+                if (procFWIN.ExitCode != 0) {
+                    System.Windows.MessageBox.Show("Failed to create inbound firewall rule.");
+                    return;
+                } else {
+                    System.Windows.MessageBox.Show("Succesfully created inbound firewall rule.");
+                }
+            }
+        }
+
+
+        private void FireWallOutRuleCheck() {
+
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            if (!File.Exists(fileName)) {
+                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.");
+                return;
+            }
+            string jsonString = File.ReadAllText(fileName);
+            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;  
+            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procFWQueryInfo.RedirectStandardOutput = true;
+            procFWQueryInfo.UseShellExecute = false;
+            procFWQueryInfo.CreateNoWindow = true;
+            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1out\"";
+            var procFWQueryIN = new Process();
+            procFWQueryIN.StartInfo = procFWQueryInfo;
+            procFWQueryIN.Start();
+            procFWQueryIN.WaitForExit();
+            if (procFWQueryIN.ExitCode != 0) {
+                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+                procFWInfo.RedirectStandardOutput = true;
+                procFWInfo.UseShellExecute = false;
+                procFWInfo.CreateNoWindow = true;
+                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1out\" -Direction Outbound -LocalPort " + conf.TargetServerPort + " -Protocol TCP -Action Allow";
+                var procFWIN = new Process();
+                procFWIN.StartInfo = procFWInfo;
+                procFWIN.Start();
+                procFWIN.WaitForExit();
+                if (procFWIN.ExitCode != 0) {
+                    System.Windows.MessageBox.Show("Failed to create outbound firewall rule.");
+                    return;
+                }
+                else {
+                    System.Windows.MessageBox.Show("Succesfully created outbound firewall rule.");
+                }
+            }
+        }
+
+        private bool CheckExecutionPolicy() {
+            Regex re = new Regex("Restricted");
+            var procStIfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procStIfo.RedirectStandardOutput = true;
+            procStIfo.UseShellExecute = false;
+            procStIfo.CreateNoWindow = true;
+            procStIfo.Arguments = "Get-ExecutionPolicy";
+            var proc = new Process();
+            proc.StartInfo = procStIfo;
+            proc.Start();
+            proc.WaitForExit();
+            StreamReader reader = proc.StandardOutput;
+            string output = reader.ReadToEnd();
+            if (re.IsMatch(output))
+            {
+                System.Windows.MessageBox.Show("System execution policies are set to restricted. Set to unrestricted and try again.");
+                return false;
+            }
+            return true;
+        }
     }
 }
