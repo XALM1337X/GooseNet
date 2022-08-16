@@ -8,12 +8,14 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.IO.Compression;
-
+using System.Net.Sockets;
+using Windows.Media.Protection.PlayReady;
+using System.Windows.Threading;
 //Notes on how to launch async thread function calls
 /*
     DispatcherTimer dispatcherTimer = new DispatcherTimer();
-    dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-    dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+    dispatcherTimer.Tick += new EventHandler(MasterStateObj.MasterClientObj.BufferPump);
+    dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
     dispatcherTimer.Start();
 */
 /*
@@ -21,15 +23,108 @@ using System.IO.Compression;
     }
 */
 
+
 namespace attiny85_rshell { 
 
     public partial class MainWindow : Window {
 
-        public int GlobalServerID { get; set; }
-
+        public MasterState MasterStateObj = new MasterState();
 
         public MainWindow() {
             InitializeComponent();
+            FirewallPreflight();
+
+        }
+
+        //MasterClient 
+        private void MasterClientStart(object sender, RoutedEventArgs e) {
+            if (!CheckExecutionPolicy()) {
+                return;
+            }
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            if (!File.Exists(fileName)) {
+                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.");
+                return;
+            } else {
+            
+            
+            }
+            if (!MasterStateObj.IsFirewallInit) {
+                FireWallClientInRuleCheck();
+                FireWallClientOutRuleCheck();
+            }
+            MasterClientLaunch();
+
+        }
+
+        private void MasterClientLaunch() {
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            string jsonString = File.ReadAllText(fileName);
+            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;
+            MasterStateObj.MasterClientObj = new MasterClient(conf.TargetServerIp, conf.TargetServerPort);
+            MasterStateObj.MasterClientObj.landing_log = landing_page_log;
+            MasterStateObj.MasterClientObj.BufferPumpTimer = new DispatcherTimer();
+            MasterStateObj.MasterClientObj.BufferPumpTimer.Tick += new EventHandler(MasterStateObj.MasterClientObj.BufferPump);
+            MasterStateObj.MasterClientObj.BufferPumpTimer.Interval = new TimeSpan(0, 0, 1);
+            MasterStateObj.MasterClientObj.BufferPumpTimer.Start();
+
+            FlowDocument myFlowDoc = new FlowDocument();
+            myFlowDoc.Blocks.Add(new Paragraph(new Run(MasterStateObj.MasterClientObj.StartClient())));
+            landing_page_log.Document = myFlowDoc;
+        }
+        private void MasterClientQueryClientList(object sender, RoutedEventArgs e) {
+            if (MasterStateObj.MasterClientObj == null) {
+                System.Windows.MessageBox.Show("MasterClient is null. Start master client.");
+                return;
+            }
+            FlowDocument myFlowDoc = new FlowDocument();
+            myFlowDoc.Blocks.Add(new Paragraph(new Run(MasterStateObj.MasterClientObj.ClientListQuery())));
+            landing_page_log.Document = myFlowDoc;
+        }
+
+        private void MasterClientDisconnectSlave(object sender, RoutedEventArgs e) {
+            if (client_id_textbox.Text != "") {
+                try {
+                    int client_id = Int32.Parse(client_id_textbox.Text);
+                    MasterStateObj.MasterClientObj.DisconnectSlave(client_id);
+                } catch(Exception ex) {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }                
+            } else {
+                System.Windows.MessageBox.Show("Cannot use empty id value.");
+            }
+        }
+
+        private void MasterClientClearSlaveLog(object sender, RoutedEventArgs e) {
+            //RunCommand
+            try {
+                int client_id = Int32.Parse(client_id_textbox.Text);
+                MasterStateObj.MasterClientObj.RunCommand(client_id, "--log_wipe");
+            } catch (Exception ex) {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void MasterClientRunUserCommand(object sender, RoutedEventArgs e) {
+            try {
+                int client_id = Int32.Parse(client_id_textbox.Text);
+                MasterStateObj.MasterClientObj.RunCommand(client_id, user_command_textbox.Text);
+            } catch (Exception ex) {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
+            user_command_textbox.Text = "";
+        }
+
+        private void MasterClientCommandEnterKeyPress(object sender, System.Windows.Input.KeyEventArgs e) {
+            if (e.Key == System.Windows.Input.Key.Enter) {
+                try {
+                    int client_id = Int32.Parse(client_id_textbox.Text);
+                    MasterStateObj.MasterClientObj.RunCommand(client_id, user_command_textbox.Text);
+                } catch (Exception ex) {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }
+                user_command_textbox.Text = "";
+            }
         }
 
         private void MasterClientConfigureView(object sender, RoutedEventArgs e) {
@@ -68,9 +163,58 @@ namespace attiny85_rshell {
             myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote: ../../../data/master_client.json")));
             landing_page_log.Document = myFlowDoc;
         }
-        private void ConfigureServerClick(object sender, RoutedEventArgs e) {
-            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
-            System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 1);
+
+
+        //Server
+        private void RunServerClick(object sender, RoutedEventArgs e) {
+            if (!CheckExecutionPolicy()) {
+                return;
+            }
+            if (File.Exists("..\\..\\..\\scripts\\rs_server.ps1")) {
+                FireWallServerOutRuleCheck();
+                FireWallServerInRuleCheck();
+                using (Process myProcess = new Process()) {
+
+                    myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                    myProcess.StartInfo.UseShellExecute = true;
+                    myProcess.StartInfo.FileName = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
+                    myProcess.StartInfo.CreateNoWindow = true;
+                    myProcess.StartInfo.Arguments = "..\\..\\..\\scripts\\rs_server.ps1";
+                    if (myProcess.Start()) {
+                        MasterStateObj.GlobalServerID = myProcess.Id;
+                        FlowDocument myFlowDoc = new FlowDocument();
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Server Started Succesfully.")));
+                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Server ID: " + MasterStateObj.GlobalServerID.ToString())));
+                        landing_page_log.Document.Blocks.Clear();
+                        landing_page_log.Document = myFlowDoc;
+                    } else {
+                        System.Windows.MessageBox.Show("Failed to boot server. Check Execution policies and try again.");
+                        return;
+                    }
+                }
+            } else {
+                System.Windows.MessageBox.Show("..\\..\\..\\scripts\\rs_server.ps1 does not exist. Use server configuration button.", "Configured server not found", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+        }
+        private void KillServerClick(object sender, RoutedEventArgs e) {
+            try {
+                Process myProcess = Process.GetProcessById(MasterStateObj.GlobalServerID);
+                if (myProcess != null) {
+                    myProcess.CloseMainWindow();
+                    myProcess.Close();
+                    FlowDocument myFlowDoc = new FlowDocument();
+                    myFlowDoc.Blocks.Add(new Paragraph(new Run("Server shutdown succesfully.")));
+                    landing_page_log.Document.Blocks.Clear();
+                    landing_page_log.Document = myFlowDoc;
+                } else {
+                    System.Windows.MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            } catch (System.ArgumentException) {
+                System.Windows.MessageBox.Show("Server is not running.");
+            }
+
         }
         private void ServerConfBackClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
@@ -96,12 +240,13 @@ namespace attiny85_rshell {
 
             if (File.Exists("../../../Templates/rs_server.ps1.template")) {
                 lines = System.IO.File.ReadAllLines(@"../../../Templates/rs_server.ps1.template");
-            } else {
+            }
+            else {
                 System.Windows.MessageBox.Show("rs_server.ps1.template not found. Reinstall application to fix.", "Critical Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-                
+
             int port;
             bool changes_made = false;
             bool success = int.TryParse(server_port.Text, out port);
@@ -118,7 +263,7 @@ namespace attiny85_rshell {
                 } else {
                     System.Windows.MessageBox.Show("Valid port range is [1 - 65536]");
                     return;
-                } 
+                }
                 if (changes_made) {
                     using (StreamWriter writetext = new StreamWriter("../../../scripts/rs_server.ps1")) {
                         foreach (string line in lines) {
@@ -130,12 +275,195 @@ namespace attiny85_rshell {
                     myFlowDoc.Blocks.Add(new Paragraph(new Run("Succesfully wrote: ../../../scripts/rs_server.ps1")));
                     landing_page_log.Document.Blocks.Clear();
                     landing_page_log.Document = myFlowDoc;
-                }            
+                }
             }
 
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 0);
         }
+        private void ConfigureServerClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
+            System.Windows.Controls.Panel.SetZIndex(server_configuration_canvas, 1);
+        }
+
+
+        //Firewall
+
+        private void FirewallPreflight() {
+            FireWallClientInRuleCheck();
+            FireWallClientOutRuleCheck();
+            MasterStateObj.IsFirewallInit = true;
+        }
+
+        private void FireWallClientInRuleCheck() {
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            string jsonString = File.ReadAllText(fileName);
+            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;
+            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procFWQueryInfo.RedirectStandardOutput = true;
+            procFWQueryInfo.UseShellExecute = false;
+            procFWQueryInfo.CreateNoWindow = true;
+            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1in\"";
+            var procFWQueryIN = new Process();
+            procFWQueryIN.StartInfo = procFWQueryInfo;
+            procFWQueryIN.Start();
+            procFWQueryIN.WaitForExit();
+            if (procFWQueryIN.ExitCode != 0) {
+                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+                procFWInfo.RedirectStandardOutput = true;
+                procFWInfo.UseShellExecute = false;
+                procFWInfo.CreateNoWindow = true;
+                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1in\" -Direction Inbound -LocalPort " + conf.TargetServerPort + " -Protocol TCP -Action Allow";
+                var procFWIN = new Process();
+                procFWIN.StartInfo = procFWInfo;
+                procFWIN.Start();
+                procFWIN.WaitForExit();
+                if (procFWIN.ExitCode != 0) {
+                    System.Windows.MessageBox.Show("Failed to create inbound firewall rule.");
+                    return;
+                }
+                else {
+                    System.Windows.MessageBox.Show("Succesfully created inbound firewall rule.");
+                }
+            }
+        }
+        private void FireWallClientOutRuleCheck() {
+
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            string jsonString = File.ReadAllText(fileName);
+            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;
+            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procFWQueryInfo.RedirectStandardOutput = true;
+            procFWQueryInfo.UseShellExecute = false;
+            procFWQueryInfo.CreateNoWindow = true;
+            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1out\"";
+            var procFWQueryIN = new Process();
+            procFWQueryIN.StartInfo = procFWQueryInfo;
+            procFWQueryIN.Start();
+            procFWQueryIN.WaitForExit();
+            if (procFWQueryIN.ExitCode != 0) {
+                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+                procFWInfo.RedirectStandardOutput = true;
+                procFWInfo.UseShellExecute = false;
+                procFWInfo.CreateNoWindow = true;
+                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1out\" -Direction Outbound -LocalPort " + conf.TargetServerPort + " -Protocol TCP -Action Allow";
+                var procFWIN = new Process();
+                procFWIN.StartInfo = procFWInfo;
+                procFWIN.Start();
+                procFWIN.WaitForExit();
+                if (procFWIN.ExitCode != 0) {
+                    System.Windows.MessageBox.Show("Failed to create outbound firewall rule.");
+                    return;
+                }
+                else {
+                    System.Windows.MessageBox.Show("Succesfully created outbound firewall rule.");
+                }
+            }
+        }
+        private void FireWallServerInRuleCheck() {
+            Regex re = new Regex(".*\\[ipaddress\\]::any,\\s([0-9]+).*");
+            string port = "";
+
+            string[] lines = File.ReadAllLines("..\\..\\..\\scripts\\rs_server.ps1");
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (re.IsMatch(lines[i]))
+                {
+                    port = re.Replace(lines[i], "$1");
+                    break;
+                }
+            }
+
+
+            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procFWQueryInfo.RedirectStandardOutput = true;
+            procFWQueryInfo.UseShellExecute = false;
+            procFWQueryInfo.CreateNoWindow = true;
+            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1in\"";
+            var procFWQueryIN = new Process();
+            procFWQueryIN.StartInfo = procFWQueryInfo;
+            procFWQueryIN.Start();
+            procFWQueryIN.WaitForExit();
+            if (procFWQueryIN.ExitCode != 0)
+            {
+                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+                procFWInfo.RedirectStandardOutput = true;
+                procFWInfo.UseShellExecute = false;
+                procFWInfo.CreateNoWindow = true;
+                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1in\" -Direction Inbound -LocalPort " + port + " -Protocol TCP -Action Allow";
+                var procFWIN = new Process();
+                procFWIN.StartInfo = procFWInfo;
+                procFWIN.Start();
+                procFWIN.WaitForExit();
+                if (procFWIN.ExitCode != 0)
+                {
+                    System.Windows.MessageBox.Show("Failed to create outbound firewall rule.");
+                    return;
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Succesfully created inbound firewall rule.");
+                }
+            }
+
+        }
+        private void FireWallServerOutRuleCheck() {
+            Regex re = new Regex(".*\\[ipaddress\\]::any,\\s([0-9]+).*");
+            string port = "";
+
+            string[] lines = File.ReadAllLines("..\\..\\..\\scripts\\rs_server.ps1");
+            for (int i = 0; i < lines.Length; i++) {
+                if (re.IsMatch(lines[i])) {
+                    port = re.Replace(lines[i], "$1");
+                    break;
+                }            
+            }
+
+            
+            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+            procFWQueryInfo.RedirectStandardOutput = true;
+            procFWQueryInfo.UseShellExecute = false;
+            procFWQueryInfo.CreateNoWindow = true;
+            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1out\"";
+            var procFWQueryIN = new Process();
+            procFWQueryIN.StartInfo = procFWQueryInfo;
+            procFWQueryIN.Start();
+            procFWQueryIN.WaitForExit();
+            if (procFWQueryIN.ExitCode != 0) {
+                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
+                procFWInfo.RedirectStandardOutput = true;
+                procFWInfo.UseShellExecute = false;
+                procFWInfo.CreateNoWindow = true;
+                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1out\" -Direction Outbound -LocalPort " + port + " -Protocol TCP -Action Allow";
+                var procFWIN = new Process();
+                procFWIN.StartInfo = procFWInfo;
+                procFWIN.Start();
+                procFWIN.WaitForExit();
+                if (procFWIN.ExitCode != 0) {
+                    System.Windows.MessageBox.Show("Failed to create outbound firewall rule.");
+                    return;
+                } else {
+                    System.Windows.MessageBox.Show("Succesfully created outbound firewall rule.");
+                }
+            }
+
+            
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+        
+
+        //Payload 
         private void PayloadConfBackButton(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
@@ -323,58 +651,6 @@ namespace attiny85_rshell {
                 local_host_path_test_display.Text = folderName;
             }
         }
-        private void RunServerClick(object sender, RoutedEventArgs e) {
-            if (!CheckExecutionPolicy()) {
-                return;            
-            }
-            
-            if (File.Exists("..\\..\\..\\scripts\\rs_server.ps1")) {
-                using (Process myProcess = new Process()) {
-
-                    myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-                    myProcess.StartInfo.UseShellExecute = true;
-                    // You can start any process, HelloWorld is a do-nothing example.
-                    myProcess.StartInfo.FileName = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
-                    myProcess.StartInfo.CreateNoWindow = true;
-                    myProcess.StartInfo.Arguments = "..\\..\\..\\scripts\\rs_server.ps1";
-                    if (myProcess.Start()) {
-                        GlobalServerID = myProcess.Id;
-                        FlowDocument myFlowDoc = new FlowDocument();
-                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Server Started Succesfully.")));
-                        myFlowDoc.Blocks.Add(new Paragraph(new Run("Server ID: " + GlobalServerID.ToString())));
-                        landing_page_log.Document.Blocks.Clear();
-                        landing_page_log.Document = myFlowDoc;
-                    } else {
-                        System.Windows.MessageBox.Show("Failed to boot server. Check Execution policies and try again.");
-                        return;
-                    }
-                }
-            } else {
-                System.Windows.MessageBox.Show("..\\..\\..\\scripts\\rs_server.ps1 does not exist. Use server configuration button.","Configured server not found", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            
-        }
-        private void KillServerClick(object sender, RoutedEventArgs e) {
-            try {
-                Process myProcess = Process.GetProcessById(GlobalServerID);
-                if (myProcess != null) {
-                    myProcess.CloseMainWindow();
-                    myProcess.Close();
-                    FlowDocument myFlowDoc = new FlowDocument();
-                    myFlowDoc.Blocks.Add(new Paragraph(new Run("Server shutdown succesfully.")));
-                    landing_page_log.Document.Blocks.Clear();
-                    landing_page_log.Document = myFlowDoc;
-                }
-                else {
-                    System.Windows.MessageBox.Show("Failed to shutdown server process.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-            } catch (System.ArgumentException) {
-                System.Windows.MessageBox.Show("Server is not running.");
-            }
-
-        }
         private void SlaveClientBroadcastCheckBoxClick(object sender, RoutedEventArgs e) {
             if (broadcast_checbox.IsChecked ?? false) {
                 client_id_textbox.IsEnabled = false;
@@ -426,17 +702,6 @@ namespace attiny85_rshell {
         private void PayloadUploadAutoButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 0);
             System.Windows.Controls.Panel.SetZIndex(payload_upload_auto_option_canvas, 1);
-        }
-        private void StartGooseNetButtonClick(object sender, RoutedEventArgs e) {
-            System.Windows.Controls.Panel.SetZIndex(terms_of_service, 0);
-            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
-        }
-        private void TermsOfServiceCheckboxClick(object sender, RoutedEventArgs e) {
-            if (service_agreement_auto_install_checkbox.IsChecked ?? true) {
-                start_goosenet_button.IsEnabled = true;
-            } else {
-                start_goosenet_button.IsEnabled = false;
-            }
         }
         private void PayloadUploadAutoButtonBackClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(payload_upload_options_canvas, 1);
@@ -651,6 +916,10 @@ namespace attiny85_rshell {
                 System.Windows.MessageBox.Show("payload_out.ino file not found. Run \"Payload Options: Configure\" on the landing screen.", "File not found", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            if (!File.Exists("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe")) {
+                System.Windows.MessageBox.Show("arduino-cli.exe does not exist. Run \"Payload Options -> Automated -> (#1)Install \"");
+                return;
+            }
 
             string port = GetCommPort();
             if (port == "") {
@@ -726,93 +995,19 @@ namespace attiny85_rshell {
             proc.StartInfo = procStIfo;
             proc.Start();
             proc.WaitForExit();
-
-        }
-
-        private void MasterClientStart(object sender, RoutedEventArgs e) {
-            
-            if (!CheckExecutionPolicy()) {
-                return;
-            }
-            FireWallInRuleCheck();
-            FireWallOutRuleCheck();
         }
 
 
-        private void FireWallInRuleCheck() {
-
-            string fileName = "..\\..\\..\\data\\master_client.json";
-            if (!File.Exists(fileName)) {
-                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.");
-                return;
-            }
-            string jsonString = File.ReadAllText(fileName);
-            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;        
-            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
-            procFWQueryInfo.RedirectStandardOutput = true;
-            procFWQueryInfo.UseShellExecute = false;
-            procFWQueryInfo.CreateNoWindow = true;
-            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1in\"";
-            var procFWQueryIN = new Process();
-            procFWQueryIN.StartInfo = procFWQueryInfo;
-            procFWQueryIN.Start();
-            procFWQueryIN.WaitForExit();
-            if (procFWQueryIN.ExitCode != 0)
-            {
-                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
-                procFWInfo.RedirectStandardOutput = true;
-                procFWInfo.UseShellExecute = false;
-                procFWInfo.CreateNoWindow = true;
-                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1in\" -Direction Inbound -LocalPort " + conf.TargetServerPort + " -Protocol TCP -Action Allow";
-                var procFWIN = new Process();
-                procFWIN.StartInfo = procFWInfo;
-                procFWIN.Start();
-                procFWIN.WaitForExit();
-                if (procFWIN.ExitCode != 0) {
-                    System.Windows.MessageBox.Show("Failed to create inbound firewall rule.");
-                    return;
-                } else {
-                    System.Windows.MessageBox.Show("Succesfully created inbound firewall rule.");
-                }
-            }
+        //Misc
+        private void StartGooseNetButtonClick(object sender, RoutedEventArgs e) {
+            System.Windows.Controls.Panel.SetZIndex(terms_of_service, 0);
+            System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
         }
-
-
-        private void FireWallOutRuleCheck() {
-
-            string fileName = "..\\..\\..\\data\\master_client.json";
-            if (!File.Exists(fileName)) {
-                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.");
-                return;
-            }
-            string jsonString = File.ReadAllText(fileName);
-            MasterClientConf conf = JsonSerializer.Deserialize<MasterClientConf>(jsonString)!;  
-            var procFWQueryInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
-            procFWQueryInfo.RedirectStandardOutput = true;
-            procFWQueryInfo.UseShellExecute = false;
-            procFWQueryInfo.CreateNoWindow = true;
-            procFWQueryInfo.Arguments = "Get-NetFirewallRule -DisplayName \"rs1out\"";
-            var procFWQueryIN = new Process();
-            procFWQueryIN.StartInfo = procFWQueryInfo;
-            procFWQueryIN.Start();
-            procFWQueryIN.WaitForExit();
-            if (procFWQueryIN.ExitCode != 0) {
-                var procFWInfo = new ProcessStartInfo("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
-                procFWInfo.RedirectStandardOutput = true;
-                procFWInfo.UseShellExecute = false;
-                procFWInfo.CreateNoWindow = true;
-                procFWInfo.Arguments = "New-NetFirewallRule -DisplayName \"rs1out\" -Direction Outbound -LocalPort " + conf.TargetServerPort + " -Protocol TCP -Action Allow";
-                var procFWIN = new Process();
-                procFWIN.StartInfo = procFWInfo;
-                procFWIN.Start();
-                procFWIN.WaitForExit();
-                if (procFWIN.ExitCode != 0) {
-                    System.Windows.MessageBox.Show("Failed to create outbound firewall rule.");
-                    return;
-                }
-                else {
-                    System.Windows.MessageBox.Show("Succesfully created outbound firewall rule.");
-                }
+        private void TermsOfServiceCheckboxClick(object sender, RoutedEventArgs e) {
+            if (service_agreement_auto_install_checkbox.IsChecked ?? true) {
+                start_goosenet_button.IsEnabled = true;
+            } else {
+                start_goosenet_button.IsEnabled = false;
             }
         }
 
@@ -829,12 +1024,13 @@ namespace attiny85_rshell {
             proc.WaitForExit();
             StreamReader reader = proc.StandardOutput;
             string output = reader.ReadToEnd();
-            if (re.IsMatch(output))
-            {
+            if (re.IsMatch(output)) {
                 System.Windows.MessageBox.Show("System execution policies are set to restricted. Set to unrestricted and try again.");
                 return false;
             }
             return true;
         }
-    }
+
+        
+    } 
 }
