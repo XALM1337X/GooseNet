@@ -43,7 +43,7 @@
             <CheckBox x:Name="service_agreement_auto_install_checkbox" Content="I Agree to terms of service" Canvas.Left="359" Canvas.Top="247" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="TermsOfServiceCheckboxClick"/>
             <Button x:Name="start_goosenet_button" Content="Start" Canvas.Left="418" Canvas.Top="288" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Click="StartGooseNetButtonClick" Width="65"/>
         </Canvas>
-        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Panel.ZIndex="1">
+        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3">
             <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" Click="RunServerClick"/>
             <RichTextBox x:Name="landing_page_log" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True" RenderTransformOrigin="0.5,0.5" TextChanged="LogTextChangedScroll" VerticalScrollBarVisibility="Auto">
 
