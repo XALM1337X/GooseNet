@@ -8,20 +8,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Net.Http;
 using System.IO.Compression;
-using System.Net.Sockets;
-using Windows.Media.Protection.PlayReady;
 using System.Windows.Threading;
-//Notes on how to launch async thread function calls
-/*
-    DispatcherTimer dispatcherTimer = new DispatcherTimer();
-    dispatcherTimer.Tick += new EventHandler(MasterStateObj.MasterClientObj.BufferPump);
-    dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
-    dispatcherTimer.Start();
-*/
-/*
-    private void dispatcherTimer_Tick(object sender, EventArgs e)  {
-    }
-*/
 
 
 namespace attiny85_rshell { 
@@ -43,7 +30,7 @@ namespace attiny85_rshell {
             }
             string fileName = "..\\..\\..\\data\\master_client.json";
             if (!File.Exists(fileName)) {
-                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.");
+                System.Windows.MessageBox.Show("master_client.json file does not exist. Run master client configuration on the main page.","Config doesnt exist", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             } else {
             
@@ -67,7 +54,7 @@ namespace attiny85_rshell {
             MasterStateObj.MasterClientObj.BufferPumpTimer.Tick += new EventHandler(MasterStateObj.MasterClientObj.BufferPump);
             MasterStateObj.MasterClientObj.BufferPumpTimer.Interval = new TimeSpan(0, 0, 1);
             MasterStateObj.MasterClientObj.BufferPumpTimer.Start();
-
+            
             FlowDocument myFlowDoc = new FlowDocument();
             myFlowDoc.Blocks.Add(new Paragraph(new Run(MasterStateObj.MasterClientObj.StartClient())));
             landing_page_log.Document = myFlowDoc;
@@ -83,6 +70,10 @@ namespace attiny85_rshell {
         }
 
         private void MasterClientDisconnectSlave(object sender, RoutedEventArgs e) {
+            if (MasterStateObj.MasterClientObj == null) {
+                System.Windows.MessageBox.Show("Master client is not active. Run master client to use command.","Client not active", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (client_id_textbox.Text != "") {
                 try {
                     int client_id = Int32.Parse(client_id_textbox.Text);
@@ -290,6 +281,10 @@ namespace attiny85_rshell {
         //Firewall
 
         private void FirewallPreflight() {
+            string fileName = "..\\..\\..\\data\\master_client.json";
+            if (!File.Exists(fileName)) {
+                return;
+            }
             FireWallClientInRuleCheck();
             FireWallClientOutRuleCheck();
             MasterStateObj.IsFirewallInit = true;
@@ -1031,6 +1026,6 @@ namespace attiny85_rshell {
             return true;
         }
 
-        
+
     } 
 }
