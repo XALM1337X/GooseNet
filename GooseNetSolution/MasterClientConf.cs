@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace attiny85_rshell { 
+namespace attiny85_rshell {
     internal class MasterClientConf {
         [JsonProperty("targetserverIp")]
         public string TargetServerIp { get; set; }

