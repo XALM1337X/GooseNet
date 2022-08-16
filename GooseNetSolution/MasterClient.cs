@@ -197,9 +197,10 @@ namespace attiny85_rshell {
                 }
             }
             if (ret_buff.Count > 0) {
-                FlowDocument myFlowDoc = new FlowDocument();
+                this.landing_log.ScrollToEnd();
+                FlowDocument myFlowDoc = this.landing_log.Document;
                 myFlowDoc.Blocks.Add(new Paragraph(new Run(String.Join("\n", ret_buff.ToArray()))));
-                this.landing_log.Document = myFlowDoc;
+                this.landing_log.Document = myFlowDoc;                
             }
         }
     }
