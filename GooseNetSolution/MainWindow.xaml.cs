@@ -20,6 +20,7 @@ namespace attiny85_rshell {
         public MainWindow() {
             InitializeComponent();
             FirewallPreflight();
+            PreflightDirectoryChecks();
 
         }
 
@@ -1073,6 +1074,15 @@ namespace attiny85_rshell {
             return true;
         }
 
+        private void PreflightDirectoryChecks() {
 
+            string[] keys = { "data","ThirdParty","scripts"};
+
+            for (int i = 0; i < keys.Length; i++) {
+                if (!Directory.Exists("../../../"+keys[i])) {
+                    Directory.CreateDirectory("../../../" + keys[i]);
+                }
+            }
+        }
     } 
 }
