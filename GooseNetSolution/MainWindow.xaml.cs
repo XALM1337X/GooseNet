@@ -20,6 +20,7 @@ namespace attiny85_rshell {
         public MainWindow() {
             InitializeComponent();
             FirewallPreflight();
+            PreflightDirectoryChecks();
 
         }
 
@@ -963,48 +964,13 @@ namespace attiny85_rshell {
                 return;
             }
 
-            string port = GetCommPort();
-            if (port == "") {
-                return;
-            }
             if (!CompileInoFile()) {
                 System.Windows.MessageBox.Show("Error during ino file compile.");
                 return;
             }
-            UploadToDevice(port);
+            UploadToDevice();
         }
-        private string GetCommPort() {
-            char[] delims = new[] { '\r', '\n' };
-            string result = "";
-            Regex usb_re = new Regex(@"(.*)\(USB\)(.*)");
-            var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
-            procStIfo.RedirectStandardOutput = true;
-            procStIfo.UseShellExecute = false;
-            procStIfo.CreateNoWindow = true;
-            procStIfo.Arguments = "board list";
-            var proc = new Process();
-            proc.StartInfo = procStIfo;
-            proc.Start();
-            proc.WaitForExit();
-            StreamReader reader = proc.StandardOutput;
-            string output = reader.ReadToEnd();
 
-            string[] lines = output.Split(delims, StringSplitOptions.RemoveEmptyEntries);
-
-            for (int i = 0; i < lines.Length; i++) {
-                if (usb_re.IsMatch(lines[i])) {
-                    string[] space_split = lines[i].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    result = space_split[0];
-                    break;
-                }            
-            }
-
-            if (result == "" || result == null) {
-                System.Windows.MessageBox.Show("Internal error, could not get communications port.");
-                return "";
-            }
-            return result;
-        }
         private bool CompileInoFile() {
             char[] delims = new[] { '\r', '\n' };
             Regex re = new Regex("Sketch uses");
@@ -1027,12 +993,12 @@ namespace attiny85_rshell {
             }
             return false;
         }
-        private void UploadToDevice(string port) {
+        private void UploadToDevice() {
             var procStIfo = new ProcessStartInfo("..\\..\\..\\ThirdParty\\arduino-cli\\arduino-cli.exe");
             procStIfo.RedirectStandardOutput = false;
             procStIfo.UseShellExecute = true;
             procStIfo.CreateNoWindow = false;
-            procStIfo.Arguments = "upload -p "+ port + " -b digistump:avr:digispark-tiny ..\\..\\..\\payload_out\\payload_out.ino";
+            procStIfo.Arguments = "upload -p COM3 -b digistump:avr:digispark-tiny ..\\..\\..\\payload_out\\payload_out.ino";
             var proc = new Process();
             proc.StartInfo = procStIfo;
             proc.Start();
@@ -1073,6 +1039,15 @@ namespace attiny85_rshell {
             return true;
         }
 
+        private void PreflightDirectoryChecks() {
 
+            string[] keys = { "data","ThirdParty","scripts"};
+
+            for (int i = 0; i < keys.Length; i++) {
+                if (!Directory.Exists("../../../"+keys[i])) {
+                    Directory.CreateDirectory("../../../" + keys[i]);
+                }
+            }
+        }
     } 
 }
