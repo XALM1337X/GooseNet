@@ -43,7 +43,7 @@
             <CheckBox x:Name="service_agreement_auto_install_checkbox" Content="I Agree to terms of service" Canvas.Left="359" Canvas.Top="247" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top" Click="TermsOfServiceCheckboxClick"/>
             <Button x:Name="start_goosenet_button" Content="Start" Canvas.Left="418" Canvas.Top="288" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Click="StartGooseNetButtonClick" Width="65"/>
         </Canvas>
-        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3">
+        <Canvas Background="{DynamicResource AppBackground}" x:Name="landing_page" Grid.RowSpan="3" Panel.ZIndex="1">
             <Button x:Name="run_server" Content="run server" Canvas.Left="11" Canvas.Top="181" Height="21" Width="73" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" Click="RunServerClick"/>
             <RichTextBox x:Name="landing_page_log" Height="302" Width="598" Canvas.Left="260" Canvas.Top="145" HorizontalAlignment="Center" VerticalAlignment="Top" IsReadOnly="True" RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
 
@@ -67,7 +67,7 @@
             <Button x:Name="kill_server" Content="kill server" Canvas.Left="91" Canvas.Top="180" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" FontSize="14" Click="KillServerClick"/>
             <Image x:Name="image" Height="188" Canvas.Top="305" Width="244" Source="/GooseNet.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="2"/>
             <Button x:Name="button" Content="run cmd" Canvas.Left="784" Canvas.Top="101" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Width="74" Height="23" Click="MasterClientRunUserCommand"/>
-            <Button x:Name="client_kill_switch" Content="kill switch" Canvas.Left="164" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" FontSize="14" Foreground="Red" Height="22"/>
+            <Button x:Name="client_kill_switch" Content="kill switch" Canvas.Left="164" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" FontSize="14" Foreground="Red" Height="22" Click="MasterClientSlaveKillswitch"/>
             <Button x:Name="configure_payload" Canvas.Left="10" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" Content="configure" FontSize="14" Click="PayloadConfigureButtonClick"/>
             <Button x:Name="payload_upload_view_button" Content="Upload" Canvas.Left="80" Canvas.Top="285" HorizontalAlignment="Center" VerticalAlignment="Top" Width="65" FontSize="14" Click="PayloadUploadClick"/>
             <Label x:Name="label" Content="Payload Options:" Canvas.Top="251" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
@@ -81,7 +81,7 @@
             <Label x:Name="label1" Canvas.Left="124" Canvas.Top="152"/>
             <Label x:Name="server_options_label" Content="Server Options:" Foreground="White" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="147" VerticalAlignment="Top" FontSize="14"/>
             <Label x:Name="target_client_options" Content="Target Client Options:" Canvas.Left="12" Canvas.Top="68" Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <CheckBox x:Name="broadcast_checbox" Content="Broadcast" Canvas.Left="164" Canvas.Top="104" Foreground="White" FontSize="14" Click="SlaveClientBroadcastCheckBoxClick"/>
+            <CheckBox x:Name="broadcast_checkbox" Content="Broadcast" Canvas.Left="164" Canvas.Top="104" Foreground="White" FontSize="14" Click="SlaveClientBroadcastCheckBoxClick"/>
             <Canvas Height="484" Width="900"/>
             <TextBox x:Name="user_command_textbox" Canvas.Left="260" TextWrapping="Wrap" Canvas.Top="101" Width="519" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" KeyDown="MasterClientCommandEnterKeyPress"/>
 

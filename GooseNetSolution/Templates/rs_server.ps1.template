@@ -157,24 +157,32 @@ while ($exit -eq 0) {
 								$exit =1;
 
 							#Send slave command##############################################
-							} elseif ($join -match ".*--[i|I][d|D]=([0-9]+)\s+--command=(.*)") {
+							} elseif ($join -match ".*--[i|I][d|D]=([0-9]+|[B][C])\s+--command=(.*)") {
 								
-								for ($i=0; $i -lt $ClientList.Length; $i++) {
-									if ($Matches[1] -eq $ClientList[$i].ID) {
+								if ($Matches[1] -eq "BC") {
+									for ($i=0; $i -lt $ClientList.Length; $i++) {
 										$client_stream = $ClientList[$i].ClientConn.GetStream();
 										$client_writer = New-Object System.IO.StreamWriter($client_stream)
 										$client_writer.WriteLine($Matches[2]);
 										$client_writer.Flush();
-										break;
 									}
-									if ($Matches[1] -ne $ClientList[$i].ID -and $i -eq $ClientList.Length -1) {
-										$client_stream = $ClientList[$i].ClientConn.GetStream();
-										$client_writer = New-Object System.IO.StreamWriter($client_stream)
-										$client_writer.WriteLine("No client with that ID found");
-										$client_writer.Flush();
-									}
+								} else {								
+									for ($i=0; $i -lt $ClientList.Length; $i++) {
+										if ($Matches[1] -eq $ClientList[$i].ID) {
+											$client_stream = $ClientList[$i].ClientConn.GetStream();
+											$client_writer = New-Object System.IO.StreamWriter($client_stream)
+											$client_writer.WriteLine($Matches[2]);
+											$client_writer.Flush();
+											break;
+										}
+										if ($Matches[1] -ne $ClientList[$i].ID -and $i -eq $ClientList.Length -1) {
+											$client_stream = $ClientList[$i].ClientConn.GetStream();
+											$client_writer = New-Object System.IO.StreamWriter($client_stream)
+											$client_writer.WriteLine("Slave ID not found");
+											$client_writer.Flush();
+										}
+									}								
 								}
-
 							} else {
 								#Dump accepted command list.
 								$master_writer.WriteLine(" ");
