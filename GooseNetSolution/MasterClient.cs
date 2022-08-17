@@ -36,6 +36,7 @@ namespace attiny85_rshell {
         public string StartClient() {
             Regex re1 = new Regex(@"(https://|http://)([a-zA-Z+_\-\\\/@&\.]+)");
             Regex re2 = new Regex(@"(https://|http://)([0-9.]+)");
+            bool is_err = false;
             try {
                 this.MasterClientObject = new TcpClient("", 1337);
                 this.MasterClientObject.ReceiveTimeout = 10000;
@@ -71,8 +72,14 @@ namespace attiny85_rshell {
 
                 return String.Join("\n", ret_buff.ToArray());
                 
-            } catch (Exception e) {
-                System.Windows.MessageBox.Show(e.ToString());
+            } catch (Exception ex) {
+                is_err = true;
+            }
+            if (is_err) {
+                //System.Windows.MessageBox.Show("MasterClient:StartClient:error - " + ex.ToString());
+                this.landing_log.ScrollToEnd();
+                this.landing_log.Document.Blocks.Add(new Paragraph(new Run("MasterClient:StartClient:error - Internal client error.")));
+
             }
             return "";
         }
@@ -118,57 +125,14 @@ namespace attiny85_rshell {
             return "";
         }
 
-        public string DisconnectSlave(int client_id) {
-           
+        public string RunCommand(string id, string command, bool isBroadcast) {
             try {
                 NetworkStream stream = this.MasterClientObject.GetStream();
                 stream.ReadTimeout = 10000;
                 stream.WriteTimeout = 10000;
                 StreamWriter writer = new StreamWriter(stream);
                 StreamReader reader = new StreamReader(stream);
-                writer.WriteLine("--id="+client_id+ " --command=--client_shutdown");
-                writer.Flush();
-
-                string in_buff = "";
-                var ret_buff = new List<string>();
-                int exit = 0;
-                while (exit == 0) {
-                    if (this.MasterClientObject.Client.Poll(50000, SelectMode.SelectRead) == true) {
-                        if (this.MasterClientObject.Client.Available == 0) {
-                            //Write - Output "Connection to server lost";
-                            exit = 1;
-                        } else {
-                            NetworkStream in_stream = this.MasterClientObject.GetStream();
-                            StreamReader in_reader = new StreamReader(in_stream);
-                            while (in_reader.Peek() > 0) {
-                                in_buff = in_reader.ReadLine();
-                                string join = String.Join("", in_buff);
-                                ret_buff.Add(join);
-
-                            }
-                            exit = 1;
-                        }
-                    }
-                }
-
-                return String.Join("\n", ret_buff.ToArray());
-
-            } catch (Exception e) {
-                System.Windows.MessageBox.Show(e.ToString());
-            }
-            return "";
-        }
-
-
-
-        public string RunCommand(int id, string command) {
-            try {
-                NetworkStream stream = this.MasterClientObject.GetStream();
-                stream.ReadTimeout = 10000;
-                stream.WriteTimeout = 10000;
-                StreamWriter writer = new StreamWriter(stream);
-                StreamReader reader = new StreamReader(stream);
-                writer.WriteLine("--id="+ id+" --command="+command);
+                writer.WriteLine("--id="+ id + " --command="+command);
                 writer.Flush();
             }
             catch (Exception e)
@@ -181,26 +145,32 @@ namespace attiny85_rshell {
         public void BufferPump(object sender, EventArgs e) {
             string in_buff = "";
             var ret_buff = new List<string>();
-
-            if (this.MasterClientObject.Client.Poll(50000, SelectMode.SelectRead) == true) {
-                if (this.MasterClientObject.Client.Available == 0) {
+            try {
+                if (this.MasterClientObject == null) {
+                    System.Windows.MessageBox.Show("MasterClient object is null. Check connection between master client and server.");
                     this.BufferPumpTimer.Stop();
-                    System.Windows.MessageBox.Show("Lost connection to server");
-                } else {
-                    NetworkStream in_stream = this.MasterClientObject.GetStream();
-                    StreamReader in_reader = new StreamReader(in_stream);
-                    while (in_reader.Peek() > 0) {
-                        in_buff = in_reader.ReadLine();
-                        string join = String.Join("", in_buff);
-                        ret_buff.Add(join);
+                    return;
+                }
+                if (this.MasterClientObject.Client.Poll(50000, SelectMode.SelectRead) == true) {
+                    if (this.MasterClientObject.Client.Available == 0) {
+                        this.BufferPumpTimer.Stop();
+                        System.Windows.MessageBox.Show("Lost connection to server");
+                    } else {
+                        NetworkStream in_stream = this.MasterClientObject.GetStream();
+                        StreamReader in_reader = new StreamReader(in_stream);
+                        while (in_reader.Peek() > 0) {
+                            in_buff = in_reader.ReadLine();
+                            string join = String.Join("", in_buff);
+                            ret_buff.Add(join);
+                        }
                     }
                 }
-            }
-            if (ret_buff.Count > 0) {
-                this.landing_log.ScrollToEnd();
-                FlowDocument myFlowDoc = this.landing_log.Document;
-                myFlowDoc.Blocks.Add(new Paragraph(new Run(String.Join("\n", ret_buff.ToArray()))));
-                this.landing_log.Document = myFlowDoc;                
+                if (ret_buff.Count > 0) {
+                    this.landing_log.ScrollToEnd();
+                    this.landing_log.Document.Blocks.Add(new Paragraph(new Run(String.Join("\n", ret_buff.ToArray()))));                                
+                }
+            } catch (Exception ex) {
+                System.Windows.MessageBox.Show(ex.ToString());               
             }
         }
     }

