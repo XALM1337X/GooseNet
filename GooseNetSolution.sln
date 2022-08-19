@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GooseNet", "GooseNet.csproj", "{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Goose Net", "Goose Net\Goose Net.wixproj", "{B8E97F17-C2AE-49E7-B49B-140EEC016186}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|x86.ActiveCfg = Release|Any CPU
 		{BF4A5EF3-86AB-4A43-A8AA-90FBE60A343D}.Release|x86.Build.0 = Release|Any CPU
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Debug|Any CPU.Build.0 = Debug|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Debug|x86.ActiveCfg = Debug|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Debug|x86.Build.0 = Debug|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Release|Any CPU.ActiveCfg = Release|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Release|Any CPU.Build.0 = Release|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Release|x86.ActiveCfg = Release|x86
+		{B8E97F17-C2AE-49E7-B49B-140EEC016186}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

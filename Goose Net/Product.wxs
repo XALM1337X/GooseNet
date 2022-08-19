@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define GooseNet_TargetDir=$(var.GooseNet.TargetDir)?>
+	<Product Id="*" Name="Goose_Net" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Goose_Net" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Goose_Net" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+			<Component Id="GooseNet.runtimeconfig.json" Guid="aeba9cf3-a79d-4b53-bbd7-62918f945a38">
+			  <File Id="GooseNet.runtimeconfig.json" Name="GooseNet.runtimeconfig.json" Source="$(var.GooseNet_TargetDir)GooseNet.runtimeconfig.json" />
+			</Component>
+			<Component Id="GooseNet.dll" Guid="261030cc-aa66-4933-8653-a5a56a19bdff">
+			  <File Id="GooseNet.dll" Name="GooseNet.dll" Source="$(var.GooseNet_TargetDir)GooseNet.dll" />
+			</Component>
+			<Component Id="Newtonsoft.Json.dll" Guid="5e7fbd84-51f6-462d-9d94-f7a9e90bf9d5">
+			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.GooseNet_TargetDir)Newtonsoft.Json.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
