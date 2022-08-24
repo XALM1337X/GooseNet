@@ -16,6 +16,6 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build
-      run: dotnet build GooseNet/GooseNetSolution.sln --no-restore
+      run: dotnet build GooseNetSolution.sln --no-restore
     - name: Test
-      run: dotnet test GooseNet/GooseNetSolution.sln --no-build --verbosity normal
+      run: dotnet test GooseNetSolution.sln --no-build --verbosity normal
