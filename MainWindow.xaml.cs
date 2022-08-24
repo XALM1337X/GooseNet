@@ -510,7 +510,11 @@ namespace attiny85_rshell {
         private void PayloadConfBackButton(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
-            
+            host_fqdn_wan_textbox.Text = "";
+            local_host_path_test_display.Text = "";
+            dial_home_frequency.Text = "";
+            slave_server_textbox.Text = "";
+            slave_server_port_textbox.Text = "";
         }
         private void PayloadConfigureButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
