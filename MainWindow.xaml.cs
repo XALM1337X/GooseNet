@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Documents;
 using System.Text.Json;
@@ -547,6 +547,17 @@ namespace attiny85_rshell {
             }
             if (slave_server_port_textbox.Text == "") {
                 System.Windows.MessageBox.Show("Slave port field cannot be empty", "Empty Entry", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (dial_home_frequency.Text == "") {
+                System.Windows.MessageBox.Show("The Dial Back Frequency field cannot be empty. Only accepts an intger value in minutes greater than zero.","Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try {
+                Int64.Parse(dial_home_frequency.Text);
+            } catch {
+                System.Windows.MessageBox.Show("Failed to parse Dial home frequency into valid number of minutes.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
