@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore
-      run: dotnet restore GooseNetSolution.sln
+      run: dotnet restore GooseNet.csproj
     - name: Build
       run: dotnet build GooseNetSolution.sln --no-restore
     - name: Test
