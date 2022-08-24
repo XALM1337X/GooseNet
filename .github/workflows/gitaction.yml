@@ -38,7 +38,7 @@ jobs:
       run: Expand-Archive .\wix311-binaries.zip -DestinationPath .\wix311-binaries
     
     - name: Check WixTools
-      run: ls
+      run: ls wix311-binaries
     #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
     #- name: Test
