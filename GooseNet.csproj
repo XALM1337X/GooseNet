@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DuckNet.png" />
     <None Remove="GooseNet.png" />
   </ItemGroup>
 

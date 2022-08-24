@@ -6,7 +6,7 @@
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
-		<Feature Id="ProductFeature" Title="Goose_Net" Level="1">
+		<Feature Id="ProductFeature" Title="GooseNet" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 	</Product>
@@ -14,17 +14,17 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Goose_Net" />
+				<Directory Id="INSTALLFOLDER" Name="GooseNet">
+					<Directory Id="DATADIRECTORY" Name="data"/>
+					<Directory Id="THIRDPARTYDIRECTORY" Name="ThirdParty"/>
+					
+				</Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-			<!-- </Component> -->
 			<Component Id="GooseNet.runtimeconfig.json" Guid="aeba9cf3-a79d-4b53-bbd7-62918f945a38">
 			  <File Id="GooseNet.runtimeconfig.json" Name="GooseNet.runtimeconfig.json" Source="$(var.GooseNet_TargetDir)GooseNet.runtimeconfig.json" />
 			</Component>
@@ -33,6 +33,9 @@
 			</Component>
 			<Component Id="Newtonsoft.Json.dll" Guid="5e7fbd84-51f6-462d-9d94-f7a9e90bf9d5">
 			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.GooseNet_TargetDir)Newtonsoft.Json.dll" />
+			</Component>
+			<Component Id="README.md" Guid="5f7fcd84-51f5-952d-9294-f0a9e80cf9d5">
+				<File Id="README.md" Source="$(var.GooseNet_TargetDir)..\..\..\..\GooseNet\README.md" KeyPath="yes" Checksum="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>

