@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Documents;
 using System.Text.Json;
@@ -692,6 +692,11 @@ namespace attiny85_rshell {
             landing_page_log.Document = myFlowDoc;
             System.Windows.Controls.Panel.SetZIndex(landing_page, 1);
             System.Windows.Controls.Panel.SetZIndex(payload_conf_canvas, 0);
+            host_fqdn_wan_textbox.Text = "";
+            local_host_path_test_display.Text = "";
+            dial_home_frequency.Text = "";
+            slave_server_textbox.Text = "";
+            slave_server_port_textbox.Text = "";
         }
         private void PayloadLocalHostCheckboxClick(object sender, RoutedEventArgs e) {
             if (local_hosting_checkbox.IsChecked ?? false) {
