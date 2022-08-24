@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Setup Checkoutv3
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - name: MSBuild Version Test
       run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
