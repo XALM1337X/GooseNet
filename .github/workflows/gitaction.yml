@@ -15,7 +15,10 @@ jobs:
 
     - name: MSBuild Version Test
       run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
+
+    - name: Where am I?
       run: ls
+      
 
     #- name: Setup .NET
     #  uses: actions/setup-dotnet@v2
