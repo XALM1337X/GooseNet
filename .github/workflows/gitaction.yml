@@ -16,20 +16,23 @@ jobs:
     - name: MSBuild Version Test
       run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
 
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+        
+    
+    - name: GooseNet Object Restore
+      run: dotnet restore GooseNet.csproj
+
     - name: Build GooseNet
       run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe GooseNet.csproj
     
     - name: Check Build 
       run: ls .\bin\Debug\net6.0-windows10.0.22621.0
 
-    #- name: Setup .NET
-    #  uses: actions/setup-dotnet@v2
-    #  with:
-    #    dotnet-version: 6.0.x
-        
-    
-    #- name: Restore
-    #  run: dotnet restore GooseNet.csproj
+
     #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
     #- name: Test
