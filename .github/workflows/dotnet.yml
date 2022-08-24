@@ -18,6 +18,6 @@ jobs:
     - name: Restore
       run: dotnet restore GooseNet.csproj
     - name: Build
-      run: dotnet build GooseNetSolution.sln --no-restore
+      run: dotnet build GooseNet.csproj --no-restore
     - name: Test
-      run: dotnet test GooseNetSolution.sln --no-build --verbosity normal
+      run: dotnet test GooseNet.csproj --no-build --verbosity normal
