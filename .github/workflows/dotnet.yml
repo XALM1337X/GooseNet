@@ -17,7 +17,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: MSBuild Version Test
-      run: MSBuild.exe --version
+      run: ls C:\Program Files\
     - name: Restore
       run: dotnet restore GooseNet.csproj
     - name: Build
