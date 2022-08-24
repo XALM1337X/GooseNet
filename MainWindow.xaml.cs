@@ -568,6 +568,7 @@ namespace attiny85_rshell {
 
             FlowDocument myFlowDoc = new FlowDocument();
             Regex re_port = new Regex(@"(.*)<OS_PORT>(.*)");
+            Regex re_dial = new Regex(@"(.*)<DIAL_FREQUENCY>(.*)");
             Regex re_dom = new Regex(@"(.*)<HOST_DOMAIN>(.*)");
             Regex re_slave_server = new Regex(@"(.*)<SLAVE_SERVER_DOMAIN>(.*)");
             Regex re_proto_catch = new Regex(@"(https://|http://)(.+)");
@@ -589,7 +590,11 @@ namespace attiny85_rshell {
                     if (re_dom.IsMatch(tsk_lines[i])) {
                         tsk_lines[i] = (re_dom.Replace(tsk_lines[i], "$1") + host_fqdn_wan_textbox.Text + re_dom.Replace(tsk_lines[i], "$2"));
                         changes_made = true;
-                        break;
+
+                    }
+                    if (re_dial.IsMatch(tsk_lines[i])) {
+                        tsk_lines[i] = (re_dial.Replace(tsk_lines[i], "$1") + dial_home_frequency.Text + re_dial.Replace(tsk_lines[i], "$2"));
+                        changes_made = true;
                     }
                 }
                 if (changes_made) {
