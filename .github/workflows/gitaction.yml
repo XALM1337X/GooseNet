@@ -43,6 +43,7 @@ jobs:
      
   package:  
     runs-on: windows-latest
+    steps:
     - name: Compile Wix Object
       run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
 
