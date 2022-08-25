@@ -2,7 +2,7 @@ name: GooseNetBuild
 
 on:
   push:
-    branches: [ "master", "primary_testing" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -48,6 +48,13 @@ jobs:
 
     - name: Check MSI
       run: ls .\'Goose Net'\bin\Debug\
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+        with:
+          name: GooseNet-MSI
+          path: .\'Goose Net'\bin\Debug\GooseNet.msi
+          retention-days: 30
 
      #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
