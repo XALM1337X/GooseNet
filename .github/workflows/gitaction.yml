@@ -5,31 +5,13 @@ on:
     branches: [ "master", "primary_testing" ]
 
 jobs:
-  build:
+  runs-on: windows-latest
 
-    runs-on: windows-latest
 
+  pre_build:
     steps:
     - name: Setup Checkoutv3
       uses: actions/checkout@v3
-
-    #- name: MSBuild Version Test
-     # run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-        
-    
-    - name: GooseNet Object Restore
-      run: dotnet restore GooseNet.csproj
-
-    - name: Build GooseNet
-      run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe GooseNet.csproj
-    
-    #- name: Check Build 
-     # run: ls .\bin\Debug\net6.0-windows10.0.22621.0
 
     - name: Pull WixToolSet
       run: Invoke-WebRequest https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip -OutFile .\wix311-binaries.zip
@@ -39,7 +21,29 @@ jobs:
     
     #- name: Check WixTools
      # run: ls wix311-binaries
+
+    #- name: MSBuild Version Test
+     # run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+  build: 
+
+    steps:
+    - name: GooseNet Object Restore
+      run: dotnet restore GooseNet.csproj
+
+    - name: Build GooseNet
+      run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe GooseNet.csproj
     
+    #- name: Check Build 
+     # run: ls .\bin\Debug\net6.0-windows10.0.22621.0
+
+     
+  Package:  
     - name: Compile Wix Object
       run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
 
@@ -47,13 +51,7 @@ jobs:
      # run: ls .\'Goose Net'\
 
     - name: Check Wix Object
-      run: ls .\'Goose Net'\obj\Debug\
-     
-     
-     
-     
-     
-     
+      run: ls .\'Goose Net'\obj\Debug\     
      
      #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
