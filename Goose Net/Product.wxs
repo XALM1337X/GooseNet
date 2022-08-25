@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="GooseNet" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">
+	<Product Id="*" Name="Goose_Net" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -26,16 +26,16 @@
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
 			<Component Id="GooseNet.runtimeconfig.json" Guid="aeba9cf3-a79d-4b53-bbd7-62918f945a38">
-			  <File Id="GooseNet.runtimeconfig.json" Name="GooseNet.runtimeconfig.json" Source="..\..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.runtimeconfig.json" />
+			  <File Id="GooseNet.runtimeconfig.json" Name="GooseNet.runtimeconfig.json" Source="GooseNet.runtimeconfig.json" />
 			</Component>
 			<Component Id="GooseNet.dll" Guid="261030cc-aa66-4933-8653-a5a56a19bdff">
-			  <File Id="GooseNet.dll" Name="GooseNet.dll" Source="..\..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.dll" />
+			  <File Id="GooseNet.dll" Name="GooseNet.dll" Source="GooseNet.dll" />
 			</Component>
 			<Component Id="Newtonsoft.Json.dll" Guid="5e7fbd84-51f6-462d-9d94-f7a9e90bf9d5">
-			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="..\..\..\..\bin\Release\net6.0-windows10.0.22621.0\Newtonsoft.Json.dll" />
+			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="Newtonsoft.Json.dll" />
 			</Component>
 			<Component Id="README.md" Guid="5f7fcd84-51f5-952d-9294-f0a9e80cf9d5">
-				<File Id="README.md" Source="..\README.md" KeyPath="yes" Checksum="yes"/>
+				<File Id="README.md" Source="..\..\README.md" KeyPath="yes" Checksum="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
