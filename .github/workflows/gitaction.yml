@@ -46,8 +46,8 @@ jobs:
     - name: Link Wix Object
       run: .\wix311-binaries\light.exe .\'Goose Net'\obj\Debug\Product.wixobj -out .\'Goose Net'\bin\Debug\GooseNet.msi
 
-    - name: Check MSI
-      run: ls .\'Goose Net'\bin\Debug\
+    #- name: Check MSI
+      #run: ls .\'Goose Net'\bin\Debug\
 
      #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
