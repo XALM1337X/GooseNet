@@ -41,12 +41,13 @@ jobs:
      # run: ls wix311-binaries
     
     - name: Compile Wix Object
-      run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs
-    - name: Debug Wix Obj test
-      run: ls .\'Goose Net'\
+      run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
 
-    #- name: Check Wix Object
-     # run: ls .\'Goose Net'\obj\Debug\
+    #- name: Debug Wix Obj test
+     # run: ls .\'Goose Net'\
+
+    - name: Check Wix Object
+      run: ls .\'Goose Net'\obj\Debug\
      
      
      
