@@ -2,34 +2,14 @@ name: GooseNetBuild
 
 on:
   push:
-    branches: [ "master", "primary_testing" ]
+    branches: [ "master" ]
 
 jobs:
   build:
-
     runs-on: windows-latest
-
     steps:
     - name: Setup Checkoutv3
       uses: actions/checkout@v3
-
-    - name: MSBuild Version Test
-      run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-        
-    
-    - name: GooseNet Object Restore
-      run: dotnet restore GooseNet.csproj
-
-    - name: Build GooseNet
-      run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe GooseNet.csproj
-    
-    - name: Check Build 
-      run: ls .\bin\Debug\net6.0-windows10.0.22621.0
 
     - name: Pull WixToolSet
       run: Invoke-WebRequest https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip -OutFile .\wix311-binaries.zip
@@ -37,9 +17,46 @@ jobs:
     - name: Unpack WixTools
       run: Expand-Archive .\wix311-binaries.zip -DestinationPath .\wix311-binaries
     
-    - name: Check WixTools
-      run: ls wix311-binaries
-    #- name: Build
+    #- name: Check WixTools
+     # run: ls wix311-binaries
+
+    #- name: MSBuild Version Test
+     # run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe --version
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: GooseNet Object Restore
+      run: dotnet restore GooseNet.csproj
+
+    - name: Build GooseNet
+      run: C:\'Program Files'\'Microsoft Visual Studio'\2022\Enterprise\Msbuild\Current\Bin\MSBuild.exe GooseNet.csproj /property:Configuration=Release
+    
+    #- name: Check Build 
+     # run: ls .\bin\Debug\net6.0-windows10.0.22621.0
+
+    - name: Compile Wix Object
+      run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
+
+    - name: Check Wix Object
+      run: ls .\'Goose Net'\obj\Debug\     
+    
+    - name: Link Wix Object
+      run: .\wix311-binaries\light.exe .\'Goose Net'\obj\Debug\Product.wixobj -out .\'Goose Net'\bin\Debug\GooseNet.msi
+
+    - name: Check MSI
+      run: ls .\'Goose Net'\bin\Debug\
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+        with:
+          name: GooseNet-MSI
+          path: .\'Goose Net'\bin\Debug\GooseNet.msi
+          retention-days: 30
+
+     #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
     #- name: Test
     #  run: dotnet test GooseNet.csproj --no-build --verbosity normal

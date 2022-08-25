@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="data\" />
+    <Folder Include="Goose Net\bin\" />
     <Folder Include="ThirdParty\" />
     <Folder Include="scripts\" />
     <Folder Include="Templates\" />
