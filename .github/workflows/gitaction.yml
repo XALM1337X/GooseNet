@@ -53,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: GooseNet-MSI
-        path: GooseNet\'Goose Net'\bin\DebugGooseNet.msi
+        path: D:\a\GooseNet\GooseNet\'Goose Net'\bin\Debug\GooseNet.msi
         retention-days: 30
 
      #- name: Build
