@@ -5,7 +5,7 @@ on:
     branches: [ "master", "primary_testing" ]
 
 jobs:
-  pre_build:
+  build:
     runs-on: windows-latest
     steps:
     - name: Setup Checkoutv3
@@ -28,10 +28,6 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-  build: 
-    needs: pre_build
-    runs-on: windows-latest
-    steps:
     - name: GooseNet Object Restore
       run: dotnet restore GooseNet.csproj
 
@@ -41,11 +37,6 @@ jobs:
     #- name: Check Build 
      # run: ls .\bin\Debug\net6.0-windows10.0.22621.0
 
-     
-  package:
-    needs: build
-    runs-on: windows-latest
-    steps:
     - name: Compile Wix Object
       run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
 
