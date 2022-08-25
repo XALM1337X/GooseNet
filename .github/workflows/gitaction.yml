@@ -40,7 +40,11 @@ jobs:
     #- name: Check WixTools
      # run: ls wix311-binaries
     
-     
+    - name: Compile Wix Object
+      run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs
+
+    - name: Check Wix Object
+      run: ls .\'Goose Net'\obj\Debug\
      
      
      
