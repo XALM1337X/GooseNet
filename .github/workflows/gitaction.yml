@@ -29,6 +29,7 @@ jobs:
         dotnet-version: 6.0.x
 
   build: 
+    needs: pre_build
     runs-on: windows-latest
     steps:
     - name: GooseNet Object Restore
@@ -41,7 +42,8 @@ jobs:
      # run: ls .\bin\Debug\net6.0-windows10.0.22621.0
 
      
-  package:  
+  package:
+    needs: build
     runs-on: windows-latest
     steps:
     - name: Compile Wix Object
