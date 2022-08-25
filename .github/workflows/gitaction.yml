@@ -40,12 +40,15 @@ jobs:
     - name: Compile Wix Object
       run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
 
-    #- name: Debug Wix Obj test
-     # run: ls .\'Goose Net'\
-
     - name: Check Wix Object
       run: ls .\'Goose Net'\obj\Debug\     
-     
+    
+    - name: Link Wix Object
+      run: .\wix311-binaries\light.exe .\'Goose Net'\obj\Debug\Product.wixobj -out .\'Goose Net'\bin\Debug\GooseNet.msi
+
+    - name: Check MSI
+      run: ls .\'Goose Net'\bin\Debug\
+
      #- name: Build
     #  run: dotnet build GooseNet.csproj --no-restore
     #- name: Test
