@@ -35,7 +35,7 @@
 			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="Newtonsoft.Json.dll" />
 			</Component>
 			<Component Id="README.md" Guid="5f7fcd84-51f5-952d-9294-f0a9e80cf9d5">
-				<File Id="README.md" Source="..\..\README.md" KeyPath="yes" Checksum="yes"/>
+				<File Id="README.md" Source="..\..\..\README.md" KeyPath="yes" Checksum="yes"/>
 			</Component>
 		</ComponentGroup>
 	</Fragment>
