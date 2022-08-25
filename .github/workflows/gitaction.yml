@@ -41,7 +41,7 @@ jobs:
      # run: ls .\bin\Debug\net6.0-windows10.0.22621.0
 
      
-  Package:  
+  package:  
     runs-on: windows-latest
     - name: Compile Wix Object
       run: .\wix311-binaries\candle.exe .\'Goose Net'\Product.wxs -out .\'Goose Net'\obj\Debug\Product.wixobj
