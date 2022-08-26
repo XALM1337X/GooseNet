@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Goose_Net" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">		
+	<Product Id="*" Name="Goose Net" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">		
 		
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64"/>
 		<Icon Id="GooseNet.ico" SourceFile="..\..\..\GooseNet.ico"/>
-		<Property Id="ARPPRODUCTICON" Value="GooseNet.ico" />
-		<UIRef Id="WixUI_Minimal" />
+		<Property Id="ARPPRODUCTICON" Value="GooseNet.ico" />		
+		<UIRef Id="WixUI_Minimal" />		
+		<Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="Thank you for installing this product." />
 		<WixVariable Id="WixUILicenseRtf" Value="..\..\..\Eula.rtf" />
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<WixVariable Id="WixUIDialogBmp" Value="..\..\..\GooseNet.bmp" />
+		<WixVariable Id="WixUIBannerBmp" Value="..\..\..\GooseNetBanner.bmp" />
+		<MajorUpgrade DowngradeErrorMessage="A newer version of GooseNet is already installed." />
 		<MediaTemplate EmbedCab="yes"/>
-		
+
 
 		<Feature Id="ProductFeature" Title="GooseNet" Level="1">
 			<ComponentGroupRef Id="TopLevelComponents" />
@@ -18,7 +21,7 @@
 			<ComponentGroupRef Id="TemplateComponents" />
 			
 		</Feature>
-		
+
 		
 		
 	</Product>
