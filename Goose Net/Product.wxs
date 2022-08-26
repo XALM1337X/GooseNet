@@ -3,6 +3,7 @@
 	<Product Id="*" Name="Goose_Net" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64"/>
 		<UIRef Id="WixUI_Minimal" />
+		<WixVariable Id="WixUILicenseRtf" Value="..\..\..\Eula.rtf" />
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
