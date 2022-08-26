@@ -34,7 +34,7 @@
                         <Run Text="GooseNet terms of service agreement:" FontSize="14" FontWeight="Bold"/>
                     </Paragraph>
                     <Paragraph>
-                        <Run Text="GooseNets usage is intended soley for penetration testing in a white hat environemnt with the end user targets having been prenotified to its usage and given consent to do so. The User of this software is prohibited from usage in any circumstance otherwise stated that would vioalte CFAA policies. Haveing been alerted to the consequences of violating such policies, I here by agree to release the GooseNet team from any legal responsiblilty resulting from the improper usage of this product, and agree that all legal liabilities from improper usage are my sole responsibility." FontSize="14" FontWeight="Bold"/>
+                        <Run Text="GooseNets usage is intended soley for penetration testing in a white hat environemnt with the end user targets having been prenotified to its usage and given consent to do so. The User of this software is prohibited from usage in any circumstance otherwise stated that would violate CFAA policies. Haveing been alerted to the consequences of violating such policies, I here by agree to release the GooseNet team from any legal responsiblilty resulting from the improper usage of this product, and agree that all legal liabilities from improper usage are my sole responsibility." FontSize="14" FontWeight="Bold"/>
                     </Paragraph>
 
 
