@@ -28,6 +28,9 @@
 					</Directory>
 					<Directory Id="PAYLOADOUTDIR" Name="payload_out"/>
 					<Directory Id="TEMPLATEDIR" Name="Templates"/>
+					<Directory Id="DATADIR" Name="data"/>
+					<Directory Id="THIRDPARTYDIR" Name="ThirdParty"/>
+					<Directory Id="SCRIPTSDIR" Name="scripts"/>
 				</Directory>
 			</Directory>
 		</Directory>
