@@ -1,42 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*" Name="Goose_Net" Language="1033" Version="1.0.0.0" Manufacturer="Angry Goose Technologies." UpgradeCode="064afc30-8b61-4282-9b70-7c46f2dcbe06">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64"/>
+		<UIRef Id="WixUI_Minimal" />
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
 		<Feature Id="ProductFeature" Title="GooseNet" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="TopLevelComponents" />
+			<ComponentGroupRef Id="BinComponents" />
+			<ComponentGroupRef Id="PayloadOutComponents" />
+			<ComponentGroupRef Id="TemplateComponents" />
+			
 		</Feature>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+			<Directory Id="ProgramFiles64Folder">
 				<Directory Id="INSTALLFOLDER" Name="GooseNet">
-					<Directory Id="DATADIRECTORY" Name="data"/>
-					<Directory Id="THIRDPARTYDIRECTORY" Name="ThirdParty"/>
-					
+					<Directory Id="BINDIR" Name="bin">
+						<Directory Id="RELEASEDIR" Name="Release">
+							<Directory Id="NET6.0DIR" Name="net6.0-windows10.0.22621.0"/>
+						</Directory>
+					</Directory>
+					<Directory Id="PAYLOADOUTDIR" Name="payload_out"/>
+					<Directory Id="TEMPLATEDIR" Name="Templates"/>
 				</Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
 
 	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<Component Id="GooseNet.runtimeconfig.json" Guid="aeba9cf3-a79d-4b53-bbd7-62918f945a38">
-			  <File Id="GooseNet.runtimeconfig.json" Name="GooseNet.runtimeconfig.json" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.runtimeconfig.json" />
+		<ComponentGroup Id="TopLevelComponents" Directory="INSTALLFOLDER">
+			
+			<Component Id="README.md" Guid="5f7fcd84-51f5-952d-9294-f0a9e80cf9d5" Win64="yes">
+				<File Id="README.md" Name="README.md" Source="..\..\..\README.md"/>
 			</Component>
-			<Component Id="GooseNet.dll" Guid="261030cc-aa66-4933-8653-a5a56a19bdff">
-			  <File Id="GooseNet.dll" Name="GooseNet.dll" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.dll" />
+			
+			<Component Id="GooseNet.png" Guid="661402b1-e227-4de1-a77e-06292019c9da" Win64="yes">
+				<File Id="GooseNet.png" Name="GooseNet.png" Source="..\..\..\GooseNet.png"/>
+			</Component>			
+			
+		</ComponentGroup>
+
+		<ComponentGroup Id="BinComponents" Directory="NET6.0DIR">
+
+			<Component Id="GooseNet.exe" Guid="3374a9ce-3e79-4224-9169-bf1d6a69161d" Win64="yes">
+				<File Id="GooseNet.exe" Name="GooseNet.exe" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.exe"/>
 			</Component>
-			<Component Id="Newtonsoft.Json.dll" Guid="5e7fbd84-51f6-462d-9d94-f7a9e90bf9d5">
-			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\Newtonsoft.Json.dll" />
+			
+			<Component Id="GooseNet.runtimeconfig.json" Guid="aeba9cf3-a79d-4b53-bbd7-62918f945a38" Win64="yes">
+				<File Id="GooseNet.runtimeconfig.json" Name="GooseNet.runtimeconfig.json" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.runtimeconfig.json"/>
 			</Component>
-			<Component Id="README.md" Guid="5f7fcd84-51f5-952d-9294-f0a9e80cf9d5">
-				<File Id="README.md" Source="..\..\..\README.md" KeyPath="yes" Checksum="yes"/>
+
+			<Component Id="GooseNet.dll" Guid="261030cc-aa66-4933-8653-a5a56a19bdff" Win64="yes">
+				<File Id="GooseNet.dll" Name="GooseNet.dll" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\GooseNet.dll"/>
+			</Component>
+
+			<Component Id="Newtonsoft.Json.dll" Guid="5e7fbd84-51f6-462d-9d94-f7a9e90bf9d5" Win64="yes">
+				<File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="..\..\..\bin\Release\net6.0-windows10.0.22621.0\Newtonsoft.Json.dll"/>
+			</Component>
+			
+		</ComponentGroup>
+
+		<ComponentGroup Id="PayloadOutComponents" Directory="PAYLOADOUTDIR">
+			<Component Id="keymap.h" Guid="f7b064b1-d611-465e-b05c-eabfddc7b419" Win64="yes">
+				<File Id="keymap.h"  Name="keymap.h" Source="..\..\..\payload_out\keymap.h"/>
 			</Component>
 		</ComponentGroup>
+
+		<ComponentGroup Id="TemplateComponents" Directory="TEMPLATEDIR">
+			
+			<Component Id="payload_out.ino.template" Guid="c21f4cca-e97e-4374-a8ec-5a7a182a9e85" Win64="yes">
+				<File Id="payload_out.ino.template" Name="payload_out.ino.template" Source="..\..\..\Templates\payload_out.ino.template"/>
+			</Component>
+		
+			<Component Id="rs_server.ps1.template" Guid="6fb7df87-8a6d-4a26-9564-6e1c17fe47f8" Win64="yes">
+				<File Id="rs_server.ps1.template" Name="rs_server.ps1.template" Source="..\..\..\Templates\rs_server.ps1.template"/>
+			</Component>
+
+			<Component Id="rs_sl.ps1.template" Guid="2dd266c3-3ef2-42d0-b713-e13efc47cc65" Win64="yes">
+				<File Id="rs_sl.ps1.template" Name="rs_sl.ps1.template" Source="..\..\..\Templates\rs_sl.ps1.template"/>
+			</Component>
+
+			<Component Id="rs_tsk.ps1.template" Guid="c67fc2eb-45ee-4f37-a08d-6cfb7ce08fe1" Win64="yes">
+				<File Id="rs_tsk.ps1.template" Name="rs_tsk.ps1.template" Source="..\..\..\Templates\rs_tsk.ps1.template"/>
+			</Component>
+			
+		</ComponentGroup>
+		
+		
 	</Fragment>
 </Wix>

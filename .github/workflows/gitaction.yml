@@ -2,7 +2,7 @@ name: GooseNetBuild
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "primary_testing" ]
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
       run: ls .\'Goose Net'\obj\Debug\     
     
     - name: Link Wix Object
-      run: .\wix311-binaries\light.exe .\'Goose Net'\obj\Debug\Product.wixobj -out .\'Goose Net'\bin\Debug\GooseNet.msi
+      run: .\wix311-binaries\light.exe -ext WixUIExtension -cultures:en-us .\'Goose Net'\obj\Debug\Product.wixobj -out .\'Goose Net'\bin\Debug\GooseNet.msi
 
     - name: Check MSI
       run: ls .\'Goose Net'\bin\Debug\
