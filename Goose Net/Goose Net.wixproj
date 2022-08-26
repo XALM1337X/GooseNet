@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>b8e97f17-c2ae-49e7-b49b-140eec016186</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Goose_Net</OutputName>
+    <OutputName>Goose Net</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
