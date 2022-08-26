@@ -2,7 +2,7 @@ name: GooseNetBuild
 
 on:
   push:
-    branches: [ "master", "primary_testing" ]
+    branches: [ "master" ]
 
 jobs:
   build:
