@@ -20,14 +20,8 @@
 			<ComponentGroupRef Id="PayloadOutComponents" />
 			<ComponentGroupRef Id="TemplateComponents" />
 			
-		</Feature>
-
-		
-		
-	</Product>
-	
-	
-	
+		</Feature>		
+	</Product>	
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFiles64Folder">
